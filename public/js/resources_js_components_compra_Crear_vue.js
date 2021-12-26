@@ -247,7 +247,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         sortable: false
       }],
       detalle: [],
-      cantidad: ""
+      cantidad: "0"
     };
   },
   mounted: function mounted() {
@@ -387,6 +387,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         Subtotal: this.producto.pro_preciocompra * this.cantidad
       });
       this.compra.com_total += this.producto.pro_preciocompra * this.cantidad;
+      this.cantidad = 0;
     },
     deleteItem: function deleteItem(index) {
       this.compra.com_total -= this.detalle[index].Subtotal;
@@ -1627,9 +1628,9 @@ var render = function () {
                       1
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-6" }),
+                    _c("div", { staticClass: "col-7" }),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-4" }, [
+                    _c("div", { staticClass: "col-3" }, [
                       _c("div", { staticClass: "form-group" }, [
                         _c("label", [_vm._v("Total")]),
                         _vm._v(" "),

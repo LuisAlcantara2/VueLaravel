@@ -93,8 +93,8 @@
                       </template>
                     </b-table>
                   </div>
-                  <div class="col-6"></div>
-                  <div class="col-4">
+                  <div class="col-7"></div>
+                  <div class="col-3">
                     <div class="form-group">
                       <label>Total</label>
                       <input class="text-end" type="text" v-model="compra.com_total">
@@ -197,7 +197,7 @@ export default{
         { key: 'actions', label: 'Acciones', tdClass: 'text-center', thClass: 'text-center', sortable: false },
       ],
       detalle: [],
-      cantidad:"",
+      cantidad:"0",
     }
   },
   async mounted(){
@@ -268,6 +268,7 @@ export default{
     agregarDetalle(){
       this.detalle.push(({Producto: this.producto.pro_nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad}))
       this.compra.com_total += this.producto.pro_preciocompra*this.cantidad
+      this.cantidad=0
     },
     deleteItem(index){
      this.compra.com_total -= this.detalle[index].Subtotal
