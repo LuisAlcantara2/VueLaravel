@@ -7,7 +7,7 @@
               <h4>Crear Compra</h4>
             </div>
             <div class="card-body">
-              <form @submit.prevent="crearProveedor">
+              <form @submit.prevent="crear">
                 <div class="row">
                   <div class="col-4 mb-2">
                     <div class="form-group">
@@ -79,7 +79,7 @@
                       show-empty
                       responsive
                       empty-text="Sin registros"
-                      :items="detalle"
+                      :items="compra.detalle"
                       :fields="fields"
                     >
                       <template #cell(actions)="data">
@@ -119,7 +119,7 @@
         @show="resetModal"
         @hidden="resetModal"
       >
-        <form @submit.prevent="crear">
+        <form @submit.prevent="crearProveedor">
           <div class="row">
             <div class="col-12 mb-2">
               <div class="form-group">
@@ -171,6 +171,7 @@ export default{
         proveedor_id:{},
         com_total:0,
         com_direccion:"",
+        detalle: [],
       },
       proveedores:[],
       isModalVisible: false,
@@ -196,7 +197,6 @@ export default{
         { key: 'Subtotal', label: 'Subtotal', sortable: true, tdClass: 'text-end'},
         { key: 'actions', label: 'Acciones', tdClass: 'text-center', thClass: 'text-center', sortable: false },
       ],
-      detalle: [],
       cantidad:"0",
     }
   },
@@ -266,13 +266,13 @@ export default{
         })
     },
     agregarDetalle(){
-      this.detalle.push(({Producto: this.producto.pro_nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad}))
+      this.compra.detalle.push(({Producto: this.producto.pro_nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad}))
       this.compra.com_total += this.producto.pro_preciocompra*this.cantidad
       this.cantidad=0
     },
     deleteItem(index){
-     this.compra.com_total -= this.detalle[index].Subtotal
-     this.$delete(this.detalle,index)
+     this.compra.com_total -= this.compra.detalle[index].Subtotal
+     this.$delete(this.compra.detalle,index)
      
    },
    seleccionarProducto(){

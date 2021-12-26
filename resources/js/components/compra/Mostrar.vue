@@ -19,7 +19,7 @@
           <tbody>
             <tr v-for="compra in compras" :key="compra.id">
               <td>{{ compra.id}}</td>
-              <td>{{ compra.com_nombre}}</td>
+              <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
               <td>
                 <router-link to="/editarCompra" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>

@@ -202,7 +202,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         com_correlativo: "",
         proveedor_id: {},
         com_total: 0,
-        com_direccion: ""
+        com_direccion: "",
+        detalle: []
       },
       proveedores: [],
       isModalVisible: false,
@@ -246,7 +247,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         thClass: 'text-center',
         sortable: false
       }],
-      detalle: [],
       cantidad: "0"
     };
   },
@@ -380,7 +380,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     agregarDetalle: function agregarDetalle() {
-      this.detalle.push({
+      this.compra.detalle.push({
         Producto: this.producto.pro_nombre,
         Precio: this.producto.pro_preciocompra,
         Cantidad: this.cantidad,
@@ -390,8 +390,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.cantidad = 0;
     },
     deleteItem: function deleteItem(index) {
-      this.compra.com_total -= this.detalle[index].Subtotal;
-      this.$delete(this.detalle, index);
+      this.compra.com_total -= this.compra.detalle[index].Subtotal;
+      this.$delete(this.compra.detalle, index);
     },
     seleccionarProducto: function seleccionarProducto() {
       var _this6 = this;
@@ -1276,7 +1276,7 @@ var render = function () {
                   on: {
                     submit: function ($event) {
                       $event.preventDefault()
-                      return _vm.crearProveedor.apply(null, arguments)
+                      return _vm.crear.apply(null, arguments)
                     },
                   },
                 },
@@ -1598,7 +1598,7 @@ var render = function () {
                             "show-empty": "",
                             responsive: "",
                             "empty-text": "Sin registros",
-                            items: _vm.detalle,
+                            items: _vm.compra.detalle,
                             fields: _vm.fields,
                           },
                           scopedSlots: _vm._u([
@@ -1698,7 +1698,7 @@ var render = function () {
               on: {
                 submit: function ($event) {
                   $event.preventDefault()
-                  return _vm.crear.apply(null, arguments)
+                  return _vm.crearProveedor.apply(null, arguments)
                 },
               },
             },

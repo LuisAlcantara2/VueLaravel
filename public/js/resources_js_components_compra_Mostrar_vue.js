@@ -1046,7 +1046,13 @@ var render = function () {
                 return _c("tr", { key: compra.id }, [
                   _c("td", [_vm._v(_vm._s(compra.id))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(compra.com_nombre))]),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(compra.com_serie) +
+                        " - " +
+                        _vm._s(compra.com_correlativo)
+                    ),
+                  ]),
                   _vm._v(" "),
                   _c(
                     "td",

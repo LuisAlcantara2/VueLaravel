@@ -36,10 +36,22 @@ class CompraController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
+    {   
+
         $compra = Compra::create($request->post());
+        foreach($request->detalle as $item){
+            $this->guardarVentaDetalle($item,$compra->id);
+        }
         return response()->json([
             'compra'=>$compra
+        ]);
+    }
+    protected function guardarVentaDetalle($producto, $id){
+        $detalle = DtalleCompra::create([
+            'precio'=> $producto->precio,
+            'cantidad' => $producto->cantidad,
+            'compra_id' => $codventa,
+            'producto_od' => $producto->codproducto
         ]);
     }
 
