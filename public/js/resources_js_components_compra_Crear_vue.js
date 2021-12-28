@@ -381,6 +381,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     agregarDetalle: function agregarDetalle() {
       this.compra.detalle.push({
+        id: this.producto.id,
         Producto: this.producto.pro_nombre,
         Precio: this.producto.pro_preciocompra,
         Cantidad: this.cantidad,

@@ -21,7 +21,7 @@
               <td>{{ categoria.id}}</td>
               <td>{{ categoria.cat_nombre}}</td>
               <td>
-                <router-link to="/editarCategoria" class="btn btn-info" custom v-slot="{ navigate }">
+                <router-link :to="{name:'editarCategoria',params: { id: categoria.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
                 </router-link>
                 <a type="button" @click="borrarCategoria(categoria.id)" class="btn btn-danger"> Eliminar </a>

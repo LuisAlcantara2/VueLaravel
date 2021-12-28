@@ -21,7 +21,7 @@
               <td>{{ cliente.id}}</td>
               <td>{{ cliente.cli_nombre}}</td>
               <td>
-                <router-link to="/editarCliente" class="btn btn-info" custom v-slot="{ navigate }">
+                <router-link :to="{name:'editarCliente', params: { id: cliente.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
                 </router-link>
                 <a type="button" @click="borrarCliente(cliente.id)" class="btn btn-danger"> Eliminar </a>

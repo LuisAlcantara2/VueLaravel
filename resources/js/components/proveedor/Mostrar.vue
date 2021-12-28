@@ -21,7 +21,7 @@
               <td>{{ proveedor.id}}</td>
               <td>{{ proveedor.pvd_nombre}}</td>
               <td>
-                <router-link to="/editarProveedor" class="btn btn-info" custom v-slot="{ navigate }">
+                <router-link :to="{name:'editarProveedor', params: { id: proveedor.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
                 </router-link>
                 <a type="button" @click="borrarProveedor(proveedor.id)" class="btn btn-danger"> Eliminar </a>

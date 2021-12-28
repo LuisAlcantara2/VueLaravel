@@ -1045,7 +1045,13 @@ var render = function () {
                     [
                       _c("router-link", {
                         staticClass: "btn btn-info",
-                        attrs: { to: "/editarCliente", custom: "" },
+                        attrs: {
+                          to: {
+                            name: "editarCliente",
+                            params: { id: cliente.id },
+                          },
+                          custom: "",
+                        },
                         scopedSlots: _vm._u(
                           [
                             {

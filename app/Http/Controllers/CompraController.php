@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Compra;
+use App\Models\DetalleCompra;
 
 class CompraController extends Controller
 {
@@ -37,7 +38,7 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {   
-
+        $request->all();
         $compra = Compra::create($request->post());
         foreach($request->detalle as $item){
             $this->guardarVentaDetalle($item,$compra->id);
@@ -46,12 +47,20 @@ class CompraController extends Controller
             'compra'=>$compra
         ]);
     }
-    protected function guardarVentaDetalle($producto, $id){
-        $detalle = DtalleCompra::create([
-            'precio'=> $producto->precio,
-            'cantidad' => $producto->cantidad,
-            'compra_id' => $codventa,
-            'producto_od' => $producto->codproducto
+    protected function guardarVentaDetalle($item, $id){
+        //dd($item);
+        // $det = new DetalleCompra(
+        //     $item['Precio'],
+        //     $item['Cantidad'],
+        //     $id,
+        //     1
+        // );
+        // $deta = DetalleCompra::create($det->post());
+        $detalle = DetalleCompra::create([
+            'dcp_cantidad' => $item['Cantidad'],
+            'dcp_precio' => $item['Precio'],
+            'compra_id' => $id,
+            'producto_id' => $item['id'],
         ]);
     }
 

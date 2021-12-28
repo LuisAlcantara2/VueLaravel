@@ -983,7 +983,7 @@ var render = function () {
         [
           _c("router-link", {
             staticClass: "btn btn-success",
-            attrs: { to: "/crearProdcuto", custom: "" },
+            attrs: { to: "/crearProducto", custom: "" },
             scopedSlots: _vm._u([
               {
                 key: "default",
@@ -1045,7 +1045,13 @@ var render = function () {
                     [
                       _c("router-link", {
                         staticClass: "btn btn-info",
-                        attrs: { to: "/editarProducto", custom: "" },
+                        attrs: {
+                          to: {
+                            name: "editarProducto",
+                            params: { id: producto.id },
+                          },
+                          custom: "",
+                        },
                         scopedSlots: _vm._u(
                           [
                             {

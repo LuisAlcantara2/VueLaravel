@@ -1045,7 +1045,13 @@ var render = function () {
                     [
                       _c("router-link", {
                         staticClass: "btn btn-info",
-                        attrs: { to: "/editarCategoria", custom: "" },
+                        attrs: {
+                          to: {
+                            name: "editarCategoria",
+                            params: { id: categoria.id },
+                          },
+                          custom: "",
+                        },
                         scopedSlots: _vm._u(
                           [
                             {

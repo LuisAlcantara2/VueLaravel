@@ -1045,7 +1045,13 @@ var render = function () {
                     [
                       _c("router-link", {
                         staticClass: "btn btn-info",
-                        attrs: { to: "/editarProveedor", custom: "" },
+                        attrs: {
+                          to: {
+                            name: "editarProveedor",
+                            params: { id: proveedor.id },
+                          },
+                          custom: "",
+                        },
                         scopedSlots: _vm._u(
                           [
                             {

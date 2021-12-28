@@ -21,7 +21,7 @@
               <td>{{ compra.id}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
               <td>
-                <router-link to="/editarCompra" class="btn btn-info" custom v-slot="{ navigate }">
+                <router-link :to="{name:'editarCompra', params: { id: compra.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
                 </router-link>
                 <a type="button" @click="borrarCompra(compra.id)" class="btn btn-danger"> Eliminar </a>

@@ -1045,7 +1045,10 @@ var render = function () {
                     [
                       _c("router-link", {
                         staticClass: "btn btn-info",
-                        attrs: { to: "/editarMarca", custom: "" },
+                        attrs: {
+                          to: { name: "editarMarca", params: { id: marca.id } },
+                          custom: "",
+                        },
                         scopedSlots: _vm._u(
                           [
                             {

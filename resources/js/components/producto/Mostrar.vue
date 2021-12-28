@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row">
     <div>
-      <router-link to="/crearProdcuto" class="btn btn-success" custom v-slot="{ navigate }">
+      <router-link to="/crearProducto" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
       </router-link>
     </div>
@@ -21,7 +21,7 @@
               <td>{{ producto.id}}</td>
               <td>{{ producto.pro_nombre}}</td>
               <td>
-                <router-link to="/editarProducto" class="btn btn-info" custom v-slot="{ navigate }">
+                <router-link :to="{ name: 'editarProducto', params: { id: producto.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
                 </router-link>
                 <a type="button" @click="borrarProducto(producto.id)" class="btn btn-danger"> Eliminar </a>
