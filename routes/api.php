@@ -43,3 +43,15 @@ Route::resource('producto',App\Http\Controllers\ProductoController::class)->only
 Route::resource('compra',App\Http\Controllers\CompraController::class)->only([
     'index','store','update','show','destroy'
 ]);
+
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', [App\Http\Controllers\AuthController::class, 'login']);
+    Route::post('logout', [App\Http\Controllers\AuthController::class, 'logout']);
+    Route::post('refresh', [App\Http\Controllers\AuthController::class, 'refresh']);
+    Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
+    Route::post('register', [App\Http\Controllers\AuthController::class, 'register']); 
+});
