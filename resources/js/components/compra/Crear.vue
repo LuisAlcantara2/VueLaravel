@@ -339,6 +339,7 @@ export default{
       await this.axios.post('/api/compra',this.compra)
         .then(response => {
           this.$router.push({name:"mostrarCompra"})
+          Swal.fire('Registrado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)
