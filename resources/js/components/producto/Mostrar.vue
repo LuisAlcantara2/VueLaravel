@@ -13,6 +13,7 @@
             <tr>
               <th>#</th>
               <th>Producto</th>
+              <th>Stock</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -20,6 +21,7 @@
             <tr v-for="producto in productos" :key="producto.id">
               <td>{{ producto.id}}</td>
               <td>{{ producto.pro_nombre}}</td>
+              <td>{{ producto.pro_stockactual}}</td>
               <td>
                 <router-link :to="{ name: 'editarProducto', params: { id: producto.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
