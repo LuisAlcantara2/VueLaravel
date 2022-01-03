@@ -64,12 +64,6 @@ export default{
     async crear(){
       await this.axios.post('/api/proveedor',this.proveedor)
         .then(response => {
-          try{
-            
-          }
-          catch{
-            this.$router.push({name:"mostrarProveedor"})
-          }
         })
         .catch(error=>{
           console.log(error)
