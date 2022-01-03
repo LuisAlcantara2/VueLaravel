@@ -50,12 +50,12 @@ export const routes =[
     },
     {
         name :'crearMarca',
-        path: '/crear',
+        path: '/crearMarca',
         component:MarcaCrear
     },
     {
         name :'editarMarca',
-        path: '/editar/:id',
+        path: '/editarMarca/:id',
         component:MarcaEditar
     },
     {
