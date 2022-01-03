@@ -1,4 +1,5 @@
-<template>
+
+<template> 
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -76,13 +77,30 @@
                   </div>
                   <div class="col-12"> 
                     <b-table
+                      striped 
+                      hover
                       show-empty
                       responsive
                       empty-text="Sin registros"
                       :items="compra.detalle"
                       :fields="fields"
                     >
+                    <template v-slot:cell(Precio)="row" v-if="edit">
+                      <b-form-input v-model="row.item.Precio"/>
+                    </template>
+                    
+                    <template v-slot:cell(Cantidad)="row" v-if="edit">
+                      <b-form-input v-model="row.item.Cantidad"/>
+                    </template>
                       <template #cell(actions)="data">
+                        <b-button
+                          size="sm"
+                          class="btn-info mr-1"
+                          @click="editItem(data)"
+                        >
+                          {{ edit === data.item.id ? 'Guardar' : 'Editar' }}
+                          <!-- <i class="fas fa-edit"></i> -->
+                        </b-button>
                         <b-button
                           size="sm"
                           class="btn-danger mr-1"
@@ -229,11 +247,12 @@
 </template>
 
 <script>
-import { BModal, VBModal } from 'bootstrap-vue'
+import { BModal, VBModal,BTable } from 'bootstrap-vue'
 export default{
   name : "crear-compra",
   components: {
       BModal,
+      BTable,
     },
   data(){
     return {
@@ -244,8 +263,23 @@ export default{
         proveedor_id:{},
         com_total:0,
         com_direccion:"",
-        detalle: [],
+        detalle:[],
       },
+      employees: [{
+          id: 0,
+          employeeName: "Jane",
+          joinDate: "11-11-1111",
+          selectedDepartment: "IT",
+          jobDescription: "Nerd"
+        },
+        {
+          id: 1,
+          employeeName: "Peter",
+          joinDate: "12-12-1212",
+          selectedDepartment: "Accounting",
+          jobDescription: "Moneier"
+        }
+      ],
       proveedores:[],
       isModalVisible: false,
       proveedor:{
@@ -263,11 +297,12 @@ export default{
         // pro_stockactual:0,
         // pro_preciocompra:"",
       },
+
       fields: [
-        { key: 'Producto', label: 'Producto', sortable: true },
-        { key: 'Precio', label: 'Precio', sortable: true, tdClass: 'text-end'},
-        { key: 'Cantidad', label: 'Cantidad', sortable: true, tdClass: 'text-end'},
-        { key: 'Subtotal', label: 'Subtotal', sortable: true, tdClass: 'text-end'},
+        { key: 'Producto', label: 'Producto', sortable: false },
+        { key: 'Precio', label: 'Precio', sortable: false, tdClass: 'text-end'},
+        { key: 'Cantidad', label: 'Cantidad', sortable: false, tdClass: 'text-end'},
+        { key: 'Subtotal', label: 'Subtotal', sortable: false, tdClass: 'text-end'},
         { key: 'actions', label: 'Acciones', tdClass: 'text-center', thClass: 'text-center', sortable: false },
       ],
       cantidad:"0",
@@ -286,11 +321,17 @@ export default{
       marcas:[],
       categorias:[],
       unidades:[],
+      edit: null,
     }
   },
   async mounted(){
     await this.getdata()
     await this.getProductos()
+  },
+  computed: {
+    rows() {
+      return this.compra.detalle.length
+    }
   },
   methods:{
     async crear(){
@@ -310,7 +351,6 @@ export default{
           if(this.isModalProducto)
           {
             this.producto_id = this.productos[this.productos.length-1].id 
-            console.log('dsadasd')
           }
           else{
             this.producto_id = this.productos[0].id
@@ -369,7 +409,11 @@ export default{
      this.compra.com_total -= this.compra.detalle[index].Subtotal
      this.$delete(this.compra.detalle,index)
      
-   },
+    },
+    editItem(id) {
+      this.edit = this.edit !== id.item.id ? id.item.id : null;
+      id.item.Subtotal = id.item.Precio * id.item.Cantidad
+    },
    seleccionarProducto(){
      this.axios.get(`/api/producto/${this.producto_id}`)
       .then(response=>{

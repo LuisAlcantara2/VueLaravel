@@ -62,8 +62,9 @@ export default{
         showCancelButton: true
       }).then((result)=>{
         if(result.isConfirmed){
-          this.axios.delete(`/api/categoria/${id}`).then(response=>{this.mostrarCompras()}).catch(error=>{console.log(error)});
+          this.axios.delete(`/api/categoria/${id}`).then(response=>{this.mostrarCategorias()}).catch(error=>{console.log(error)});
           Swal.fire('Eliminado','','success')
+
         }else if(result.isDenied){}
       });
     }

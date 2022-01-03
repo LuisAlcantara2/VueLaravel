@@ -73,6 +73,7 @@ export default{
       await this.axios.put(`/api/cliente/${this.$route.params.id}`,this.cliente)
         .then(response => {
           this.$router.push({name:"mostrarCliente"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

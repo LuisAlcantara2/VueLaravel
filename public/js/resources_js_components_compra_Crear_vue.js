@@ -25,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/components/modal/modal.js");
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/components/table/table.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -261,11 +262,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "crear-compra",
   components: {
-    BModal: bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__.BModal
+    BModal: bootstrap_vue__WEBPACK_IMPORTED_MODULE_1__.BModal,
+    BTable: bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__.BTable
   },
   data: function data() {
     return {
@@ -278,6 +298,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         com_direccion: "",
         detalle: []
       },
+      employees: [{
+        id: 0,
+        employeeName: "Jane",
+        joinDate: "11-11-1111",
+        selectedDepartment: "IT",
+        jobDescription: "Nerd"
+      }, {
+        id: 1,
+        employeeName: "Peter",
+        joinDate: "12-12-1212",
+        selectedDepartment: "Accounting",
+        jobDescription: "Moneier"
+      }],
       proveedores: [],
       isModalVisible: false,
       proveedor: {
@@ -297,21 +330,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       fields: [{
         key: 'Producto',
         label: 'Producto',
-        sortable: true
+        sortable: false
       }, {
         key: 'Precio',
         label: 'Precio',
-        sortable: true,
+        sortable: false,
         tdClass: 'text-end'
       }, {
         key: 'Cantidad',
         label: 'Cantidad',
-        sortable: true,
+        sortable: false,
         tdClass: 'text-end'
       }, {
         key: 'Subtotal',
         label: 'Subtotal',
-        sortable: true,
+        sortable: false,
         tdClass: 'text-end'
       }, {
         key: 'actions',
@@ -335,7 +368,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isModalProducto: false,
       marcas: [],
       categorias: [],
-      unidades: []
+      unidades: [],
+      edit: null
     };
   },
   mounted: function mounted() {
@@ -360,6 +394,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }, _callee);
     }))();
+  },
+  computed: {
+    rows: function rows() {
+      return this.compra.detalle.length;
+    }
   },
   methods: {
     crear: function crear() {
@@ -402,7 +441,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                   if (_this3.isModalProducto) {
                     _this3.producto_id = _this3.productos[_this3.productos.length - 1].id;
-                    console.log('dsadasd');
                   } else {
                     _this3.producto_id = _this3.productos[0].id;
                   }
@@ -501,6 +539,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteItem: function deleteItem(index) {
       this.compra.com_total -= this.compra.detalle[index].Subtotal;
       this.$delete(this.compra.detalle, index);
+    },
+    editItem: function editItem(id) {
+      this.edit = this.edit !== id.item.id ? id.item.id : null;
+      id.item.Subtotal = id.item.Precio * id.item.Cantidad;
     },
     seleccionarProducto: function seleccionarProducto() {
       var _this6 = this;
@@ -1753,34 +1795,104 @@ var render = function () {
                       [
                         _c("b-table", {
                           attrs: {
+                            striped: "",
+                            hover: "",
                             "show-empty": "",
                             responsive: "",
                             "empty-text": "Sin registros",
                             items: _vm.compra.detalle,
                             fields: _vm.fields,
                           },
-                          scopedSlots: _vm._u([
-                            {
-                              key: "cell(actions)",
-                              fn: function (data) {
-                                return [
-                                  _c(
-                                    "b-button",
-                                    {
-                                      staticClass: "btn-danger mr-1",
-                                      attrs: { size: "sm" },
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.deleteItem(data.index)
+                          scopedSlots: _vm._u(
+                            [
+                              _vm.edit
+                                ? {
+                                    key: "cell(Precio)",
+                                    fn: function (row) {
+                                      return [
+                                        _c("b-form-input", {
+                                          model: {
+                                            value: row.item.Precio,
+                                            callback: function ($$v) {
+                                              _vm.$set(row.item, "Precio", $$v)
+                                            },
+                                            expression: "row.item.Precio",
+                                          },
+                                        }),
+                                      ]
+                                    },
+                                  }
+                                : null,
+                              _vm.edit
+                                ? {
+                                    key: "cell(Cantidad)",
+                                    fn: function (row) {
+                                      return [
+                                        _c("b-form-input", {
+                                          model: {
+                                            value: row.item.Cantidad,
+                                            callback: function ($$v) {
+                                              _vm.$set(
+                                                row.item,
+                                                "Cantidad",
+                                                $$v
+                                              )
+                                            },
+                                            expression: "row.item.Cantidad",
+                                          },
+                                        }),
+                                      ]
+                                    },
+                                  }
+                                : null,
+                              {
+                                key: "cell(actions)",
+                                fn: function (data) {
+                                  return [
+                                    _c(
+                                      "b-button",
+                                      {
+                                        staticClass: "btn-info mr-1",
+                                        attrs: { size: "sm" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.editItem(data)
+                                          },
                                         },
                                       },
-                                    },
-                                    [_c("i", { staticClass: "fas fa-trash" })]
-                                  ),
-                                ]
+                                      [
+                                        _vm._v(
+                                          "\n                      " +
+                                            _vm._s(
+                                              _vm.edit === data.item.id
+                                                ? "Guardar"
+                                                : "Editar"
+                                            ) +
+                                            "\n                      "
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "b-button",
+                                      {
+                                        staticClass: "btn-danger mr-1",
+                                        attrs: { size: "sm" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.deleteItem(data.index)
+                                          },
+                                        },
+                                      },
+                                      [_c("i", { staticClass: "fas fa-trash" })]
+                                    ),
+                                  ]
+                                },
                               },
-                            },
-                          ]),
+                            ],
+                            null,
+                            true
+                          ),
                         }),
                       ],
                       1

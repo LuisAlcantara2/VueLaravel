@@ -45,6 +45,7 @@ export default{
       await this.axios.put(`/api/unidad/${this.$route.params.id}`,this.unidad)
         .then(response => {
           this.$router.push({name:"mostrarUnidad"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

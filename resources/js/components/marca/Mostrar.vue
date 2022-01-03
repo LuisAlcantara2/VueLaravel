@@ -62,7 +62,7 @@ export default{
         showCancelButton: true
       }).then((result)=>{
         if(result.isConfirmed){
-          this.axios.delete(`/api/marca/${id}`).then(response=>{this.mostrarCompras()}).catch(error=>{console.log(error)});
+          this.axios.delete(`/api/marca/${id}`).then(response=>{this.mostrarMarcas()}).catch(error=>{console.log(error)});
           Swal.fire('Eliminado','','success')
         }else if(result.isDenied){}
       });

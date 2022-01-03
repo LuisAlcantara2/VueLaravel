@@ -70,6 +70,7 @@ export default{
       await this.axios.post('/api/cliente',this.cliente)
         .then(response => {
           this.$router.push({name:"mostrarCliente"})
+          Swal.fire('Registrado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

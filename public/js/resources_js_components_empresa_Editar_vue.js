@@ -120,6 +120,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.$router.push({
                     name: "mostrarEmpresa"
                   });
+
+                  Swal.fire('Actualizado Correctamente', '', 'success');
                 })["catch"](function (error) {
                   console.log(error);
                 });

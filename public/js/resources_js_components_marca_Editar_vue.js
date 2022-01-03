@@ -86,6 +86,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this.$router.push({
                     name: "mostrarMarca"
                   });
+
+                  Swal.fire('Actualizado Correctamente', '', 'success');
                 })["catch"](function (error) {
                   console.log(error);
                 });

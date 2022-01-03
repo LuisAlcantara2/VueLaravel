@@ -45,6 +45,7 @@ export default{
       await this.axios.put(`/api/categoria/${this.$route.params.id}`,this.categoria)
         .then(response => {
           this.$router.push({name:"mostrarCategoria"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

@@ -110,7 +110,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (result) {
         if (result.isConfirmed) {
           _this2.axios["delete"]("/api/categoria/".concat(id)).then(function (response) {
-            _this2.mostrarCompras();
+            _this2.mostrarCategorias();
           })["catch"](function (error) {
             console.log(error);
           });

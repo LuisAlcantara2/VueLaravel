@@ -66,6 +66,7 @@ export default{
       await this.axios.put(`/api/proveedor/${this.$route.params.id}`,this.proveedor)
         .then(response => {
           this.$router.push({name:"mostrarProveedor"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

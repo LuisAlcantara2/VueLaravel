@@ -44,6 +44,7 @@ export default{
       await this.axios.post('/api/marca',this.marca)
         .then(response => {
           this.$router.push({name:"mostrarMarca"})
+          Swal.fire('Registrado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

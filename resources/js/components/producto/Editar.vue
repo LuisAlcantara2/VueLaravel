@@ -107,6 +107,7 @@ export default{
       await this.axios.put(`/api/producto/${this.$route.params.id}`,this.producto)
         .then(response => {
           this.$router.push({name:"mostrarProducto"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

@@ -46,6 +46,7 @@ export default{
       await this.axios.put(`/api/marca/${this.$route.params.id}`,this.marca)
         .then(response => {
           this.$router.push({name:"mostrarMarca"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

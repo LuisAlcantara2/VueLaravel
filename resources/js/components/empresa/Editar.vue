@@ -80,6 +80,7 @@ export default{
       await this.axios.put(`/api/empresa/${this.$route.params.id}`,this.empresa)
         .then(response => {
           this.$router.push({name:"mostrarEmpresa"})
+          Swal.fire('Actualizado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

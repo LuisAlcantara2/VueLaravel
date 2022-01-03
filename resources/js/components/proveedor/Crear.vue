@@ -64,6 +64,7 @@ export default{
       await this.axios.post('/api/proveedor',this.proveedor)
         .then(response => {
             this.$router.push({name:"mostrarProveedor"})
+            Swal.fire('Registrado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

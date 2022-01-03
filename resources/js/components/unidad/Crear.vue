@@ -42,6 +42,7 @@ export default{
       await this.axios.post('/api/unidad',this.unidad)
         .then(response => {
           this.$router.push({name:"mostrarUnidad"})
+          Swal.fire('Registrado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)
