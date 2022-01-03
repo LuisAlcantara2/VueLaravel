@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Venta;
 use App\Models\DetalleVenta;
-
-
+use App\Models\Producto;
+use App\Models\Kardex;
+Use \Carbon\Carbon;
 class VentaController extends Controller
 {
     /**
@@ -70,6 +71,15 @@ class VentaController extends Controller
             'venta_id' => $id,
             'producto_id' => $item['id'],
         ]);
+        $fechaact = Carbon::now();
+        $kardex = Kardex::create([
+            'krd_fecha' => $fechaact,
+            'krd_tipo' => 1,
+            'krd_cantidad' => $item['Cantidad'],
+            'producto_id' => $item['id'],
+        ]);
+
+        Producto::ActualizarStock($detalle->producto_id,-($detalle->dvt_cantidad));
     }
     public function show(Venta $venta)
     {

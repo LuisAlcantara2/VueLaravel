@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Compra;
 use App\Models\DetalleCompra;
-
+use App\Models\Producto;
+use App\Models\Kardex;
+use Carbon\Carbon;
 class CompraController extends Controller
 {
     /**
@@ -62,6 +64,15 @@ class CompraController extends Controller
             'compra_id' => $id,
             'producto_id' => $item['id'],
         ]);
+        $fechaact = Carbon::now();
+        $kardex = Kardex::create([
+            'krd_fecha' => $fechaact,
+            'krd_tipo' => 1,
+            'krd_cantidad' => $item['Cantidad'],
+            'producto_id' => $item['id'],
+        ]);
+
+        Producto::ActualizarStock($detalle->producto_id,$detalle->dcp_cantidad);
     }
 
     /**

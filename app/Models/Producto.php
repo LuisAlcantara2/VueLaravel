@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+use DB;
 
 class Producto extends Model
 {
@@ -37,5 +38,15 @@ class Producto extends Model
     public function detallecompra()
     {
         return $this->hasMany(DetalleCompra::class);
+    }
+    public function kardex()
+    {
+        return $this->hasMany(Kardex::class);
+    }
+
+    public static function ActualizarStock($id,$cantidad){ 
+        return DB::select(
+             DB::raw("UPDATE productos set pro_stockactual = pro_stockactual + '".$cantidad."' where id='".$id."'")
+        );
     }
 }
