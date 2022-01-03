@@ -1,12 +1,12 @@
 <template>
 <div class="container">
   <div class="row">
-    <div class="mt-2 mb-2">
+    <div>
       <router-link to="/crearUnidad" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
       </router-link>
     </div>
-    <div class="col-12"> 
+    <div class="col-12 mt-3">
       <div class="table-responsive">
         <table class="table table-border">
           <thead class="bg-primary text-white">

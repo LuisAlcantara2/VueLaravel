@@ -92,6 +92,7 @@ export default Vue.extend({
   },
   methods: {
     onSidebarChanged () {
+      console.log('ads')
     }
   }
 })
@@ -109,13 +110,13 @@ export default Vue.extend({
         <b-navbar
           id="mainNavbar"
           toggleable="lg"
-          type="light"
-          variant="light"
+          type="dark"
+          variant="dark"
           fixed="top"
         >
           <b-navbar-nav>
-            <b-nav-item>
-              
+            <b-nav-item @click="onSidebarChanged">
+              Menu
             </b-nav-item>
           </b-navbar-nav>
         </b-navbar>

@@ -47,6 +47,9 @@
                   </div>
                   <div class="col-12">
                     <button type="submit" class="btn btn-primary">Guardar</button>
+                    <router-link :to="{name:'mostrarEmpresa'}" class="btn btn-secondary" custom v-slot="{ navigate }">
+                      <span @click="navigate" @keypress.enter="navigate" role="link">Atras</span>
+                    </router-link>
                   </div>
                 </div>
 

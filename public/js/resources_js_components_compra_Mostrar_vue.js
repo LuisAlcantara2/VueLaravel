@@ -22479,7 +22479,7 @@ var render = function () {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-12" }, [
+      _c("div", { staticClass: "col-12 mt-3" }, [
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table table-border" }, [
             _vm._m(0),

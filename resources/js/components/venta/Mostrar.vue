@@ -1,12 +1,11 @@
 <template>
-<div class="container">
   <div class="row">
     <div>
       <router-link to="/crearVenta" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
       </router-link>
     </div>
-    <div class="col-12"> 
+    <div class="col-12 mt-3"> 
       <div class="table-responsive">
         <table class="table table-border">
           <thead class="bg-primary text-white">
@@ -35,7 +34,6 @@
       </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 import moment from "moment";

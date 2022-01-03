@@ -69,8 +69,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -22429,151 +22427,149 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
-      _c(
-        "div",
-        [
-          _c("router-link", {
-            staticClass: "btn btn-success",
-            attrs: { to: "/crearVenta", custom: "" },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function (ref) {
-                  var navigate = ref.navigate
-                  return [
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      [
+        _c("router-link", {
+          staticClass: "btn btn-success",
+          attrs: { to: "/crearVenta", custom: "" },
+          scopedSlots: _vm._u([
+            {
+              key: "default",
+              fn: function (ref) {
+                var navigate = ref.navigate
+                return [
+                  _c(
+                    "span",
+                    {
+                      attrs: { role: "link" },
+                      on: {
+                        click: navigate,
+                        keypress: function ($event) {
+                          if (
+                            !$event.type.indexOf("key") &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return navigate.apply(null, arguments)
+                        },
+                      },
+                    },
+                    [
+                      _c("i", { staticClass: "fas fa-plus-circle" }),
+                      _vm._v("  Nuevo"),
+                    ]
+                  ),
+                ]
+              },
+            },
+          ]),
+        }),
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-12 mt-3" }, [
+      _c("div", { staticClass: "table-responsive" }, [
+        _c("table", { staticClass: "table table-border" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.ventas, function (venta) {
+              return _c("tr", { key: venta.id }, [
+                _c("td", [_vm._v(_vm._s(venta.id))]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(_vm._s(_vm._f("formatDate")(venta.ven_fecha))),
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    _vm._s(venta.ven_serie) +
+                      " - " +
+                      _vm._s(venta.ven_correlativo)
+                  ),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c("router-link", {
+                      staticClass: "btn btn-info",
+                      attrs: {
+                        to: { name: "editarVenta", params: { id: venta.id } },
+                        custom: "",
+                      },
+                      scopedSlots: _vm._u(
+                        [
+                          {
+                            key: "default",
+                            fn: function (ref) {
+                              var navigate = ref.navigate
+                              return [
+                                _c(
+                                  "span",
+                                  {
+                                    attrs: { role: "link" },
+                                    on: {
+                                      click: navigate,
+                                      keypress: function ($event) {
+                                        if (
+                                          !$event.type.indexOf("key") &&
+                                          _vm._k(
+                                            $event.keyCode,
+                                            "enter",
+                                            13,
+                                            $event.key,
+                                            "Enter"
+                                          )
+                                        ) {
+                                          return null
+                                        }
+                                        return navigate.apply(null, arguments)
+                                      },
+                                    },
+                                  },
+                                  [_vm._v("Editar")]
+                                ),
+                              ]
+                            },
+                          },
+                        ],
+                        null,
+                        true
+                      ),
+                    }),
+                    _vm._v(" "),
                     _c(
-                      "span",
+                      "a",
                       {
-                        attrs: { role: "link" },
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button" },
                         on: {
-                          click: navigate,
-                          keypress: function ($event) {
-                            if (
-                              !$event.type.indexOf("key") &&
-                              _vm._k(
-                                $event.keyCode,
-                                "enter",
-                                13,
-                                $event.key,
-                                "Enter"
-                              )
-                            ) {
-                              return null
-                            }
-                            return navigate.apply(null, arguments)
+                          click: function ($event) {
+                            return _vm.borrarVenta(venta.id)
                           },
                         },
                       },
-                      [
-                        _c("i", { staticClass: "fas fa-plus-circle" }),
-                        _vm._v("  Nuevo"),
-                      ]
+                      [_vm._v(" Eliminar ")]
                     ),
-                  ]
-                },
-              },
-            ]),
-          }),
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-12" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table table-border" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.ventas, function (venta) {
-                return _c("tr", { key: venta.id }, [
-                  _c("td", [_vm._v(_vm._s(venta.id))]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(_vm._s(_vm._f("formatDate")(venta.ven_fecha))),
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm._v(
-                      _vm._s(venta.ven_serie) +
-                        " - " +
-                        _vm._s(venta.ven_correlativo)
-                    ),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c("router-link", {
-                        staticClass: "btn btn-info",
-                        attrs: {
-                          to: { name: "editarVenta", params: { id: venta.id } },
-                          custom: "",
-                        },
-                        scopedSlots: _vm._u(
-                          [
-                            {
-                              key: "default",
-                              fn: function (ref) {
-                                var navigate = ref.navigate
-                                return [
-                                  _c(
-                                    "span",
-                                    {
-                                      attrs: { role: "link" },
-                                      on: {
-                                        click: navigate,
-                                        keypress: function ($event) {
-                                          if (
-                                            !$event.type.indexOf("key") &&
-                                            _vm._k(
-                                              $event.keyCode,
-                                              "enter",
-                                              13,
-                                              $event.key,
-                                              "Enter"
-                                            )
-                                          ) {
-                                            return null
-                                          }
-                                          return navigate.apply(null, arguments)
-                                        },
-                                      },
-                                    },
-                                    [_vm._v("Editar")]
-                                  ),
-                                ]
-                              },
-                            },
-                          ],
-                          null,
-                          true
-                        ),
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function ($event) {
-                              return _vm.borrarVenta(venta.id)
-                            },
-                          },
-                        },
-                        [_vm._v(" Eliminar ")]
-                      ),
-                    ],
-                    1
-                  ),
-                ])
-              }),
-              0
-            ),
-          ]),
+                  ],
+                  1
+                ),
+              ])
+            }),
+            0
+          ),
         ]),
       ]),
     ]),

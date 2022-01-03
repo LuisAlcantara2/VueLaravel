@@ -980,7 +980,6 @@ var render = function () {
     _c("div", { staticClass: "row" }, [
       _c(
         "div",
-        { staticClass: "mt-2 mb-2" },
         [
           _c("router-link", {
             staticClass: "btn btn-success",
@@ -1028,7 +1027,7 @@ var render = function () {
         1
       ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-12" }, [
+      _c("div", { staticClass: "col-12 mt-3" }, [
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table table-border" }, [
             _vm._m(0),
