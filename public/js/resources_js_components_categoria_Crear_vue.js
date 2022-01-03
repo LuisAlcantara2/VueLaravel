@@ -84,7 +84,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                     name: "mostrarCategoria"
                   });
 
-                  Swal.fire('Agregado', '', 'success');
+                  Swal.fire('Registrado Correctamente', '', 'success');
                 })["catch"](function (error) {
                   console.log(error);
                 });

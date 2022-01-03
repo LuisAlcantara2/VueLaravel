@@ -19,7 +19,7 @@ export default Vue.extend({
             {
               name: 'Lista',
               href: {
-                name: ''
+                name: 'mostrarVenta'
               },
             },
             {

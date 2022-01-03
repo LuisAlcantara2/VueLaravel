@@ -43,7 +43,7 @@ export default{
       await this.axios.post('/api/categoria',this.categoria)
         .then(response => {
           this.$router.push({name:"mostrarCategoria"})
-          Swal.fire('Agregado','','success')
+          Swal.fire('Registrado Correctamente','','success')
         })
         .catch(error=>{
           console.log(error)

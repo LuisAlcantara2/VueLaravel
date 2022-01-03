@@ -111,7 +111,7 @@ class CompraController extends Controller
     {
         $compra->delete();
         return response()->json([
-            'mensaje'=>'Compra eliminado'
+            'mensaje'=>'Compra eliminada'
         ]);
     }
 }

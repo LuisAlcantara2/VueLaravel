@@ -12,6 +12,7 @@
           <thead class="bg-primary text-white">
             <tr>
               <th>#</th>
+              <th>Fecha</th>
               <th>Compra</th>
               <th>Acciones</th>
             </tr>
@@ -19,6 +20,7 @@
           <tbody>
             <tr v-for="compra in compras" :key="compra.id">
               <td>{{ compra.id}}</td>
+              <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
               <td>
                 <router-link :to="{name:'editarCompra', params: { id: compra.id }}" class="btn btn-info" custom v-slot="{ navigate }">
@@ -35,6 +37,12 @@
 </div>
 </template>
 <script>
+import moment from "moment";
+Vue.filter('formatDate', function(value) {
+  if (value) {
+    return moment(String(value)).format('MM/DD/YYYY')
+  }
+})
 export default{
   name:"compras",
   data(){

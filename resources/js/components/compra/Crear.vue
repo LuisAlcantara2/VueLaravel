@@ -28,19 +28,30 @@
                       <input type="text" class="form-control" v-model="compra.com_correlativo">
                     </div>
                   </div>
-                  <div class="col-6 mb-2">
+                  <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Proveedor</label>
                       <a v-b-modal.modalProveedor>[+Nuevo]</a>
-                      <select v-model="compra.proveedor_id" class="form-control" id="proveedor">
-                        <option v-for="proveedor in proveedores" :key="proveedor.id" :value="proveedor.id">{{proveedor.pvd_nombre}}</option>
-                    </select>
+                      <b-form-select
+                        v-model="proveedor_id"
+                        :options="proveedores"
+                        class="form-control"
+                        value-field="id"
+                        text-field="pvd_nombre"
+                        @change="seleccionarProveedor"
+                      ></b-form-select>
                     </div>
                   </div>
-                  <div class="col-6 mb-2">
+                  <div class="col-4 mb-2">
+                    <div class="form-group">
+                      <label>Documento</label>
+                      <input type="text" class="form-control" v-model="proveedor.pvd_doc">
+                    </div>
+                  </div>
+                  <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Dirección</label>
-                      <input type="text" class="form-control" v-model="compra.com_direccion">
+                      <input type="text" class="form-control" v-model="proveedor.pvd_direccion">
                     </div>
                   </div>
                   <div class="col-3 mb-2">
@@ -248,6 +259,7 @@
 
 <script>
 import { BModal, VBModal,BTable } from 'bootstrap-vue'
+import moment from "moment";
 export default{
   name : "crear-compra",
   components: {
@@ -257,30 +269,18 @@ export default{
   data(){
     return {
       compra:{
-        com_fecha:"",
+        com_fecha:moment().format("YYYY-MM-DD"),
         com_serie:"",
         com_correlativo:"",
-        proveedor_id:{},
+        proveedor_id:"",
         com_total:0,
-        com_direccion:"",
+        com_direccion:"-",
         detalle:[],
       },
-      employees: [{
-          id: 0,
-          employeeName: "Jane",
-          joinDate: "11-11-1111",
-          selectedDepartment: "IT",
-          jobDescription: "Nerd"
-        },
-        {
-          id: 1,
-          employeeName: "Peter",
-          joinDate: "12-12-1212",
-          selectedDepartment: "Accounting",
-          jobDescription: "Moneier"
-        }
-      ],
       proveedores:[],
+      proveedor_id:{
+
+      },
       isModalVisible: false,
       proveedor:{
         pvd_doc:"",
@@ -325,8 +325,8 @@ export default{
     }
   },
   async mounted(){
-    await this.getdata()
     await this.getProductos()
+    await this.getdata()
   },
   computed: {
     rows() {
@@ -362,15 +362,18 @@ export default{
         })
     },
     async getdata(){
-      this.axios.get('/api/proveedor')
+      await this.axios.get('/api/proveedor')
         .then(response=>{
           this.proveedores = response.data 
+          console.log('prove',this.proveedores)
           if(this.isModal){
-            this.compra.proveedor_id  = this.proveedores[this.proveedores.length-1].id
+            this.proveedor_id  = this.proveedores[this.proveedores.length-1].id
+            console.log('llega')
           }
           else{
-            this.compra.proveedor_id  = this.proveedores[0].id
+            this.proveedor_id  = this.proveedores[0].id
           }
+          this.seleccionarProveedor()
         })
         .catch(error=>{
           this.marcas = []
@@ -418,6 +421,17 @@ export default{
      this.axios.get(`/api/producto/${this.producto_id}`)
       .then(response=>{
         this.producto = response.data
+        console.log(response.data)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+   },
+   seleccionarProveedor(){
+     this.axios.get(`/api/proveedor/${this.proveedor_id}`)
+      .then(response=>{
+        this.proveedor = response.data
+        this.compra.proveedor_id =this.proveedor.id
         console.log(response.data)
       })
       .catch(error=>{

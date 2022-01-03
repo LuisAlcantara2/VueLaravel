@@ -43,6 +43,9 @@ Route::resource('producto',App\Http\Controllers\ProductoController::class)->only
 Route::resource('compra',App\Http\Controllers\CompraController::class)->only([
     'index','store','update','show','destroy'
 ]);
+Route::resource('venta',App\Http\Controllers\VentaController::class)->only([
+    'index','store','update','show','destroy'
+]);
 
 
 Route::group([
