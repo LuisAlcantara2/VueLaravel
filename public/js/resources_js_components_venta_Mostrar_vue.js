@@ -69,6 +69,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -22586,7 +22587,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Fecha")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Documente")]),
+        _c("th", [_vm._v("Documento")]),
         _vm._v(" "),
         _c("th", [_vm._v("Acciones")]),
       ]),

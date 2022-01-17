@@ -68,11 +68,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "productos",
   data: function data() {
     return {
-      productos: []
+      productos: [],
+      nombre: ''
     };
   },
   mounted: function mounted() {
@@ -88,7 +100,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get('api/producto').then(function (response) {
+                return _this.axios.get('api/producto', {
+                  params: {
+                    nombre: _this.nombre
+                  }
+                }).then(function (response) {
                   _this.productos = response.data;
                 })["catch"](function (error) {
                   _this.productos = [];
@@ -980,6 +996,35 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.nombre,
+              expression: "nombre",
+            },
+          ],
+          attrs: { type: "text" },
+          domProps: { value: _vm.nombre },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.nombre = $event.target.value
+            },
+          },
+        }),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.mostrarProductos } }, [
+          _vm._v("Filtrar"),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
       _c(
         "div",
         [
@@ -1042,6 +1087,8 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(producto.pro_nombre))]),
                   _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(producto.pro_precioventa))]),
+                  _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(producto.pro_stockactual))]),
                   _vm._v(" "),
                   _c(
@@ -1097,6 +1144,56 @@ var render = function () {
                         ),
                       }),
                       _vm._v(" "),
+                      _c("router-link", {
+                        staticClass: "btn btn-warning",
+                        attrs: {
+                          to: {
+                            name: "movimientoProducto",
+                            params: { id: producto.id },
+                          },
+                          custom: "",
+                        },
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "default",
+                              fn: function (ref) {
+                                var navigate = ref.navigate
+                                return [
+                                  _c(
+                                    "span",
+                                    {
+                                      attrs: { role: "link" },
+                                      on: {
+                                        click: navigate,
+                                        keypress: function ($event) {
+                                          if (
+                                            !$event.type.indexOf("key") &&
+                                            _vm._k(
+                                              $event.keyCode,
+                                              "enter",
+                                              13,
+                                              $event.key,
+                                              "Enter"
+                                            )
+                                          ) {
+                                            return null
+                                          }
+                                          return navigate.apply(null, arguments)
+                                        },
+                                      },
+                                    },
+                                    [_vm._v("Movimientos")]
+                                  ),
+                                ]
+                              },
+                            },
+                          ],
+                          null,
+                          true
+                        ),
+                      }),
+                      _vm._v(" "),
                       _c(
                         "a",
                         {
@@ -1134,7 +1231,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Producto")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Stock")]),
+        _c("th", [_vm._v("Precio venta")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Stock Actual")]),
         _vm._v(" "),
         _c("th", [_vm._v("Acciones")]),
       ]),

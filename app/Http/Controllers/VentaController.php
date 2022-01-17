@@ -74,8 +74,8 @@ class VentaController extends Controller
         $fechaact = Carbon::now();
         $kardex = Kardex::create([
             'krd_fecha' => $fechaact,
-            'krd_tipo' => 1,
-            'krd_cantidad' => $item['Cantidad'],
+            'krd_tipo' => 0,
+            'krd_cantidad' => -$item['Cantidad'],
             'producto_id' => $item['id'],
         ]);
 

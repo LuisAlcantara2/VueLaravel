@@ -13,6 +13,7 @@
             <tr>
               <th>#</th>
               <th>Cliente</th>
+              <th>Nro. Documento</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -20,6 +21,7 @@
             <tr v-for="cliente in clientes" :key="cliente.id">
               <td>{{ cliente.id}}</td>
               <td>{{ cliente.cli_nombre}}</td>
+              <td>{{ cliente.cli_doc}}</td>
               <td>
                 <router-link :to="{name:'editarCliente', params: { id: cliente.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>

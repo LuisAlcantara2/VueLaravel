@@ -17,7 +17,7 @@ class Kardex extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'krd_fecha','krd_tipo','krd_cantidad','producto_id',
+        'krd_fecha','krd_tipo','krd_cantidad','krd_anterior','krd_actual','producto_id',
     ];
 
     public function producto()

@@ -1,6 +1,12 @@
 <template>
 <div class="container">
   <div class="row">
+    <div class="col-12">
+      <input v-model="nombre" type="text">
+      <button @click="mostrarProductos">Filtrar</button>
+    </div>
+  </div>
+  <div class="row">
     <div>
       <router-link to="/crearProducto" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
@@ -13,7 +19,8 @@
             <tr>
               <th>#</th>
               <th>Producto</th>
-              <th>Stock</th>
+              <th>Precio venta</th>
+              <th>Stock Actual</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -21,10 +28,14 @@
             <tr v-for="producto in productos" :key="producto.id">
               <td>{{ producto.id}}</td>
               <td>{{ producto.pro_nombre}}</td>
+              <td>{{ producto.pro_precioventa}}</td>
               <td>{{ producto.pro_stockactual}}</td>
               <td>
                 <router-link :to="{ name: 'editarProducto', params: { id: producto.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
+                </router-link>
+                <router-link :to="{ name: 'movimientoProducto', params: { id: producto.id }}" class="btn btn-warning" custom v-slot="{ navigate }">
+                  <span @click="navigate" @keypress.enter="navigate" role="link">Movimientos</span>
                 </router-link>
                 <a type="button" @click="borrarProducto(producto.id)" class="btn btn-danger"> Eliminar </a>
               </td>
@@ -41,7 +52,8 @@ export default{
   name:"productos",
   data(){
     return{
-      productos:[]
+      productos:[],
+      nombre:''
     }
   },
   mounted(){
@@ -49,7 +61,11 @@ export default{
   },
   methods: {
     async mostrarProductos(){
-      await this.axios.get('api/producto')
+      await this.axios.get('api/producto',{
+        params:{
+          nombre:this.nombre
+        }
+      })
         .then(response=>{
           this.productos = response.data
         })

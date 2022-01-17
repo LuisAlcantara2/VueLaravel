@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Producto;
-
+use DB;
 class ProductoController extends Controller
 {
     /**
@@ -12,9 +12,11 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $productos = Producto::all();
+        $filtro = $request->nombre;
+        // $productos = Producto::all();
+        $productos = Producto::where('pro_nombre','LIKE','%'.$filtro.'%')->get();
         return response()->json($productos);
     }
 
@@ -91,5 +93,11 @@ class ProductoController extends Controller
         return response()->json([
             'mensaje'=>'Producto eliminado'
         ]);
+    }
+
+    public function movimiento($id)
+    {
+        $movimientos = DB::table('kardex')->where('producto_id','=',$id)->get();
+        return response()->json($movimientos);
     }
 }

@@ -12,7 +12,7 @@
             <tr>
               <th>#</th>
               <th>Fecha</th>
-              <th>Documente</th>
+              <th>Documento</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -34,6 +34,7 @@
       </div>
     </div>
   </div>
+  
 </template>
 <script>
 import moment from "moment";

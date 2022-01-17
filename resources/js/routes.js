@@ -27,6 +27,7 @@ const EmpresaEditar = ()=> import('./components/empresa/Editar.vue')
 const ProductoMostrar = ()=> import('./components/producto/Mostrar.vue')
 const ProductoCrear = ()=> import('./components/producto/Crear.vue')
 const ProductoEditar = ()=> import('./components/producto/Editar.vue')
+const ProductoMovimiento = ()=> import('./components/producto/Movimiento.vue')
 
 const CompraMostrar = ()=> import('./components/compra/Mostrar.vue')
 const CompraCrear = ()=> import('./components/compra/Crear.vue')
@@ -147,6 +148,11 @@ export const routes =[
         name :'editarProducto',
         path: '/editarProducto/:id',
         component:ProductoEditar
+    },
+    {
+        name :'movimientoProducto',
+        path: '/movimientoProducto/:id',
+        component:ProductoMovimiento
     },
     {
         name :'mostrarCompra',

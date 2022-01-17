@@ -46,8 +46,7 @@ Route::resource('compra',App\Http\Controllers\CompraController::class)->only([
 Route::resource('venta',App\Http\Controllers\VentaController::class)->only([
     'index','store','update','show','destroy'
 ]);
-
-
+Route::get('movimiento/{id}', [App\Http\Controllers\ProductoController::class, 'movimiento'])->name('movimiento'); 
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
@@ -58,3 +57,4 @@ Route::group([
     Route::post('me', [App\Http\Controllers\AuthController::class, 'me']);
     Route::post('register', [App\Http\Controllers\AuthController::class, 'register']); 
 });
+
