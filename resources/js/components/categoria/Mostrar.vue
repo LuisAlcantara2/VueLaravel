@@ -82,7 +82,7 @@ export default{
 
         }else if(result.isDenied){}
       });
-    }
+    },
   },
 }
 </script>

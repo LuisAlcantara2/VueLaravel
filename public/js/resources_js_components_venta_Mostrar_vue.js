@@ -70,6 +70,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 Vue.filter('formatDate', function (value) {
   if (value) {
@@ -80,7 +89,8 @@ Vue.filter('formatDate', function (value) {
   name: "ventas",
   data: function data() {
     return {
-      ventas: []
+      ventas: [],
+      total: 0
     };
   },
   mounted: function mounted() {
@@ -98,6 +108,8 @@ Vue.filter('formatDate', function (value) {
                 _context.next = 2;
                 return _this.axios.get('api/venta').then(function (response) {
                   _this.ventas = response.data;
+
+                  _this.sumPrecios();
                 })["catch"](function (error) {
                   _this.ventas = [];
                 });
@@ -136,6 +148,13 @@ Vue.filter('formatDate', function (value) {
       //     console.log(error)
       //   })
       // }
+    },
+    sumPrecios: function sumPrecios() {
+      var _this3 = this;
+
+      this.ventas.forEach(function (element) {
+        _this3.total = element.ven_total;
+      });
     }
   }
 });
@@ -22485,97 +22504,113 @@ var render = function () {
           _vm._v(" "),
           _c(
             "tbody",
-            _vm._l(_vm.ventas, function (venta) {
-              return _c("tr", { key: venta.id }, [
-                _c("td", [_vm._v(_vm._s(venta.id))]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(_vm._s(_vm._f("formatDate")(venta.ven_fecha))),
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _vm._v(
-                    _vm._s(venta.ven_serie) +
-                      " - " +
-                      _vm._s(venta.ven_correlativo)
-                  ),
-                ]),
-                _vm._v(" "),
-                _c(
-                  "td",
-                  [
-                    _c("router-link", {
-                      staticClass: "btn btn-info",
-                      attrs: {
-                        to: { name: "editarVenta", params: { id: venta.id } },
-                        custom: "",
-                      },
-                      scopedSlots: _vm._u(
-                        [
-                          {
-                            key: "default",
-                            fn: function (ref) {
-                              var navigate = ref.navigate
-                              return [
-                                _c(
-                                  "span",
-                                  {
-                                    attrs: { role: "link" },
-                                    on: {
-                                      click: navigate,
-                                      keypress: function ($event) {
-                                        if (
-                                          !$event.type.indexOf("key") &&
-                                          _vm._k(
-                                            $event.keyCode,
-                                            "enter",
-                                            13,
-                                            $event.key,
-                                            "Enter"
-                                          )
-                                        ) {
-                                          return null
-                                        }
-                                        return navigate.apply(null, arguments)
+            [
+              _vm._l(_vm.ventas, function (venta) {
+                return _c("tr", { key: venta.id }, [
+                  _c("td", [_vm._v(_vm._s(venta.id))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(_vm._s(_vm._f("formatDate")(venta.ven_fecha))),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(venta.ven_serie) +
+                        " - " +
+                        _vm._s(venta.ven_correlativo)
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(venta.ven_total))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    [
+                      _c("router-link", {
+                        staticClass: "btn btn-info",
+                        attrs: {
+                          to: { name: "editarVenta", params: { id: venta.id } },
+                          custom: "",
+                        },
+                        scopedSlots: _vm._u(
+                          [
+                            {
+                              key: "default",
+                              fn: function (ref) {
+                                var navigate = ref.navigate
+                                return [
+                                  _c(
+                                    "span",
+                                    {
+                                      attrs: { role: "link" },
+                                      on: {
+                                        click: navigate,
+                                        keypress: function ($event) {
+                                          if (
+                                            !$event.type.indexOf("key") &&
+                                            _vm._k(
+                                              $event.keyCode,
+                                              "enter",
+                                              13,
+                                              $event.key,
+                                              "Enter"
+                                            )
+                                          ) {
+                                            return null
+                                          }
+                                          return navigate.apply(null, arguments)
+                                        },
                                       },
                                     },
-                                  },
-                                  [
-                                    _c("i", { staticClass: "fas fa-edit" }),
-                                    _vm._v(" Editar"),
-                                  ]
-                                ),
-                              ]
+                                    [
+                                      _c("i", { staticClass: "fas fa-edit" }),
+                                      _vm._v(" Editar"),
+                                    ]
+                                  ),
+                                ]
+                              },
+                            },
+                          ],
+                          null,
+                          true
+                        ),
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.borrarVenta(venta.id)
                             },
                           },
-                        ],
-                        null,
-                        true
-                      ),
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn btn-danger",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function ($event) {
-                            return _vm.borrarVenta(venta.id)
-                          },
                         },
-                      },
-                      [
-                        _c("i", { staticClass: "fas fa-trash" }),
-                        _vm._v(" Eliminar "),
-                      ]
-                    ),
-                  ],
-                  1
-                ),
-              ])
-            }),
-            0
+                        [
+                          _c("i", { staticClass: "fas fa-trash" }),
+                          _vm._v(" Eliminar "),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                ])
+              }),
+              _vm._v(" "),
+              _c("tr", [
+                _c("td"),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _c("td"),
+                _vm._v(" "),
+                _c("td", [_c("strong", [_vm._v(" " + _vm._s(this.total))])]),
+                _vm._v(" "),
+                _c("td"),
+              ]),
+            ],
+            2
           ),
         ]),
       ]),
@@ -22595,9 +22630,17 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Documento")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Total")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Acciones")]),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [_c("strong", [_vm._v(" TOTAL")])])
   },
 ]
 render._withStripped = true

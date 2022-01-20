@@ -13,6 +13,7 @@
               <th>#</th>
               <th>Fecha</th>
               <th>Documento</th>
+              <th>Total</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -22,12 +23,20 @@
               <td>{{ venta.ven_fecha | formatDate}}</td>
               <!-- format("YYYY-MM-DD"), -->
               <td>{{ venta.ven_serie}} - {{ venta.ven_correlativo}}</td>
+              <td>{{ venta.ven_total}}</td>
               <td>
                 <router-link :to="{name:'editarVenta', params: { id: venta.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
                 </router-link>
                 <a type="button" @click="borrarVenta(venta.id)" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar </a>
               </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><strong> TOTAL</strong></td>
+              <td></td>
+              <td><strong> {{this.total}}</strong></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -47,7 +56,8 @@ export default{
   name:"ventas",
   data(){
     return{
-      ventas:[]
+      ventas:[],
+      total:0,
     }
   },
   mounted(){
@@ -58,6 +68,7 @@ export default{
       await this.axios.get('api/venta')
         .then(response=>{
           this.ventas = response.data
+          this.sumPrecios()
         })
         .catch(error=>{
           this.ventas = []
@@ -83,6 +94,11 @@ export default{
       //     console.log(error)
       //   })
       // }
+    },
+    sumPrecios() {
+      this.ventas.forEach(element => {
+        this.total=element.ven_total        
+      });
     },
   },
 }

@@ -14,6 +14,7 @@
               <th>#</th>
               <th>Fecha</th>
               <th>Compra</th>
+              <th>Total</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -22,12 +23,20 @@
               <td>{{ compra.id}}</td>
               <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
+              <td>{{ compra.com_total}}</td>
               <td>
                 <router-link :to="{name:'editarCompra', params: { id: compra.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
                 </router-link>
                 <a type="button" @click="borrarCompra(compra.id)" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar </a>
               </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td><strong>TOTAL</strong></td>
+              <td></td>
+              <td><strong>{{this.total}}</strong></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -47,7 +56,8 @@ export default{
   name:"compras",
   data(){
     return{
-      compras:[]
+      compras:[],
+      total:0,
     }
   },
   mounted(){
@@ -58,6 +68,7 @@ export default{
       await this.axios.get('api/compra')
         .then(response=>{
           this.compras = response.data
+          this.sumPrecios()
         })
         .catch(error=>{
           this.compras = []
@@ -83,6 +94,11 @@ export default{
       //     console.log(error)
       //   })
       // }
+    },
+    sumPrecios() {
+      this.compras.forEach(element => {
+        this.total=element.com_total
+      });
     },
   },
 }
