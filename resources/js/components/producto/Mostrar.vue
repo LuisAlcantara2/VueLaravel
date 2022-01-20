@@ -1,9 +1,14 @@
 <template>
 <div class="container">
   <div class="row">
-    <div class="col-12">
-      <input v-model="nombre" type="text">
-      <button @click="mostrarProductos">Filtrar</button>
+    <div class="col-auto">
+      <label for="">Busqueda</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control" v-model="nombre" type="text">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" @click="mostrarProductos"><i class="fas fa-search"></i> Filtrar</button>
     </div>
   </div>
   <div class="row">
@@ -65,8 +70,7 @@ export default{
         params:{
           nombre:this.nombre
         }
-      })
-        .then(response=>{
+      }).then(response=>{
           this.productos = response.data
         })
         .catch(error=>{

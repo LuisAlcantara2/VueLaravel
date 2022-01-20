@@ -79,6 +79,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "productos",
   data: function data() {
@@ -996,7 +1001,9 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-12" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-auto" }, [
         _c("input", {
           directives: [
             {
@@ -1006,6 +1013,7 @@ var render = function () {
               expression: "nombre",
             },
           ],
+          staticClass: "form-control",
           attrs: { type: "text" },
           domProps: { value: _vm.nombre },
           on: {
@@ -1017,10 +1025,17 @@ var render = function () {
             },
           },
         }),
-        _vm._v(" "),
-        _c("button", { on: { click: _vm.mostrarProductos } }, [
-          _vm._v("Filtrar"),
-        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-auto" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            on: { click: _vm.mostrarProductos },
+          },
+          [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Filtrar")]
+        ),
       ]),
     ]),
     _vm._v(" "),
@@ -1077,7 +1092,7 @@ var render = function () {
       _c("div", { staticClass: "col-12 mt-3" }, [
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table table-border" }, [
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "tbody",
@@ -1230,6 +1245,14 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-auto" }, [
+      _c("label", { attrs: { for: "" } }, [_vm._v("Busqueda")]),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

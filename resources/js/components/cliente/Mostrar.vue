@@ -1,6 +1,17 @@
 <template>
 <div class="container">
   <div class="row">
+    <div class="col-auto">
+      <label for="">Busqueda</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control" v-model="filtro" type="text">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" @click="mostrarClientes"><i class="fas fa-search"></i> Filtrar</button>
+    </div>
+  </div>
+  <div class="row">
     <div>
       <router-link to="/crearCliente" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
@@ -41,7 +52,8 @@ export default{
   name:"clientes",
   data(){
     return{
-      clientes:[]
+      clientes:[],
+      filtro:'',
     }
   },
   mounted(){
@@ -49,8 +61,11 @@ export default{
   },
   methods: {
     async mostrarClientes(){
-      await this.axios.get('api/cliente')
-        .then(response=>{
+      await this.axios.get('api/cliente',{
+        params:{
+          filtro:this.filtro
+        }
+      }).then(response=>{
           this.clientes = response.data
         })
         .catch(error=>{

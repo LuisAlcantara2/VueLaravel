@@ -12,9 +12,10 @@ class MarcaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $marcas = Marca::all();
+        $filtro = $request->filtro;
+        $marcas = Marca::where('mar_nombre','LIKE','%'.$filtro.'%')->get();
         return response()->json($marcas);
     }
 

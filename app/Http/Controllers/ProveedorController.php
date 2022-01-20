@@ -12,9 +12,11 @@ class ProveedorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $proveedores = Proveedor::all();
+        $filtro = $request->filtro;
+        $proveedores = Proveedor::where('pvd_nombre','LIKE','%'.$filtro.'%')
+        ->orWhere('pvd_doc','LIKE','%'.$filtro.'%')->get();
         return response()->json($proveedores);
     }
 

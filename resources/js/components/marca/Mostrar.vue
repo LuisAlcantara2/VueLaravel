@@ -1,6 +1,17 @@
 <template>
 <div class="container">
   <div class="row">
+    <div class="col-auto">
+      <label for="">Busqueda</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control" v-model="filtro" type="text">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" @click="mostrarMarcas"><i class="fas fa-search"></i> Filtrar</button>
+    </div>
+  </div>
+  <div class="row">
     <div>
       <router-link to="/crearMarca" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
@@ -39,7 +50,8 @@ export default{
   name:"marcas",
   data(){
     return{
-      marcas:[]
+      marcas:[],
+      filtro:'',
     }
   },
   mounted(){
@@ -47,8 +59,11 @@ export default{
   },
   methods: {
     async mostrarMarcas(){
-      await this.axios.get('api/marca')
-        .then(response=>{
+      await this.axios.get('api/marca',{
+        params:{
+          filtro:this.filtro
+        }
+      }).then(response=>{
           this.marcas = response.data
         })
         .catch(error=>{

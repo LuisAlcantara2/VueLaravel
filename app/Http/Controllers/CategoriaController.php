@@ -12,9 +12,11 @@ class CategoriaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorias = Categoria::all();
+        $filtro = $request->filtro;
+        $categorias = Categoria::where('cat_nombre','LIKE','%'.$filtro.'%')->get();
+        // $categorias = Categoria::all();
         return response()->json($categorias);
     }
 

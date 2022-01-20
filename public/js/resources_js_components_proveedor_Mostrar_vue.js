@@ -66,18 +66,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "proveedores",
   data: function data() {
     return {
-      proveedores: []
+      proveedores: [],
+      filtro: ''
     };
   },
   mounted: function mounted() {
-    this.mostrarProveedors();
+    this.mostrarProveedores();
   },
   methods: {
-    mostrarProveedors: function mostrarProveedors() {
+    mostrarProveedores: function mostrarProveedores() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -86,7 +100,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get('api/proveedor').then(function (response) {
+                return _this.axios.get('api/proveedor', {
+                  params: {
+                    filtro: _this.filtro
+                  }
+                }).then(function (response) {
                   _this.proveedores = response.data;
                 })["catch"](function (error) {
                   _this.proveedores = [];
@@ -110,7 +128,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }).then(function (result) {
         if (result.isConfirmed) {
           _this2.axios["delete"]("/api/proveedor/".concat(id)).then(function (response) {
-            _this2.mostrarProveedors();
+            _this2.mostrarProveedores();
           })["catch"](function (error) {
             console.log(error);
           });
@@ -978,6 +996,45 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-auto" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.filtro,
+              expression: "filtro",
+            },
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text" },
+          domProps: { value: _vm.filtro },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.filtro = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-auto" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            on: { click: _vm.mostrarProveedores },
+          },
+          [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Filtrar")]
+        ),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
       _c(
         "div",
         [
@@ -1030,7 +1087,7 @@ var render = function () {
       _c("div", { staticClass: "col-12 mt-3" }, [
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table table-border" }, [
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "tbody",
@@ -1039,6 +1096,8 @@ var render = function () {
                   _c("td", [_vm._v(_vm._s(proveedor.id))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(proveedor.pvd_nombre))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(proveedor.pvd_doc))]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -1130,11 +1189,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-auto" }, [
+      _c("label", { attrs: { for: "" } }, [_vm._v("Busqueda")]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "bg-primary text-white" }, [
       _c("tr", [
         _c("th", [_vm._v("#")]),
         _vm._v(" "),
         _c("th", [_vm._v("Proveedor")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nro. Documento")]),
         _vm._v(" "),
         _c("th", [_vm._v("Acciones")]),
       ]),

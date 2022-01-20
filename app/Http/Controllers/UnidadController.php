@@ -12,9 +12,10 @@ class UnidadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $unidads = Unidad::all();
+        $filtro = $request->filtro;
+        $unidads = Unidad::where('uni_nombre','LIKE','%'.$filtro.'%')->get();
         return response()->json($unidads);
     }
 

@@ -1,6 +1,17 @@
 <template>
 <div class="container">
   <div class="row">
+    <div class="col-auto">
+      <label for="">Busqueda</label>
+    </div>
+    <div class="col-auto">
+      <input class="form-control" v-model="filtro" type="text">
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" @click="mostrarUnidades"><i class="fas fa-search"></i> Filtrar</button>
+    </div>
+  </div>
+  <div class="row">
     <div>
       <router-link to="/crearUnidad" class="btn btn-success" custom v-slot="{ navigate }">
         <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
@@ -39,16 +50,20 @@ export default{
   name:"unidades",
   data(){
     return{
-      unidades:[]
+      unidades:[],
+      filtro:'',
     }
   },
   mounted(){
-    this.mostrarUnidads()
+    this.mostrarUnidades()
   },
   methods: {
-    async mostrarUnidads(){
-      await this.axios.get('api/unidad')
-        .then(response=>{
+    async mostrarUnidades(){
+      await this.axios.get('api/unidad',{
+        params:{
+          filtro:this.filtro
+        }
+      }).then(response=>{
           this.unidades = response.data
         })
         .catch(error=>{
@@ -62,7 +77,7 @@ export default{
         showCancelButton: true
       }).then((result)=>{
         if(result.isConfirmed){
-          this.axios.delete(`/api/unidad/${id}`).then(response=>{this.mostrarUnidads()}).catch(error=>{console.log(error)});
+          this.axios.delete(`/api/unidad/${id}`).then(response=>{this.mostrarUnidades()}).catch(error=>{console.log(error)});
           Swal.fire('Eliminado','','success')
         }else if(result.isDenied){}
       });

@@ -12,9 +12,11 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $clientes = Cliente::all();
+        $filtro = $request->filtro;
+        $clientes = Cliente::where('cli_nombre','LIKE','%'.$filtro.'%')
+        ->orWhere('cli_doc','LIKE','%'.$filtro.'%')->get();
         return response()->json($clientes);
     }
 

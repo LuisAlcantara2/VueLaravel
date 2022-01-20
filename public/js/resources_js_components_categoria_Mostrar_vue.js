@@ -66,11 +66,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "categorias",
   data: function data() {
     return {
-      categorias: []
+      categorias: [],
+      filtro: ''
     };
   },
   mounted: function mounted() {
@@ -86,7 +98,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return _this.axios.get('api/categoria').then(function (response) {
+                return _this.axios.get('api/categoria', {
+                  params: {
+                    filtro: _this.filtro
+                  }
+                }).then(function (response) {
                   _this.categorias = response.data;
                 })["catch"](function (error) {
                   _this.categorias = [];
@@ -978,6 +994,45 @@ var render = function () {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-auto" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.filtro,
+              expression: "filtro",
+            },
+          ],
+          staticClass: "form-control",
+          attrs: { type: "text" },
+          domProps: { value: _vm.filtro },
+          on: {
+            input: function ($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.filtro = $event.target.value
+            },
+          },
+        }),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-auto" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            on: { click: _vm.mostrarCategorias },
+          },
+          [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Filtrar")]
+        ),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row" }, [
       _c(
         "div",
         [
@@ -1030,7 +1085,7 @@ var render = function () {
       _c("div", { staticClass: "col-12 mt-3" }, [
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table table-border" }, [
-            _vm._m(0),
+            _vm._m(1),
             _vm._v(" "),
             _c(
               "tbody",
@@ -1126,6 +1181,14 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-auto" }, [
+      _c("label", { attrs: { for: "" } }, [_vm._v("Busqueda")]),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
