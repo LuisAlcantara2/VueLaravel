@@ -16,7 +16,7 @@
                     </div>
                   </div>
                   <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
                     <router-link :to="{name:'mostrarCategoria'}" class="btn btn-secondary" custom v-slot="{ navigate }">
                       <span @click="navigate" @keypress.enter="navigate" role="link">Atras</span>
                     </router-link>

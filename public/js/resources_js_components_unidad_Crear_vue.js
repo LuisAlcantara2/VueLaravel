@@ -1011,14 +1011,7 @@ var render = function () {
                     "div",
                     { staticClass: "col-12" },
                     [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: { type: "submit" },
-                        },
-                        [_vm._v("Guardar")]
-                      ),
+                      _vm._m(1),
                       _vm._v(" "),
                       _c("router-link", {
                         staticClass: "btn btn-secondary",
@@ -1079,6 +1072,16 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("h4", [_vm._v("Crear Unidad")]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fas fa-save" }), _vm._v(" Guardar")]
+    )
   },
 ]
 render._withStripped = true

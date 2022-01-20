@@ -1133,7 +1133,10 @@ var render = function () {
                                         },
                                       },
                                     },
-                                    [_vm._v("Editar")]
+                                    [
+                                      _c("i", { staticClass: "fas fa-edit" }),
+                                      _vm._v("Editar"),
+                                    ]
                                   ),
                                 ]
                               },
@@ -1183,7 +1186,10 @@ var render = function () {
                                         },
                                       },
                                     },
-                                    [_vm._v("Movimientos")]
+                                    [
+                                      _c("i", { staticClass: "fas fa-eye" }),
+                                      _vm._v(" Movimientos"),
+                                    ]
                                   ),
                                 ]
                               },
@@ -1205,7 +1211,10 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v(" Eliminar ")]
+                        [
+                          _c("i", { staticClass: "fas fa-trash" }),
+                          _vm._v(" Eliminar "),
+                        ]
                       ),
                     ],
                     1

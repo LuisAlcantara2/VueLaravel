@@ -24,9 +24,9 @@
               <td>{{ cliente.cli_doc}}</td>
               <td>
                 <router-link :to="{name:'editarCliente', params: { id: cliente.id }}" class="btn btn-info" custom v-slot="{ navigate }">
-                  <span @click="navigate" @keypress.enter="navigate" role="link">Editar</span>
+                  <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
                 </router-link>
-                <a type="button" @click="borrarCliente(cliente.id)" class="btn btn-danger"> Eliminar </a>
+                <a type="button" @click="borrarCliente(cliente.id)" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar</a>
               </td>
             </tr>
           </tbody>

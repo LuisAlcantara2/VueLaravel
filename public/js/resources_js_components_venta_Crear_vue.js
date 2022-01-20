@@ -23625,7 +23625,10 @@ var render = function () {
                       attrs: { type: "button" },
                       on: { click: _vm.crearCliente },
                     },
-                    [_vm._v("Guardar")]
+                    [
+                      _c("i", { staticClass: "fas fa-save" }),
+                      _vm._v(" Guardar"),
+                    ]
                   ),
                   _vm._v(" "),
                   _c(

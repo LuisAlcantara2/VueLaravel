@@ -1084,7 +1084,7 @@ var render = function () {
                                     },
                                     [
                                       _c("i", { staticClass: "fas fa-edit" }),
-                                      _vm._v("Editar"),
+                                      _vm._v(" Editar"),
                                     ]
                                   ),
                                 ]
@@ -1109,7 +1109,7 @@ var render = function () {
                         },
                         [
                           _c("i", { staticClass: "fas fa-trash" }),
-                          _vm._v("Eliminar "),
+                          _vm._v(" Eliminar"),
                         ]
                       ),
                     ],

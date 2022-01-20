@@ -178,7 +178,7 @@
               </div>
             </div>
             <div class="col-12">
-              <button type="button" class="btn btn-primary" @click="crearCliente">Guardar</button>
+              <button type="button" class="btn btn-primary" @click="crearCliente"><i class="fas fa-save"></i> Guardar</button>
               <button type="button" class="btn btn-secondary" @click="hideModal">Cerrar</button>
             </div>
           </div>
