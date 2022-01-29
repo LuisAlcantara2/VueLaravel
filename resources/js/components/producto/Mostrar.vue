@@ -35,7 +35,7 @@
               <td>{{ producto.id}}</td>
               <td>{{ producto.pro_nombre}}</td>
               <td >{{ producto.pro_precioventa}}</td>
-              <td v-bind:class = "(producto.pro_stockactual<=producto.pro_stockmin)?'text-danger':''"><strong> {{ producto.pro_stockactual}}</strong></td>
+              <td v-bind:class = "(producto.pro_stockactual<=producto.pro_stockmin)?'bg-danger text-white':''"><strong> {{ producto.pro_stockactual}}</strong></td>
               <td>
                 <router-link :to="{ name: 'editarProducto', params: { id: producto.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i>Editar</span>

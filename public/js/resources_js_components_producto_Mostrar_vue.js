@@ -1130,7 +1130,7 @@ var render = function () {
                     {
                       class:
                         producto.pro_stockactual <= producto.pro_stockmin
-                          ? "text-danger"
+                          ? "bg-danger text-white"
                           : "",
                     },
                     [

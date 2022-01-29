@@ -145,13 +145,15 @@ class CompraController extends Controller
     }
     public function reporteCompraPdf(Request $request)
     {
+        $total=Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])->sum('com_total');
         $compras = Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])
         ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')->get();
         
         $data = [
             'desde' => $request->desde,
             'hasta' => $request->hasta,
-            'compra' => $compras
+            'compra' => $compras,
+            'total' =>$total,
         ];
         $path = public_path() . '/pdf/' . 'reporte Compra' . '.pdf';
 

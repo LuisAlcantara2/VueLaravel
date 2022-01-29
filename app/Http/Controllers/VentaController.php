@@ -168,6 +168,7 @@ class VentaController extends Controller
     }
     public function reporteVentaPdf(Request $request)
     {
+        $total=Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])->sum('ven_total');
         $ventas = Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])
         ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')->get();
 
@@ -175,8 +176,10 @@ class VentaController extends Controller
         $data = [
             'desde' => $request->desde,
             'hasta' => $request->hasta,
-            'venta' => $ventas
+            'venta' => $ventas,
+            'total' => $total,
         ];
+        
         $path = public_path() . '/pdf/' . 'reporte Venta' . '.pdf';
 
         $pdf = PDF::loadView('pdf/reporteventas', $data);

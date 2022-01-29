@@ -12,7 +12,12 @@
                   <div class="col-12 mb-2">
                     <div class="form-group">
                       <label>Documento</label>
-                      <input type="text" class="form-control" v-model="proveedor.pvd_doc">
+                      <div class="input-group">
+                        <input type="text" class="form-control" v-model="proveedor.pvd_doc">
+                        <div class="input-group-append">
+                          <button class="btn btn-outline-secondary" @click="Consultar" type="button"><i class="fas fa-search"></i> Consultar</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="col-12 mb-2">
@@ -72,6 +77,36 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+    },
+    Consultar(){
+      if(this.proveedor.pvd_doc.length==8){
+      //  axios.get(API_PERU_URL+"dni/"+this.suplierData.doi+"?api_token="+API_PERU_TOKEN).then((result) => {
+        axios.get("https://apiperu.dev/api/dni/"+this.proveedor.pvd_doc+"?api_token=69aff0151f9ba2dfd65f6602f5b3556a12674d365799cc919b79cd715bf160f8").then((result) => {
+        if(result.data.success){
+          console.log(result.data)
+          this.proveedor.pvd_nombre=result.data.data.nombre_completo
+          this.proveedor.pvd_direccion=result.data.data.direccion_completa
+        }
+        else{
+            Swal.fire('Ocurrió un error',"error")
+          }
+        })
+      }
+      else if (this.proveedor.pvd_doc.length==11){
+        axios.get("https://apiperu.dev/api/ruc/"+this.proveedor.pvd_doc+"?api_token=69aff0151f9ba2dfd65f6602f5b3556a12674d365799cc919b79cd715bf160f8").then((result) => {
+        if(result.data.success){
+          console.log(result.data)
+          this.proveedor.pvd_nombre=result.data.data.nombre_o_razon_social
+          this.proveedor.pvd_direccion=result.data.data.direccion_completa
+        }
+        else{
+            Swal.fire('Ocurrió un error',"error")
+          }
+        })
+      }
+      else{
+        Swal.fire('Nro de documento incorrecto',"error")
+      }
     },
   }
 }

@@ -86,6 +86,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "editar-cliente",
   data: function data() {
@@ -152,6 +157,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
+    },
+    Consultar: function Consultar() {
+      var _this3 = this;
+
+      if (this.cliente.cli_doc.length == 8) {
+        //  axios.get(API_PERU_URL+"dni/"+this.suplierData.doi+"?api_token="+API_PERU_TOKEN).then((result) => {
+        axios.get("https://apiperu.dev/api/dni/" + this.cliente.cli_doc + "?api_token=69aff0151f9ba2dfd65f6602f5b3556a12674d365799cc919b79cd715bf160f8").then(function (result) {
+          if (result.data.success) {
+            console.log(result.data);
+            _this3.cliente.cli_nombre = result.data.data.nombre_completo;
+            _this3.cliente.cli_direccion = result.data.data.direccion_completa;
+          } else {
+            Swal.fire('Ocurrió un error', "error");
+          }
+        });
+      } else if (this.cliente.cli_doc.length == 11) {
+        axios.get("https://apiperu.dev/api/ruc/" + this.cliente.cli_doc + "?api_token=69aff0151f9ba2dfd65f6602f5b3556a12674d365799cc919b79cd715bf160f8").then(function (result) {
+          if (result.data.success) {
+            console.log(result.data);
+            _this3.cliente.cli_nombre = result.data.data.nombre_o_razon_social;
+            _this3.cliente.cli_direccion = result.data.data.direccion_completa;
+          } else {
+            Swal.fire('Ocurrió un error', "error");
+          }
+        });
+      } else {
+        Swal.fire('Nro de documento incorrecto', "error");
+      }
     }
   }
 });
@@ -1033,31 +1066,48 @@ var render = function () {
                     _c("div", { staticClass: "form-group" }, [
                       _c("label", [_vm._v("Documento")]),
                       _vm._v(" "),
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.cliente.cli_doc,
-                            expression: "cliente.cli_doc",
+                      _c("div", { staticClass: "input-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.cliente.cli_doc,
+                              expression: "cliente.cli_doc",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.cliente.cli_doc },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.cliente,
+                                "cli_doc",
+                                $event.target.value
+                              )
+                            },
                           },
-                        ],
-                        staticClass: "form-control",
-                        attrs: { type: "text" },
-                        domProps: { value: _vm.cliente.cli_doc },
-                        on: {
-                          input: function ($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.$set(
-                              _vm.cliente,
-                              "cli_doc",
-                              $event.target.value
-                            )
-                          },
-                        },
-                      }),
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "input-group-append" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-outline-secondary",
+                              attrs: { type: "button" },
+                              on: { click: _vm.Consultar },
+                            },
+                            [
+                              _c("i", { staticClass: "fas fa-search" }),
+                              _vm._v(" Consultar"),
+                            ]
+                          ),
+                        ]),
+                      ]),
                     ]),
                   ]),
                   _vm._v(" "),
