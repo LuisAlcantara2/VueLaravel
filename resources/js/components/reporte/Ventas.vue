@@ -106,7 +106,7 @@ export default{
         document.body.appendChild(link);
         // link.click();
       });
-      window.open("pdf/reporteVenta.pdf");
+      window.open("pdf/reporte Venta.pdf");
     },
     async getrptVentas(){
       await this.axios.get('/api/getrptVentas',{

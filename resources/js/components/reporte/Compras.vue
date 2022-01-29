@@ -13,7 +13,7 @@
       <button class="btn btn-primary" @click="Actualizar"><i class="fas fa-search"></i> Filtrar</button>
     </div>
     <div class="col-3 mt-4 end">
-      <button class="btn btn-danger" @click="Actualizar"><i class="fas fa-file"></i> PDF</button>
+      <button class="btn btn-danger" @click="Reporte"><i class="fas fa-file"></i> PDF</button>
     </div>
   </div>
   <div class="row justify-content-between">
@@ -86,6 +86,25 @@ export default{
       else{
         this.getrptCompras()
       }
+    },
+    async Reporte(file){
+      axios({
+        url: '/api/reporteCompraPdf',
+        method: 'GET',
+        responseType: 'blob', // important
+        params:{
+          desde:this.desde,
+          hasta:this.hasta,
+        },
+      }).then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'file.pdf');
+        document.body.appendChild(link);
+        // link.click();
+      });
+      window.open("pdf/reporte Compra.pdf");
     },
     async getrptCompras(){
       await this.axios.get('/api/getrptCompras',{

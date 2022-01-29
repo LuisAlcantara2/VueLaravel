@@ -177,7 +177,7 @@ class VentaController extends Controller
             'hasta' => $request->hasta,
             'venta' => $ventas
         ];
-        $path = public_path() . '/pdf/' . 'reporteVenta' . '.pdf';
+        $path = public_path() . '/pdf/' . 'reporte Venta' . '.pdf';
 
         $pdf = PDF::loadView('pdf/reporteventas', $data);
 

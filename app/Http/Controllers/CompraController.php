@@ -10,6 +10,7 @@ use App\Models\Producto;
 use App\Models\Kardex;
 use Carbon\Carbon;
 use DB;
+use PDF;
 class CompraController extends Controller
 {
     /**
@@ -141,5 +142,23 @@ class CompraController extends Controller
         return response()->json([
             'compra'=>$compras
         ]);
+    }
+    public function reporteCompraPdf(Request $request)
+    {
+        $compras = Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])
+        ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')->get();
+        
+        $data = [
+            'desde' => $request->desde,
+            'hasta' => $request->hasta,
+            'compra' => $compras
+        ];
+        $path = public_path() . '/pdf/' . 'reporte Compra' . '.pdf';
+
+        $pdf = PDF::loadView('pdf/reportecompras', $data);
+
+        $pdf->save($path);
+
+        return response()->download($path);
     }
 }

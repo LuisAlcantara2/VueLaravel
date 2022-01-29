@@ -116,7 +116,7 @@ Vue.filter('formatDate', function (value) {
         this.getrptCompras();
       }
     },
-    getrptCompras: function getrptCompras() {
+    Reporte: function Reporte(file) {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -124,19 +124,23 @@ Vue.filter('formatDate', function (value) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return _this.axios.get('/api/getrptCompras', {
+                axios({
+                  url: '/api/reporteCompraPdf',
+                  method: 'GET',
+                  responseType: 'blob',
+                  // important
                   params: {
                     desde: _this.desde,
                     hasta: _this.hasta
                   }
                 }).then(function (response) {
-                  _this.compras = response.data.compra;
-
-                  _this.sumPrecios();
-                })["catch"](function (error) {
-                  _this.compras = 0.00;
+                  var url = window.URL.createObjectURL(new Blob([response.data]));
+                  var link = document.createElement('a');
+                  link.href = url;
+                  link.setAttribute('download', 'file.pdf');
+                  document.body.appendChild(link); // link.click();
                 });
+                window.open("pdf/reporte Compra.pdf");
 
               case 2:
               case "end":
@@ -146,12 +150,42 @@ Vue.filter('formatDate', function (value) {
         }, _callee);
       }))();
     },
-    sumPrecios: function sumPrecios() {
+    getrptCompras: function getrptCompras() {
       var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return _this2.axios.get('/api/getrptCompras', {
+                  params: {
+                    desde: _this2.desde,
+                    hasta: _this2.hasta
+                  }
+                }).then(function (response) {
+                  _this2.compras = response.data.compra;
+
+                  _this2.sumPrecios();
+                })["catch"](function (error) {
+                  _this2.compras = 0.00;
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    sumPrecios: function sumPrecios() {
+      var _this3 = this;
 
       this.total = 0;
       this.compras.forEach(function (element) {
-        _this2.total += Number(element.com_total);
+        _this3.total += Number(element.com_total);
       });
     }
   }
@@ -22510,7 +22544,7 @@ var render = function () {
       _c("div", { staticClass: "col-3 mt-4 end" }, [
         _c(
           "button",
-          { staticClass: "btn btn-danger", on: { click: _vm.Actualizar } },
+          { staticClass: "btn btn-danger", on: { click: _vm.Reporte } },
           [_c("i", { staticClass: "fas fa-file" }), _vm._v(" PDF")]
         ),
       ]),

@@ -142,7 +142,7 @@ Vue.filter('formatDate', function (value) {
                   link.setAttribute('download', 'file.pdf');
                   document.body.appendChild(link); // link.click();
                 });
-                window.open("pdf/reporteVenta.pdf");
+                window.open("pdf/reporte Venta.pdf");
 
               case 3:
               case "end":

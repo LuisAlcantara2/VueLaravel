@@ -1125,7 +1125,20 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(producto.pro_precioventa))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(producto.pro_stockactual))]),
+                  _c(
+                    "td",
+                    {
+                      class:
+                        producto.pro_stockactual <= producto.pro_stockmin
+                          ? "text-danger"
+                          : "",
+                    },
+                    [
+                      _c("strong", [
+                        _vm._v(" " + _vm._s(producto.pro_stockactual)),
+                      ]),
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "td",

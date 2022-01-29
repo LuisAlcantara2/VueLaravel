@@ -57,7 +57,8 @@ Route::get('getSaldo', [App\Http\Controllers\VentaController::class, 'getSaldo']
 Route::get('getAños', [App\Http\Controllers\VentaController::class, 'getAños'])->name('getAños');
 Route::get('getMeses', [App\Http\Controllers\VentaController::class, 'getMeses'])->name('getMeses');
 Route::get('getCompras', [App\Http\Controllers\CompraController::class, 'getCompras'])->name('getCompras'); 
-Route::get('getrptCompras', [App\Http\Controllers\CompraController::class, 'getrptCompras'])->name('getrptCompras'); 
+Route::get('getrptCompras', [App\Http\Controllers\CompraController::class, 'getrptCompras'])->name('getrptCompras');
+Route::get('reporteCompraPdf', [App\Http\Controllers\CompraController::class, 'reporteCompraPdf'])->name('reporteCompraPdf');
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
