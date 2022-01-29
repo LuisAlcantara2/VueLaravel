@@ -79,6 +79,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "proveedores",
   data: function data() {
@@ -117,6 +118,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
+    },
+    Reset: function Reset() {
+      this.filtro = '';
+      this.mostrarProveedores();
     },
     borrarProveedor: function borrarProveedor(id) {
       var _this2 = this;
@@ -1031,6 +1036,22 @@ var render = function () {
           },
           [_c("i", { staticClass: "fas fa-search" }), _vm._v(" Filtrar")]
         ),
+        _vm._v(" "),
+        _vm.filtro.length > 0
+          ? _c(
+              "button",
+              {
+                staticClass: "btn btn-warning",
+                on: {
+                  click: function ($event) {
+                    $event.preventDefault()
+                    return _vm.Reset.apply(null, arguments)
+                  },
+                },
+              },
+              [_c("i", { staticClass: "fas fa-ban" }), _vm._v(" Limpiar")]
+            )
+          : _vm._e(),
       ]),
     ]),
     _vm._v(" "),

@@ -153,7 +153,7 @@ Vue.filter('formatDate', function (value) {
       var _this3 = this;
 
       this.ventas.forEach(function (element) {
-        _this3.total = element.ven_total;
+        _this3.total += Number(element.ven_total);
       });
     }
   }
@@ -22521,7 +22521,9 @@ var render = function () {
                     ),
                   ]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(venta.ven_total))]),
+                  _c("td", { attrs: { align: "right" } }, [
+                    _vm._v(_vm._s(venta.ven_total)),
+                  ]),
                   _vm._v(" "),
                   _c(
                     "td",
@@ -22605,7 +22607,9 @@ var render = function () {
                 _vm._v(" "),
                 _c("td"),
                 _vm._v(" "),
-                _c("td", [_c("strong", [_vm._v(" " + _vm._s(this.total))])]),
+                _c("td", { attrs: { align: "right" } }, [
+                  _c("strong", [_vm._v(" " + _vm._s(this.total.toFixed(2)))]),
+                ]),
                 _vm._v(" "),
                 _c("td"),
               ]),
@@ -22640,7 +22644,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("td", [_c("strong", [_vm._v(" TOTAL")])])
+    return _c("td", [_c("strong", [_vm._v("TOTAL")])])
   },
 ]
 render._withStripped = true

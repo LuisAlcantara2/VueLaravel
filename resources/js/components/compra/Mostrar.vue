@@ -23,7 +23,7 @@
               <td>{{ compra.id}}</td>
               <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
-              <td>{{ compra.com_total}}</td>
+              <td align="right">{{ compra.com_total}}</td>
               <td>
                 <router-link :to="{name:'editarCompra', params: { id: compra.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
@@ -35,7 +35,7 @@
               <td></td>
               <td><strong>TOTAL</strong></td>
               <td></td>
-              <td><strong>{{this.total}}</strong></td>
+              <td align="right"><strong>{{(this.total).toFixed(2)}}</strong></td>
               <td></td>
             </tr>
           </tbody>
@@ -97,7 +97,7 @@ export default{
     },
     sumPrecios() {
       this.compras.forEach(element => {
-        this.total=element.com_total
+        this.total+=Number(element.com_total)
       });
     },
   },

@@ -13,19 +13,27 @@
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Fecha de emisión</label>
-                      <input type="date" class="form-control" v-model="venta.ven_fecha">
+                      <input type="date" readonly class="form-control" v-model="venta.ven_fecha">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Serie</label>
-                      <input type="text" class="form-control" v-model="venta.ven_serie">
+                      <b-form-select
+                        v-model="serie_id"
+                        :options="series"
+                        class="form-control"
+                        value-field="id"
+                        text-field="ser_serie"
+                        @change="seleccionarSerie"
+                      ></b-form-select>
+                      <!-- <input type="text" class="form-control" v-model="venta.ven_serie"> -->
                     </div>
                   </div>
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Correlativo</label>
-                      <input type="text" class="form-control" v-model="venta.ven_correlativo">
+                      <input readonly type="text" class="form-control" v-model="venta.ven_correlativo">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
@@ -45,13 +53,13 @@
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Documento</label>
-                      <input type="text" class="form-control" v-model="cliente.cli_doc">
+                      <input readonly type="text" class="form-control" v-model="cliente.cli_doc">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Dirección</label>
-                      <input type="text" class="form-control" v-model="cliente.cli_direccion">
+                      <input readonly type="text" class="form-control" v-model="cliente.cli_direccion">
                     </div>
                   </div>
                   <div class="col-3 mb-2">
@@ -84,7 +92,7 @@
                     </div>
                   </div>
                   <div class="col-3 mt-4">
-                    <b-button @click="agregarDetalle">Agregar Producto</b-button>
+                    <b-button @click="agregarDetalle"><i class="fas fa-plus-circle"></i> Agregar Producto</b-button>
                   </div>
                   <div class="col-12"> 
                     <b-table
@@ -131,7 +139,7 @@
                   </div>
                   <div class="col-2"></div>
                   <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
                     <router-link :to="{name:'mostrarVenta'}" class="btn btn-secondary" custom v-slot="{ navigate }">
                       <span @click="navigate" @keypress.enter="navigate" role="link">Atras</span>
                     </router-link>
@@ -281,9 +289,7 @@ export default{
         detalle:[],
       },
       clientes:[],
-      cliente_id:{
-
-      },
+      cliente_id:{},
       isModalVisible: false,
       cliente:{
         cli_doc:"",
@@ -294,13 +300,7 @@ export default{
       isModal:false,
       producto:{},
       productos:[],
-      producto_id:{
-        // id:0,
-        // pro_nombre:"",
-        // pro_stockactual:0,
-        // pro_precioventa:"",
-      },
-
+      producto_id:{},
       fields: [
         { key: 'Producto', label: 'Producto', sortable: false },
         { key: 'Precio', label: 'Precio', sortable: false, tdClass: 'text-end'},
@@ -325,11 +325,15 @@ export default{
       categorias:[],
       unidades:[],
       edit: null,
+      serie_id:{},
+      serie:'',
+      series:[],
     }
   },
   async mounted(){
     await this.getProductos()
     await this.getdata()
+    await this.getSerie()
   },
   computed: {
     rows() {
@@ -346,6 +350,18 @@ export default{
         })
         .catch(error=>{
           console.log(error)
+        })
+    },
+    async getSerie(){
+      await this.axios.get('/api/serie')
+        .then(response=>{
+          this.series = response.data 
+          this.serie_id = this.series[0].id
+          this.venta.ven_serie = this.series[0].ser_serie
+          this.venta.ven_correlativo = this.series[0].ser_corre
+        })
+        .catch(error=>{
+          this.series = []
         })
     },
     async getProductos(){
@@ -436,6 +452,18 @@ export default{
       .then(response=>{
         this.cliente = response.data
         this.venta.cliente_id =this.cliente.id
+        console.log(response.data)
+      })
+      .catch(error=>{
+        console.log(error)
+      })
+   },
+   seleccionarSerie(){
+     this.axios.get(`/api/serie/${this.serie_id}`)
+      .then(response=>{
+        this.serie = response.data
+        this.venta.ven_serie =this.serie.ser_serie
+        this.venta.ven_correlativo =this.serie.ser_corre
         console.log(response.data)
       })
       .catch(error=>{

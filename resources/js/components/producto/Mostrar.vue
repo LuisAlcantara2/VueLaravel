@@ -9,6 +9,7 @@
     </div>
     <div class="col-auto">
       <button class="btn btn-primary" @click="mostrarProductos"><i class="fas fa-search"></i> Filtrar</button>
+      <button v-if="nombre.length>0" class="btn btn-warning" @click.prevent="Reset"><i class="fas fa-ban"></i> Limpiar</button>
     </div>
   </div>
   <div class="row">
@@ -76,6 +77,10 @@ export default{
         .catch(error=>{
           this.productos = []
         })
+    },
+    Reset(){
+      this.nombre=''
+      this.mostrarProductos()
     },
     borrarProducto(id){
       Swal.fire({

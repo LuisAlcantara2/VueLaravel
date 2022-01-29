@@ -77,6 +77,23 @@ export default Vue.extend({
           ]
         },
         {
+          name: 'Reporte',
+          children: [
+            {
+              name: 'Ventas',
+              href: {
+                name: 'rptVentas'
+              },
+            },
+            {
+              name: 'Compras',
+              href: {
+                name: 'rptCompras'
+              },
+            },
+          ]
+        },
+        {
           name: 'Configuracion',
           children: [
             {

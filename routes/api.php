@@ -46,7 +46,18 @@ Route::resource('compra',App\Http\Controllers\CompraController::class)->only([
 Route::resource('venta',App\Http\Controllers\VentaController::class)->only([
     'index','store','update','show','destroy'
 ]);
+Route::resource('serie',App\Http\Controllers\SerieController::class)->only([
+    'index','store','update','show','destroy'
+]);
 Route::get('movimiento/{id}', [App\Http\Controllers\ProductoController::class, 'movimiento'])->name('movimiento'); 
+Route::get('getVentas', [App\Http\Controllers\VentaController::class, 'getVentas'])->name('getVentas');
+Route::get('getrptVentas', [App\Http\Controllers\VentaController::class, 'getrptVentas'])->name('getrptVentas');
+Route::get('reporteVentaPdf', [App\Http\Controllers\VentaController::class, 'reporteVentaPdf'])->name('reporteVentaPdf');
+Route::get('getSaldo', [App\Http\Controllers\VentaController::class, 'getSaldo'])->name('getSaldo');
+Route::get('getAños', [App\Http\Controllers\VentaController::class, 'getAños'])->name('getAños');
+Route::get('getMeses', [App\Http\Controllers\VentaController::class, 'getMeses'])->name('getMeses');
+Route::get('getCompras', [App\Http\Controllers\CompraController::class, 'getCompras'])->name('getCompras'); 
+Route::get('getrptCompras', [App\Http\Controllers\CompraController::class, 'getrptCompras'])->name('getrptCompras'); 
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'

@@ -37,6 +37,9 @@ const VentaMostrar = ()=> import('./components/venta/Mostrar.vue')
 const VentaCrear = ()=> import('./components/venta/Crear.vue')
 const VentaEditar = ()=> import('./components/venta/Editar.vue')
 
+const rptVentas = ()=> import('./components/reporte/Ventas.vue')
+const rptCompras = ()=> import('./components/reporte/Compras.vue')
+
 
 export const routes =[
     {
@@ -183,5 +186,15 @@ export const routes =[
         name :'editarVenta',
         path: '/editarVenta/:id',
         component:VentaEditar
+    },
+    {
+        name :'rptVentas',
+        path: '/reporteVentas',
+        component:rptVentas
+    },
+    {
+        name :'rptCompras',
+        path: '/reporteCompras',
+        component:rptCompras
     },
 ]

@@ -1,12 +1,12 @@
 require('./bootstrap');
 import vue from 'vue'
+import * as VeeValidate from 'vee-validate';
 window.Vue = vue;
 
 import App from './components/App.vue';
 
 import VueAxios from 'vue-axios'
 import axios from 'axios';
-
 import VueRouter from 'vue-router';
 import BootstrapSidebar from 'vue-bootstrap-sidebar'
 import { routes } from './routes';
@@ -18,7 +18,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
-
+Vue.use(VeeValidate);
 window.Swal = Swal
 const Toast = Swal.mixin({
     toast: true,
@@ -33,6 +33,7 @@ const Toast = Swal.mixin({
   })
   window.Toast = Toast
 Vue.use(VueRouter);
+
 Vue.use(VueAxios,axios);
 Vue.use(BootstrapSidebar);
 Vue.use(BootstrapVue)

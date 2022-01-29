@@ -9,6 +9,7 @@
     </div>
     <div class="col-auto">
       <button class="btn btn-primary" @click="mostrarCategorias"><i class="fas fa-search"></i> Filtrar</button>
+      <button v-if="filtro.length>0" class="btn btn-warning" @click.prevent="Reset"><i class="fas fa-ban"></i> Limpiar</button>
     </div>
   </div>
   <div class="row">
@@ -69,6 +70,10 @@ export default{
         .catch(error=>{
           this.categorias = []
         })
+    },
+    Reset(){
+      this.filtro=''
+      this.mostrarCategorias()
     },
     borrarCategoria(id){
       Swal.fire({

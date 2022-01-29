@@ -153,7 +153,7 @@ Vue.filter('formatDate', function (value) {
       var _this3 = this;
 
       this.compras.forEach(function (element) {
-        _this3.total = element.com_total;
+        _this3.total += Number(element.com_total);
       });
     }
   }
@@ -22522,7 +22522,9 @@ var render = function () {
                       ),
                     ]),
                     _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(compra.com_total))]),
+                    _c("td", { attrs: { align: "right" } }, [
+                      _vm._v(_vm._s(compra.com_total)),
+                    ]),
                     _vm._v(" "),
                     _c(
                       "td",
@@ -22612,7 +22614,9 @@ var render = function () {
                   _vm._v(" "),
                   _c("td"),
                   _vm._v(" "),
-                  _c("td", [_c("strong", [_vm._v(_vm._s(this.total))])]),
+                  _c("td", { attrs: { align: "right" } }, [
+                    _c("strong", [_vm._v(_vm._s(this.total.toFixed(2)))]),
+                  ]),
                   _vm._v(" "),
                   _c("td"),
                 ]),

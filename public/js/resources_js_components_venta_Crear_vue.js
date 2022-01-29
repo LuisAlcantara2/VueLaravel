@@ -296,6 +296,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -327,11 +335,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       isModal: false,
       producto: {},
       productos: [],
-      producto_id: {// id:0,
-        // pro_nombre:"",
-        // pro_stockactual:0,
-        // pro_precioventa:"",
-      },
+      producto_id: {},
       fields: [{
         key: 'Producto',
         label: 'Producto',
@@ -374,7 +378,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       marcas: [],
       categorias: [],
       unidades: [],
-      edit: null
+      edit: null,
+      serie_id: {},
+      serie: '',
+      series: []
     };
   },
   mounted: function mounted() {
@@ -393,6 +400,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return _this.getdata();
 
             case 4:
+              _context.next = 6;
+              return _this.getSerie();
+
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -434,7 +445,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
-    getProductos: function getProductos() {
+    getSerie: function getSerie() {
       var _this3 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
@@ -443,18 +454,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context3.prev = _context3.next) {
               case 0:
                 _context3.next = 2;
-                return _this3.axios.get('/api/producto').then(function (response) {
-                  _this3.productos = response.data;
-
-                  if (_this3.isModalProducto) {
-                    _this3.producto_id = _this3.productos[_this3.productos.length - 1].id;
-                  } else {
-                    _this3.producto_id = _this3.productos[0].id;
-                  }
-
-                  _this3.seleccionarProducto();
+                return _this3.axios.get('/api/serie').then(function (response) {
+                  _this3.series = response.data;
+                  _this3.serie_id = _this3.series[0].id;
+                  _this3.venta.ven_serie = _this3.series[0].ser_serie;
+                  _this3.venta.ven_correlativo = _this3.series[0].ser_corre;
                 })["catch"](function (error) {
-                  _this3.marcas = [];
+                  _this3.series = [];
                 });
 
               case 2:
@@ -465,7 +471,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee3);
       }))();
     },
-    getdata: function getdata() {
+    getProductos: function getProductos() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
@@ -474,18 +480,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context4.prev = _context4.next) {
               case 0:
                 _context4.next = 2;
-                return _this4.axios.get('/api/cliente').then(function (response) {
-                  _this4.clientes = response.data;
-                  console.log('prove', _this4.clientes);
+                return _this4.axios.get('/api/producto').then(function (response) {
+                  _this4.productos = response.data;
 
-                  if (_this4.isModal) {
-                    _this4.cliente_id = _this4.clientes[_this4.clientes.length - 1].id;
-                    console.log('llega');
+                  if (_this4.isModalProducto) {
+                    _this4.producto_id = _this4.productos[_this4.productos.length - 1].id;
                   } else {
-                    _this4.cliente_id = _this4.clientes[0].id;
+                    _this4.producto_id = _this4.productos[0].id;
                   }
 
-                  _this4.seleccionarCliente();
+                  _this4.seleccionarProducto();
                 })["catch"](function (error) {
                   _this4.marcas = [];
                 });
@@ -496,6 +500,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }
           }
         }, _callee4);
+      }))();
+    },
+    getdata: function getdata() {
+      var _this5 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _this5.axios.get('/api/cliente').then(function (response) {
+                  _this5.clientes = response.data;
+                  console.log('prove', _this5.clientes);
+
+                  if (_this5.isModal) {
+                    _this5.cliente_id = _this5.clientes[_this5.clientes.length - 1].id;
+                    console.log('llega');
+                  } else {
+                    _this5.cliente_id = _this5.clientes[0].id;
+                  }
+
+                  _this5.seleccionarCliente();
+                })["catch"](function (error) {
+                  _this5.marcas = [];
+                });
+
+              case 2:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
       }))();
     },
     showModal: function showModal() {
@@ -511,30 +548,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.cliente.cli_telefono = "";
     },
     crearCliente: function crearCliente() {
-      var _this5 = this;
+      var _this6 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                _this5.isModal = true;
-                _context5.next = 3;
-                return _this5.axios.post('/api/cliente', _this5.cliente).then(function (response) {
-                  _this5.getdata();
+                _this6.isModal = true;
+                _context6.next = 3;
+                return _this6.axios.post('/api/cliente', _this6.cliente).then(function (response) {
+                  _this6.getdata();
 
-                  _this5.venta.ven_direccion = response.data.cliente.cli_direccion;
-                  _this5.isModalVisible = false;
+                  _this6.venta.ven_direccion = response.data.cliente.cli_direccion;
+                  _this6.isModalVisible = false;
                 })["catch"](function (error) {
                   console.log(error);
                 });
 
               case 3:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5);
+        }, _callee6);
       }))();
     },
     agregarDetalle: function agregarDetalle() {
@@ -557,47 +594,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       id.item.Subtotal = id.item.Precio * id.item.Cantidad;
     },
     seleccionarProducto: function seleccionarProducto() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.axios.get("/api/producto/".concat(this.producto_id)).then(function (response) {
-        _this6.producto = response.data;
+        _this7.producto = response.data;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     seleccionarCliente: function seleccionarCliente() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.axios.get("/api/cliente/".concat(this.cliente_id)).then(function (response) {
-        _this7.cliente = response.data;
-        _this7.venta.cliente_id = _this7.cliente.id;
+        _this8.cliente = response.data;
+        _this8.venta.cliente_id = _this8.cliente.id;
+        console.log(response.data);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    seleccionarSerie: function seleccionarSerie() {
+      var _this9 = this;
+
+      this.axios.get("/api/serie/".concat(this.serie_id)).then(function (response) {
+        _this9.serie = response.data;
+        _this9.venta.ven_serie = _this9.serie.ser_serie;
+        _this9.venta.ven_correlativo = _this9.serie.ser_corre;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     showModalProducto: function showModalProducto() {
-      var _this8 = this;
+      var _this10 = this;
 
       this.isModalProductoVisible = true;
       this.axios.get('/api/marca').then(function (response) {
-        _this8.marcas = response.data;
-        _this8.productoModal.marca_id = _this8.marcas[0].id;
+        _this10.marcas = response.data;
+        _this10.productoModal.marca_id = _this10.marcas[0].id;
       })["catch"](function (error) {
-        _this8.marcas = [];
+        _this10.marcas = [];
       });
       this.axios.get('/api/unidad').then(function (response) {
-        _this8.unidades = response.data;
-        _this8.productoModal.unidad_id = _this8.unidades[0].id;
+        _this10.unidades = response.data;
+        _this10.productoModal.unidad_id = _this10.unidades[0].id;
       })["catch"](function (error) {
-        _this8.marcas = [];
+        _this10.marcas = [];
       });
       this.axios.get('/api/categoria').then(function (response) {
-        _this8.categorias = response.data;
-        _this8.productoModal.categoria_id = _this8.categorias[0].id;
+        _this10.categorias = response.data;
+        _this10.productoModal.categoria_id = _this10.categorias[0].id;
       })["catch"](function (error) {
-        _this8.marcas = [];
+        _this10.marcas = [];
       });
     },
     hideModalProducto: function hideModalProducto() {
@@ -611,29 +660,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.productoModal.pro_precioventa = "";
     },
     crearProducto: function crearProducto() {
-      var _this9 = this;
+      var _this11 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _this9.isModalProducto = true;
-                _context6.next = 3;
-                return _this9.axios.post('/api/producto', _this9.productoModal).then(function (response) {
-                  _this9.getProductos();
+                _this11.isModalProducto = true;
+                _context7.next = 3;
+                return _this11.axios.post('/api/producto', _this11.productoModal).then(function (response) {
+                  _this11.getProductos();
 
-                  _this9.isModalProductoVisible = false;
+                  _this11.isModalProductoVisible = false;
                 })["catch"](function (error) {
                   console.log(error);
                 });
 
               case 3:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6);
+        }, _callee7);
       }))();
     }
   }
@@ -22963,7 +23012,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "date" },
+                          attrs: { type: "date", readonly: "" },
                           domProps: { value: _vm.venta.ven_fecha },
                           on: {
                             input: function ($event) {
@@ -22982,35 +23031,31 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-4 mb-2" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Serie")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.venta.ven_serie,
-                              expression: "venta.ven_serie",
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Serie")]),
+                          _vm._v(" "),
+                          _c("b-form-select", {
+                            staticClass: "form-control",
+                            attrs: {
+                              options: _vm.series,
+                              "value-field": "id",
+                              "text-field": "ser_serie",
                             },
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.venta.ven_serie },
-                          on: {
-                            input: function ($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.venta,
-                                "ven_serie",
-                                $event.target.value
-                              )
+                            on: { change: _vm.seleccionarSerie },
+                            model: {
+                              value: _vm.serie_id,
+                              callback: function ($$v) {
+                                _vm.serie_id = $$v
+                              },
+                              expression: "serie_id",
                             },
-                          },
-                        }),
-                      ]),
+                          }),
+                        ],
+                        1
+                      ),
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-4 mb-2" }, [
@@ -23027,7 +23072,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.venta.ven_correlativo },
                           on: {
                             input: function ($event) {
@@ -23101,7 +23146,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.cliente.cli_doc },
                           on: {
                             input: function ($event) {
@@ -23133,7 +23178,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.cliente.cli_direccion },
                           on: {
                             input: function ($event) {
@@ -23248,7 +23293,8 @@ var render = function () {
                       { staticClass: "col-3 mt-4" },
                       [
                         _c("b-button", { on: { click: _vm.agregarDetalle } }, [
-                          _vm._v("Agregar Producto"),
+                          _c("i", { staticClass: "fas fa-plus-circle" }),
+                          _vm._v(" Agregar Producto"),
                         ]),
                       ],
                       1
@@ -23403,14 +23449,7 @@ var render = function () {
                       "div",
                       { staticClass: "col-12" },
                       [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-primary",
-                            attrs: { type: "submit" },
-                          },
-                          [_vm._v("Guardar")]
-                        ),
+                        _vm._m(1),
                         _vm._v(" "),
                         _c("router-link", {
                           staticClass: "btn btn-secondary",
@@ -24026,6 +24065,16 @@ var staticRenderFns = [
     return _c("div", { staticClass: "card-header" }, [
       _c("h4", [_vm._v("Crear Venta")]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+      [_c("i", { staticClass: "fas fa-save" }), _vm._v(" Guardar")]
+    )
   },
 ]
 render._withStripped = true

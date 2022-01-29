@@ -8,7 +8,11 @@ use App\Models\Venta;
 use App\Models\DetalleVenta;
 use App\Models\Producto;
 use App\Models\Kardex;
+use App\Models\Serie;
+use App\Models\Compra;
 Use \Carbon\Carbon;
+use DB;
+use PDF;
 class VentaController extends Controller
 {
     /**
@@ -40,14 +44,25 @@ class VentaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->all();
-        $venta = Venta::create($request->post());
-        foreach($request->detalle as $item){
-            $this->guardarVentaDetalle($item,$venta->id);
+        DB::beginTransaction();
+        try {
+            $ser_id = DB::table('serie')->where('ser_serie','=',$request->ven_serie)->first();
+            $serie = Serie::find($ser_id->id);
+            $serie->ser_corre = $request->ven_correlativo+1;
+            $serie->save();
+            $request->all();
+            $venta = Venta::create($request->post());
+            foreach($request->detalle as $item){
+                $this->guardarVentaDetalle($item,$venta->id);
+            }
+            DB::commit();
+            return response()->json([
+                'venta'=>$venta
+            ]);
+        }catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
         }
-        return response()->json([
-            'venta'=>$venta
-        ]);
     }
 
     /**
@@ -57,14 +72,6 @@ class VentaController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected function guardarVentaDetalle($item, $id){
-        //dd($item);
-        // $det = new DetalleVenta(
-        //     $item['Precio'],
-        //     $item['Cantidad'],
-        //     $id,
-        //     1
-        // );
-        // $deta = DetalleVenta::create($det->post());
         $detalle = DetalleVenta::create([
             'dvt_cantidad' => $item['Cantidad'],
             'dvt_precio' => $item['Precio'],
@@ -124,5 +131,58 @@ class VentaController extends Controller
         return response()->json([
             'mensaje'=>'Venta eliminada'
         ]);
+    }
+    public function getVentas(Request $request)
+    { 
+        $ventas = DB::table('ventas')->whereYear('ven_fecha',$request->año)->whereMonth('ven_fecha',$request->mes)->count();
+        return response()->json([
+            'venta'=>$ventas
+        ]);
+    }
+    public function getSaldo(Request $request)
+    {
+        $saldo = DB::table('ventas')->whereYear('ven_fecha',$request->año)->whereMonth('ven_fecha',$request->mes)->sum("ven_total");
+        return response()->json([
+            'saldo'=>$saldo
+        ]);
+    }
+    public function getAños()
+    {
+        $years = Venta::select(DB::raw('YEAR(ven_fecha) as year'))->distinct();
+        $b = Compra::select(DB::raw('YEAR(com_fecha) as year'))->distinct()
+        ->union($years)
+        ->get();
+        // $anios = $years->pluck('year');
+        return response()->json([
+            'anios'=>$b
+        ]);
+    }
+    public function getrptVentas(Request $request)
+    {
+        $ventas = Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])
+        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')->get();
+
+        return response()->json([
+            'venta'=>$ventas
+        ]);
+    }
+    public function reporteVentaPdf(Request $request)
+    {
+        $ventas = Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])
+        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')->get();
+
+        
+        $data = [
+            'desde' => $request->desde,
+            'hasta' => $request->hasta,
+            'venta' => $ventas
+        ];
+        $path = public_path() . '/pdf/' . 'reporteVenta' . '.pdf';
+
+        $pdf = PDF::loadView('pdf/reporteventas', $data);
+
+        $pdf->save($path);
+
+        return response()->download($path);
     }
 }

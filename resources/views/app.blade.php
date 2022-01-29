@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="stylesheet" href="{{ mix('css/app.css')}}" type="text/css">
+    
 
 </head>
 <body>
@@ -19,5 +20,7 @@
     <script src="{{mix('js/app.js')}}" type="text/javascript"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/2.6.1/vuetify.min.js" integrity="sha512-RiKl5hR3ePSZwVw8g98fZYam4zx6LxcS0yySVqlPxnXc0TKdcSIO8sm9ATFDwxpqEaqIIGxD4d0UZZxxzcduyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
 </body>
 </html>

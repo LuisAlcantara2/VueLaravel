@@ -23,7 +23,7 @@
               <td>{{ venta.ven_fecha | formatDate}}</td>
               <!-- format("YYYY-MM-DD"), -->
               <td>{{ venta.ven_serie}} - {{ venta.ven_correlativo}}</td>
-              <td>{{ venta.ven_total}}</td>
+              <td align="right">{{ venta.ven_total}}</td>
               <td>
                 <router-link :to="{name:'editarVenta', params: { id: venta.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
@@ -33,9 +33,9 @@
             </tr>
             <tr>
               <td></td>
-              <td><strong> TOTAL</strong></td>
+              <td><strong>TOTAL</strong></td>
               <td></td>
-              <td><strong> {{this.total}}</strong></td>
+              <td align="right"><strong> {{(this.total).toFixed(2)}}</strong></td>
               <td></td>
             </tr>
           </tbody>
@@ -97,7 +97,7 @@ export default{
     },
     sumPrecios() {
       this.ventas.forEach(element => {
-        this.total=element.ven_total        
+        this.total+=Number(element.ven_total)  
       });
     },
   },

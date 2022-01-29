@@ -8,7 +8,8 @@
       <input class="form-control" v-model="filtro" type="text">
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" @click="mostrarUnidades"><i class="fas fa-search"></i> Filtrar</button>
+      <button class="btn btn-primary" @click="mostrarUnidades"><i class="fas fa-filter"></i> Filtrar</button>
+      <button v-if="filtro.length>0" class="btn btn-warning" @click.prevent="Reset"><i class="fas fa-ban"></i> Limpiar</button>
     </div>
   </div>
   <div class="row">
@@ -69,6 +70,10 @@ export default{
         .catch(error=>{
           this.unidades = []
         })
+    },
+    Reset(){
+      this.filtro=''
+      this.mostrarUnidades()
     },
     borrarUnidad(id){
       Swal.fire({

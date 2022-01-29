@@ -9,6 +9,7 @@ use App\Models\DetalleCompra;
 use App\Models\Producto;
 use App\Models\Kardex;
 use Carbon\Carbon;
+use DB;
 class CompraController extends Controller
 {
     /**
@@ -123,6 +124,22 @@ class CompraController extends Controller
         $compra->delete();
         return response()->json([
             'mensaje'=>'Compra eliminada'
+        ]);
+    }
+    public function getCompras(Request $request)
+    {
+        $compras = DB::table('compras')->whereYear('com_fecha',$request->año)->whereMonth('com_fecha',$request->mes)->count();
+        return response()->json([
+            'compra'=>$compras
+        ]);
+    }
+    public function getrptCompras(Request $request)
+    {
+        $compras = Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])
+        ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')->get();
+
+        return response()->json([
+            'compra'=>$compras
         ]);
     }
 }
