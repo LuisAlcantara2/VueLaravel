@@ -82,7 +82,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 Vue.filter('formatDate', function (value) {
   if (value) {
-    return moment__WEBPACK_IMPORTED_MODULE_1___default()(String(value)).format('MM/DD/YYYY');
+    return moment__WEBPACK_IMPORTED_MODULE_1___default()(String(value)).format('DD/MM/YYYY');
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({

@@ -53,6 +53,8 @@ Route::get('movimiento/{id}', [App\Http\Controllers\ProductoController::class, '
 Route::get('getVentas', [App\Http\Controllers\VentaController::class, 'getVentas'])->name('getVentas');
 Route::get('getrptVentas', [App\Http\Controllers\VentaController::class, 'getrptVentas'])->name('getrptVentas');
 Route::get('reporteVentaPdf', [App\Http\Controllers\VentaController::class, 'reporteVentaPdf'])->name('reporteVentaPdf');
+Route::get('reporteVenta', [App\Http\Controllers\VentaController::class, 'reporteVenta'])->name('reporteVenta');
+Route::get('reporteVenta2', [App\Http\Controllers\VentaController::class, 'reporteVenta2'])->name('reporteVenta2');
 Route::get('getSaldo', [App\Http\Controllers\VentaController::class, 'getSaldo'])->name('getSaldo');
 Route::get('getAños', [App\Http\Controllers\VentaController::class, 'getAños'])->name('getAños');
 Route::get('getMeses', [App\Http\Controllers\VentaController::class, 'getMeses'])->name('getMeses');

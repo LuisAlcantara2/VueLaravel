@@ -137,7 +137,8 @@ class CompraController extends Controller
     public function getrptCompras(Request $request)
     {
         $compras = Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])
-        ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')->get();
+        ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')
+        ->select('compras.*', 'proveedores.pvd_nombre')->get();
 
         return response()->json([
             'compra'=>$compras
@@ -147,7 +148,8 @@ class CompraController extends Controller
     {
         $total=Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])->sum('com_total');
         $compras = Compra::whereBetween('com_fecha', [$request->desde, $request->hasta])
-        ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')->get();
+        ->join('proveedores', 'proveedores.id', '=', 'compras.proveedor_id')
+        ->select('compras.*', 'proveedores.pvd_nombre')->get();
         
         $data = [
             'desde' => $request->desde,
@@ -155,6 +157,7 @@ class CompraController extends Controller
             'compra' => $compras,
             'total' =>$total,
         ];
+
         $path = public_path() . '/pdf/' . 'reporte Compra' . '.pdf';
 
         $pdf = PDF::loadView('pdf/reportecompras', $data);

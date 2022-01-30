@@ -14,10 +14,12 @@ import Vue from 'vue';
 import Swal from 'sweetalert2'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-
-
-
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import VueApexCharts from 'vue-apexcharts'
+
+
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
 Vue.use(VeeValidate);
 window.Swal = Swal
 const Toast = Swal.mixin({

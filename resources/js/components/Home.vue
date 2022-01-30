@@ -51,17 +51,21 @@
         </div>
     </div>
 </div>
-<!-- <div class="small">
-  <line-chart :chart-data="datacollection"></line-chart>
-  <button @click="fillData()">Randomize</button>
-</div> -->
+   <div class="row justify-content">
+     <div class="col-6">
+       <apexchart width="100%" type="bar" ref="realtimeChart" :options="chartOptions" :series="series"></apexchart>
+     </div>
+     <div class="col-5">
+       <apexchart type="donut" width="100%" ref="realtimeChart2" :options="chartOptions2" :series="series2"></apexchart>
+     </div>
+   </div>
 </div>
 </template>
 
 <script>
-import moment from "moment";
-// import LineChart from './LineChart.js'
+
 export default{
+  
   name : "crear-venta",
   components: {
   },
@@ -72,9 +76,79 @@ export default{
       saldo: 0,
       años:[],
       meses:[],
+      reporte:[],
       año: new Date().getFullYear(),
       mes: new Date().getMonth()+1,
-      datacollection: null
+      chartOptions: {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: []
+        }
+      },
+      series: [{
+        name:'ventas',
+        data:[]
+      }],
+
+      // da
+      series2: [1, 1, 1, 1, 10],
+      chartOptions2: {
+        chart: {
+          type: 'donut',
+          selection: {
+            enabled: true
+          },
+          toolbar:{
+            show: true
+          }
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                total: {
+                  show: true,
+                  label: 'Total',
+                  color: '#373d3f',
+                  formatter: function (w) {
+                    return w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b
+                    }, 0)
+                  }
+                }
+              }
+            }
+          }
+        },
+      dataLabels: {
+        enabled: false,//NOSE VEAN NUMEROS
+        formatter: function (val, opts) {
+            return opts.w.config.series[opts.seriesIndex]
+        },
+      },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            formatter: function (val) {
+              return val
+            },
+            legend: {
+              position: 'bottom',
+              dataLabels:{
+                formatter: function (val, opts) {
+                    return opts.w.config.series[opts.seriesIndex]
+                },
+              }
+            }
+          }
+        }]
+      },
     }
   },
 
@@ -83,12 +157,15 @@ export default{
     this.getVentas()
     this.getCompras()
     this.getSaldo()
+    this.getReporte1()
+    this.getReporte2()
   },
   methods:{
     Actualizar(){
       this.getVentas()
       this.getCompras()
       this.getSaldo()
+      this.getReporte2()
     },
     async getVentas(){
       await this.axios.get('/api/getVentas',{
@@ -138,25 +215,51 @@ export default{
           this.años =[]
         })
     },
-    fillData () {
-        this.datacollection = {
-          labels: [this.getRandomInt(), this.getRandomInt()],
-          datasets: [
-            {
-              label: 'Data One',
-              backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt()]
-            }, {
-              label: 'Data One',
-              backgroundColor: '#f87979',
-              data: [this.getRandomInt(), this.getRandomInt()]
-            }
-          ]
-        }
-      },
-      getRandomInt () {
-        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
-      }
+    async getReporte1(){
+      this.series[0].data=[]
+      this.chartOptions.xaxis.categories=[]
+      let cat=[]
+      await this.axios.get('/api/reporteVenta')
+        .then(response=>{
+          this.reporte = response.data.venta
+          this.reporte.forEach(element => {
+            cat.push(element.name)
+            this.series[0].data.push(element.data)
+          });
+          this.$refs.realtimeChart.updateSeries([{
+            data: this.series[0].data,
+          }], false, true);
+          this.chartOptions = {...this.chartOptions, ...{
+              xaxis: {
+                  categories:cat
+              }
+            }}
+        })
+        .catch(error=>{
+          this.años =[]
+        })
+    },
+    async getReporte2(){
+      this.series2=[]
+      this.chartOptions2.labels=[]
+      let cat=[]
+      await this.axios.get('/api/reporteVenta2',{
+        params:{
+          mes:this.mes,
+          año:this.año,
+        }}).then(response=>{
+          this.reporte = response.data.productos
+          this.reporte.forEach(element => {
+            cat.push(element.nombre)
+            this.series2.push(Number(element.cantidad))
+          });
+          this.chartOptions2 = {...this.chartOptions, ...{
+              labels:cat
+            }}
+        })
+        .catch(error=>{
+        })
+    },
   }
 }
 </script>

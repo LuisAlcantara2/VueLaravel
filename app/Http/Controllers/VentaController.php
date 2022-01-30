@@ -160,7 +160,8 @@ class VentaController extends Controller
     public function getrptVentas(Request $request)
     {
         $ventas = Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])
-        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')->get();
+        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')
+        ->select('ventas.*', 'clientes.cli_nombre')->get();
 
         return response()->json([
             'venta'=>$ventas
@@ -170,7 +171,8 @@ class VentaController extends Controller
     {
         $total=Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])->sum('ven_total');
         $ventas = Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])
-        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')->get();
+        ->join('clientes', 'clientes.id', '=', 'ventas.cliente_id')
+        ->select('ventas.*', 'clientes.cli_nombre')->get();
 
         
         $data = [
@@ -179,7 +181,7 @@ class VentaController extends Controller
             'venta' => $ventas,
             'total' => $total,
         ];
-        
+
         $path = public_path() . '/pdf/' . 'reporte Venta' . '.pdf';
 
         $pdf = PDF::loadView('pdf/reporteventas', $data);
@@ -187,5 +189,32 @@ class VentaController extends Controller
         $pdf->save($path);
 
         return response()->download($path);
+    }
+
+    public function reporteVenta(Request $request){
+        $war = DB::select(DB::raw("SET lc_time_names = 'es_Es';"));
+        $ventas = DB::table('ventas')
+                 ->select(DB::raw("concat(concat(monthname(ven_fecha),'-'),YEAR(ven_fecha)) name"), DB::raw('count(*)  data'))
+                 ->groupBy('name')
+                 ->orderBy('ven_fecha')
+                 ->get();
+        // $ventas = Venta::whereBetween('ven_fecha', [$request->desde, $request->hasta])->get();
+
+        return response()->json([
+            'venta'=>$ventas
+        ]);
+    }
+    public function reporteVenta2(Request $request){
+        $productos = DB::table('ventas')
+                ->join('detalleventas', 'detalleventas.venta_id', '=', 'ventas.id')
+                ->join('productos', 'productos.id', '=', 'detalleventas.producto_id')
+                ->select(DB::raw("sum(detalleventas.dvt_cantidad) as cantidad"),'productos.pro_nombre as nombre')
+                ->whereYear('ven_fecha',$request->año)->whereMonth('ven_fecha',$request->mes)
+                ->groupBy('productos.pro_nombre')
+                ->orderBy('cantidad')
+                ->get();
+        return response()->json([
+            'productos'=>$productos
+        ]);
     }
 }

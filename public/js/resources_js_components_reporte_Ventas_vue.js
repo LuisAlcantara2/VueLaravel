@@ -89,7 +89,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 Vue.filter('formatDate', function (value) {
   if (value) {
-    return moment__WEBPACK_IMPORTED_MODULE_1___default()(String(value)).format('MM/DD/YYYY');
+    return moment__WEBPACK_IMPORTED_MODULE_1___default()(String(value)).format('DD/MM/YYYY');
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -114,7 +114,7 @@ Vue.filter('formatDate', function (value) {
       } else if (this.hasta == "") {
         Swal.fire('Ingrese fecha final', '', 'error');
       } else {
-        this.getrptCompras();
+        this.getrptVentas();
       }
     },
     Reporte: function Reporte(file) {
@@ -22496,7 +22496,7 @@ var render = function () {
             },
           ],
           staticClass: "form-control",
-          attrs: { type: "date", name: "desde", id: "desde", max: this.hasta },
+          attrs: { type: "date", max: this.hasta },
           domProps: { value: _vm.desde },
           on: {
             input: function ($event) {
@@ -22522,7 +22522,7 @@ var render = function () {
             },
           ],
           staticClass: "form-control",
-          attrs: { type: "date", name: "desde", id: "desde", min: this.desde },
+          attrs: { type: "date", min: this.desde },
           domProps: { value: _vm.hasta },
           on: {
             input: function ($event) {

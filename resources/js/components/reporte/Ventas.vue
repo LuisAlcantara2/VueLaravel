@@ -3,11 +3,11 @@
   <div class="row justify-content">
     <div class="col-3 mb-2">
       <label for="">Desde:</label>
-      <input class="form-control" type="date" name="desde" id="desde" v-model="desde" :max="this.hasta">
+      <input class="form-control" type="date" v-model="desde" :max="this.hasta">
     </div>
     <div class="col-3 mb-2">
       <label for="">Hasta:</label>
-      <input class="form-control" type="date" name="desde" id="desde" v-model="hasta" :min="this.desde"> 
+      <input class="form-control" type="date" v-model="hasta" :min="this.desde"> 
     </div>
     <div class="col-3 mt-4">
       <button class="btn btn-primary" @click="Actualizar"><i class="fas fa-search"></i> Filtrar</button>
@@ -56,7 +56,7 @@
 import moment from "moment";
 Vue.filter('formatDate', function(value) {
   if (value) {
-    return moment(String(value)).format('MM/DD/YYYY')
+    return moment(String(value)).format('DD/MM/YYYY')
   }
 })
 export default{
@@ -85,7 +85,7 @@ export default{
         Swal.fire('Ingrese fecha final','','error')
       }
       else{
-        this.getrptCompras()
+        this.getrptVentas()
       }
     },
     async Reporte(file){
