@@ -23,7 +23,7 @@
               <td>{{ index+1}}</td>
               <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
-              <td align="right">{{ compra.com_total}}</td>
+              <td align="right">{{ compra.com_total.toFixed(2)}}</td>
               <td>
                 <router-link :to="{name:'editarCompra', params: { id: compra.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
