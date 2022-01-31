@@ -85,11 +85,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "crear-proveedor",
   props: ['isModal'],
   data: function data() {
     return {
+      errors: [],
       proveedor: {
         pvd_doc: "",
         pvd_nombre: "",
@@ -107,7 +114,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                _this.errors = [];
+
+                if (!_this.proveedor.pvd_doc) {
+                  _this.errors.push('El nro. de documento es obligatorio.');
+                } else if (!(_this.proveedor.pvd_doc.length == 8 || _this.proveedor.pvd_doc.length == 11)) {
+                  _this.errors.push('El documento debe ser de 8 o 11 dígitos.');
+                }
+
+                if (!_this.proveedor.pvd_nombre) {
+                  _this.errors.push('El nombre es obligatorio.');
+                }
+
+                if (!(_this.proveedor.pvd_doc && _this.proveedor.pvd_nombre && _this.errors.length == 0)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                _context.next = 6;
                 return _this.axios.post('/api/proveedor', _this.proveedor).then(function (response) {
                   _this.$router.push({
                     name: "mostrarProveedor"
@@ -118,13 +142,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 2:
+              case 6:
               case "end":
                 return _context.stop();
             }
           }
         }, _callee);
       }))();
+    },
+    validEmail: function validEmail(email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     },
     Consultar: function Consultar() {
       var _this2 = this;
@@ -137,7 +165,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this2.proveedor.pvd_nombre = result.data.data.nombre_completo;
             _this2.proveedor.pvd_direccion = result.data.data.direccion_completa;
           } else {
-            Swal.fire('Ocurrió un error', "error");
+            Swal.fire('Ocurrió un error', '', "error");
           }
         });
       } else if (this.proveedor.pvd_doc.length == 11) {
@@ -147,11 +175,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             _this2.proveedor.pvd_nombre = result.data.data.nombre_o_razon_social;
             _this2.proveedor.pvd_direccion = result.data.data.direccion_completa;
           } else {
-            Swal.fire('Ocurrió un error', "error");
+            Swal.fire('Ocurrió un error', '', "error");
           }
         });
       } else {
-        Swal.fire('Nro de documento incorrecto', "error");
+        Swal.fire('Nro de documento incorrecto', '', "error");
+      }
+    },
+    isDigit: function isDigit(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+        ;
+      } else {
+        return true;
       }
     }
   }
@@ -1018,6 +1057,28 @@ var render = function () {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
+            _vm.errors.length
+              ? _c("p", [
+                  _c("b", [
+                    _vm._v(
+                      "Por favor, corrija el(los) siguiente(s) error(es):"
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    _vm._l(_vm.errors, function (error) {
+                      return _c(
+                        "li",
+                        { key: error, staticClass: "text-danger" },
+                        [_vm._v(_vm._s(error))]
+                      )
+                    }),
+                    0
+                  ),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "form",
               {
@@ -1048,6 +1109,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.proveedor.pvd_doc },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isDigit($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -1160,6 +1224,9 @@ var render = function () {
                         attrs: { type: "text" },
                         domProps: { value: _vm.proveedor.pvd_telefono },
                         on: {
+                          keypress: function ($event) {
+                            return _vm.isDigit($event)
+                          },
                           input: function ($event) {
                             if ($event.target.composing) {
                               return

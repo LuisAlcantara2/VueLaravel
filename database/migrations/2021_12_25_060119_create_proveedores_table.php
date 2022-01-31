@@ -17,7 +17,7 @@ class CreateProveedoresTable extends Migration
             $table->id();
             $table->string('pvd_doc');
             $table->string('pvd_nombre');
-            $table->string('pvd_direccion');
+            $table->string('pvd_direccion')->nullable();
             $table->string('pvd_telefono')->nullable();
             $table->timestamps();
             $table->softDeletes();

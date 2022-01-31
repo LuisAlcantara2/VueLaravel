@@ -7,13 +7,19 @@
               <h4>Editar Proveedor</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="actualizar">
                 <div class="row">
                   <div class="col-12 mb-2">
                     <div class="form-group">
                       <label>Documento</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" v-model="proveedor.pvd_doc">
+                        <input type="text" class="form-control" v-model="proveedor.pvd_doc" @keypress="isDigit($event)">
                         <div class="input-group-append">
                           <button class="btn btn-outline-secondary" @click="Consultar" type="button"><i class="fas fa-search"></i> Consultar</button>
                         </div>
@@ -58,6 +64,7 @@ export default{
   name : "editar-proveedor",
   data(){
     return {
+      errors:[],
       proveedor:{
         pvd_doc:"",
         pvd_nombre:"",
@@ -71,14 +78,29 @@ export default{
   },
   methods:{
     async actualizar(){
-      await this.axios.put(`/api/proveedor/${this.$route.params.id}`,this.proveedor)
-        .then(response => {
-          this.$router.push({name:"mostrarProveedor"})
-          Swal.fire('Actualizado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      this.errors =[]
+      if(!this.proveedor.pvd_doc)
+      {
+        this.errors.push('El nro. de documento es obligatorio.');
+      }
+      else if(!(this.proveedor.pvd_doc.length==8 || this.proveedor.pvd_doc.length==11) )
+      {
+        this.errors.push('El documento debe ser de 8 o 11 dígitos.');
+      }
+      if(!this.proveedor.pvd_nombre)
+      {
+        this.errors.push('El nombre es obligatorio.');
+      }
+      if(this.proveedor.pvd_doc && this.proveedor.pvd_nombre && this.errors.length==0){
+        await this.axios.put(`/api/proveedor/${this.$route.params.id}`,this.proveedor)
+          .then(response => {
+            this.$router.push({name:"mostrarProveedor"})
+            Swal.fire('Actualizado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+      }
     },
     async mostrarProveedor(){
       await this.axios.get(`/api/proveedor/${this.$route.params.id}`)
@@ -99,7 +121,7 @@ export default{
           this.proveedor.pvd_direccion=result.data.data.direccion_completa
         }
         else{
-            Swal.fire('Ocurrió un error',"error")
+            Swal.fire('Ocurrió un error','',"error")
           }
         })
       }
@@ -111,14 +133,23 @@ export default{
           this.proveedor.pvd_direccion=result.data.data.direccion_completa
         }
         else{
-            Swal.fire('Ocurrió un error',"error")
+            Swal.fire('Ocurrió un error','',"error")
           }
         })
       }
       else{
-        Swal.fire('Nro de documento incorrecto',"error")
+        Swal.fire('Nro de documento incorrecto','',"error")
       }
-    }
+    },
+    isDigit: function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
+    },
   }
 }
 </script>

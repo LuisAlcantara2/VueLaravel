@@ -17,7 +17,7 @@ class CreateClientesTable extends Migration
             $table->id();
             $table->string('cli_doc');
             $table->string('cli_nombre');
-            $table->string('cli_direccion');
+            $table->string('cli_direccion')->nullable();;
             $table->string('cli_telefono')->nullable();
             $table->string('cli_correo')->nullable();
             $table->timestamps();

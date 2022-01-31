@@ -7,13 +7,19 @@
               <h4>Crear Cliente</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="crear">
                 <div class="row">
                   <div class="col-12 mb-2">
                     <div class="form-group">
                       <label>Documento</label>
                       <div class="input-group">
-                        <input type="text" class="form-control" v-model="cliente.cli_doc">
+                        <input type="text" class="form-control" v-model="cliente.cli_doc" @keypress="isDigit($event)">
                         <div class="input-group-append">
                           <button class="btn btn-outline-secondary" @click="Consultar" type="button"><i class="fas fa-search"></i> Consultar</button>
                         </div>
@@ -35,7 +41,7 @@
                   <div class="col-12 mb-2">
                     <div class="form-group">
                       <label>Telefono</label>
-                      <input type="text" class="form-control" v-model="cliente.cli_telefono">
+                      <input type="text" class="form-control" v-model="cliente.cli_telefono" @keypress="isDigit($event)">
                     </div>
                   </div>
                   <div class="col-12 mb-2">
@@ -64,6 +70,7 @@ export default{
   name : "crear-cliente",
   data(){
     return {
+      errors:[],
       cliente:{
         cli_doc:"",
         cli_nombre:"",
@@ -75,7 +82,25 @@ export default{
   },
   methods:{
     async crear(){
-      await this.axios.post('/api/cliente',this.cliente)
+      this.errors =[]
+      if(!this.cliente.cli_doc)
+      {
+        this.errors.push('El nro. de documento es obligatorio.');
+      }
+      else if(!(this.cliente.cli_doc.length==8 || this.cliente.cli_doc.length==11) )
+      {
+        this.errors.push('El documento debe ser de 8 o 11 dígitos.');
+      }
+      if(!this.cliente.cli_nombre)
+      {
+        this.errors.push('El nombre es obligatorio.');
+      }
+      if(!this.validEmail(this.cliente.cli_correo) && this.cliente.cli_correo) {
+        this.errors.push('El correo electrónico debe ser válido.');
+      }
+      if(this.cliente.cli_doc && this.cliente.cli_nombre && this.errors.length==0)
+      {
+        await this.axios.post('/api/cliente',this.cliente)
         .then(response => {
           this.$router.push({name:"mostrarCliente"})
           Swal.fire('Registrado Correctamente','','success')
@@ -83,6 +108,12 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+      }
+      
+    },
+    validEmail: function (email) {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
     },
     Consultar(){
       if(this.cliente.cli_doc.length==8){
@@ -94,7 +125,7 @@ export default{
           this.cliente.cli_direccion=result.data.data.direccion_completa
         }
         else{
-            Swal.fire('Ocurrió un error',"error")
+            Swal.fire('Ocurrió un error','',"error")
           }
         })
       }
@@ -106,12 +137,21 @@ export default{
           this.cliente.cli_direccion=result.data.data.direccion_completa
         }
         else{
-            Swal.fire('Ocurrió un error',"error")
+            Swal.fire('Ocurrió un error','',"error")
           }
         })
       }
       else{
-        Swal.fire('Nro de documento incorrecto',"error")
+        Swal.fire('Nro de documento incorrecto','',"error")
+      }
+    },
+    isDigit: function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+        evt.preventDefault();;
+      } else {
+        return true;
       }
     },
   }
