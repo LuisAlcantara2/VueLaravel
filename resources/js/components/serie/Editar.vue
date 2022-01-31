@@ -17,7 +17,7 @@
                 <div class="row">
                   <div class="col-12 mb-2">
                     <div class="form-group">
-                      <label>Serie</label>
+                      <label>Serie (*)</label>
                       <input type="text" class="form-control" v-model="serie.ser_serie">
                     </div>
                   </div>

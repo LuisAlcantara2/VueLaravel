@@ -1129,7 +1129,7 @@ var render = function () {
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-12 mb-2" }, [
                     _c("div", { staticClass: "form-group" }, [
-                      _c("label", [_vm._v("Documento")]),
+                      _c("label", [_vm._v("Documento (*)")]),
                       _vm._v(" "),
                       _c("div", { staticClass: "input-group" }, [
                         _c("input", {
@@ -1181,7 +1181,7 @@ var render = function () {
                   _vm._v(" "),
                   _c("div", { staticClass: "col-12 mb-2" }, [
                     _c("div", { staticClass: "form-group" }, [
-                      _c("label", [_vm._v("Nombre")]),
+                      _c("label", [_vm._v("Nombre (*)")]),
                       _vm._v(" "),
                       _c("input", {
                         directives: [

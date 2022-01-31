@@ -17,31 +17,31 @@
                 <div class="row">
                   <div class="col-12 mb-2">
                     <div class="form-group">
-                      <label>Nombre</label>
+                      <label>Nombre (*)</label>
                       <input type="text" class="form-control" v-model="producto.pro_nombre">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
-                      <label>Stock actual</label>
+                      <label>Stock actual (*)</label>
                       <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_stockactual">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
-                      <label>Stock mínimo</label>
+                      <label>Stock mínimo (*)</label>
                       <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_stockmin">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
-                      <label>Precio Venta</label>
+                      <label>Precio Venta (*)</label>
                       <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_precioventa">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
-                      <label>Precio Compra</label>
+                      <label>Precio Compra (*)</label>
                       <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_preciocompra">
                     </div>
                   </div>

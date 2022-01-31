@@ -17,7 +17,7 @@
                 <div class="row">
                   <div class="col-12 mb-2">
                     <div class="form-group">
-                      <label>Documento</label>
+                      <label>Documento (*)</label>
                       <div class="input-group">
                         <input type="text" class="form-control" v-model="proveedor.pvd_doc" @keypress="isDigit($event)">
                         <div class="input-group-append">
@@ -28,7 +28,7 @@
                   </div>
                   <div class="col-12 mb-2">
                     <div class="form-group">
-                      <label>Nombre</label>
+                      <label>Nombre (*)</label>
                       <input type="text" class="form-control" v-model="proveedor.pvd_nombre">
                     </div>
                   </div>
