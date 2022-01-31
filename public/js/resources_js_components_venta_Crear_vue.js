@@ -425,7 +425,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log('venta:', _this2.venta);
+                if (!(_this2.venta.detalle.length > 0)) {
+                  _context2.next = 5;
+                  break;
+                }
+
                 _context2.next = 3;
                 return _this2.axios.post('/api/venta', _this2.venta).then(function (response) {
                   _this2.$router.push({
@@ -438,6 +442,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
+                _context2.next = 6;
+                break;
+
+              case 5:
+                Swal.fire('Venta sin detalle', '', 'error');
+
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -585,13 +596,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var band = 0;
         console.log('llega', this.venta.detalle);
         this.venta.detalle.forEach(function (element) {
-          if (element.Producto == _this7.producto.pro_nombre) {
+          if (element.Producto == _this7.producto.nombre) {
             band = 1;
             console.log(element);
           }
         });
 
         if (band == 0) {
+          console.log('AA', this.producto);
           this.venta.detalle.push({
             id: this.producto.id,
             Producto: this.producto.nombre,
@@ -614,61 +626,71 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     editItem: function editItem(id) {
       this.edit = this.edit !== id.item.id ? id.item.id : null;
       id.item.Subtotal = id.item.Precio * id.item.Cantidad;
+      this.calculartotal();
     },
-    seleccionarProducto: function seleccionarProducto() {
+    calculartotal: function calculartotal() {
       var _this8 = this;
 
+      this.venta.ven_total = 0;
+      this.venta.detalle.forEach(function (element) {
+        console.log('listadet', element);
+        _this8.venta.ven_total += Number(element.Subtotal);
+      });
+    },
+    seleccionarProducto: function seleccionarProducto() {
+      var _this9 = this;
+
       this.axios.get("/api/producto/".concat(this.producto_id)).then(function (response) {
-        _this8.producto = response.data;
+        _this9.producto = response.data;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     seleccionarCliente: function seleccionarCliente() {
-      var _this9 = this;
+      var _this10 = this;
 
       this.axios.get("/api/cliente/".concat(this.cliente_id)).then(function (response) {
-        _this9.cliente = response.data;
-        _this9.venta.cliente_id = _this9.cliente.id;
+        _this10.cliente = response.data;
+        _this10.venta.cliente_id = _this10.cliente.id;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     seleccionarSerie: function seleccionarSerie() {
-      var _this10 = this;
+      var _this11 = this;
 
       this.axios.get("/api/serie/".concat(this.serie_id)).then(function (response) {
-        _this10.serie = response.data;
-        _this10.venta.ven_serie = _this10.serie.ser_serie;
-        _this10.venta.ven_correlativo = _this10.serie.ser_corre;
+        _this11.serie = response.data;
+        _this11.venta.ven_serie = _this11.serie.ser_serie;
+        _this11.venta.ven_correlativo = _this11.serie.ser_corre;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     showModalProducto: function showModalProducto() {
-      var _this11 = this;
+      var _this12 = this;
 
       this.isModalProductoVisible = true;
       this.axios.get('/api/marca').then(function (response) {
-        _this11.marcas = response.data;
-        _this11.productoModal.marca_id = _this11.marcas[0].id;
+        _this12.marcas = response.data;
+        _this12.productoModal.marca_id = _this12.marcas[0].id;
       })["catch"](function (error) {
-        _this11.marcas = [];
+        _this12.marcas = [];
       });
       this.axios.get('/api/unidad').then(function (response) {
-        _this11.unidades = response.data;
-        _this11.productoModal.unidad_id = _this11.unidades[0].id;
+        _this12.unidades = response.data;
+        _this12.productoModal.unidad_id = _this12.unidades[0].id;
       })["catch"](function (error) {
-        _this11.marcas = [];
+        _this12.marcas = [];
       });
       this.axios.get('/api/categoria').then(function (response) {
-        _this11.categorias = response.data;
-        _this11.productoModal.categoria_id = _this11.categorias[0].id;
+        _this12.categorias = response.data;
+        _this12.productoModal.categoria_id = _this12.categorias[0].id;
       })["catch"](function (error) {
-        _this11.marcas = [];
+        _this12.marcas = [];
       });
     },
     hideModalProducto: function hideModalProducto() {
@@ -682,19 +704,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.productoModal.pro_precioventa = "";
     },
     crearProducto: function crearProducto() {
-      var _this12 = this;
+      var _this13 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                _this12.isModalProducto = true;
+                _this13.isModalProducto = true;
                 _context7.next = 3;
-                return _this12.axios.post('/api/producto', _this12.productoModal).then(function (response) {
-                  _this12.getProductos();
+                return _this13.axios.post('/api/producto', _this13.productoModal).then(function (response) {
+                  _this13.getProductos();
 
-                  _this12.isModalProductoVisible = false;
+                  _this13.isModalProductoVisible = false;
                 })["catch"](function (error) {
                   console.log(error);
                 });
@@ -23264,7 +23286,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "number" },
+                          attrs: { type: "text" },
                           domProps: { value: _vm.producto.pro_precioventa },
                           on: {
                             input: function ($event) {
@@ -23438,7 +23460,7 @@ var render = function () {
                     _vm._v(" "),
                     _c("div", { staticClass: "col-3" }, [
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Total")]),
+                        _c("label", [_vm._v("Total (S/.)")]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [

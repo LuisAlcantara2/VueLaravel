@@ -22,7 +22,9 @@ class VentaController extends Controller
      */
     public function index()
     {
-        $ventas = Venta::orderBy('ven_fecha','desc')->get();
+        $ventas = Venta::orderBy('ven_fecha','desc')
+        ->orderBy('ven_serie','desc')
+        ->orderBy('ven_correlativo','desc')->get();
         return response()->json($ventas);
     }
 

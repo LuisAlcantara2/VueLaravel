@@ -20,7 +20,9 @@ class CompraController extends Controller
      */
     public function index()
     {
-        $compras = Compra::orderBy('com_fecha','desc')->get();
+        $compras = Compra::orderBy('com_fecha','desc')
+        ->orderBy('com_serie','desc')
+        ->orderBy('com_correlativo','desc')->get();
         return response()->json($compras);
     }
 
@@ -50,6 +52,7 @@ class CompraController extends Controller
             foreach($request->detalle as $item){
                 $this->guardarVentaDetalle($item,$compra->id,$ser_det);
             }
+            DB::commit();
             return response()->json([
                 'compra'=>$compra
             ]);

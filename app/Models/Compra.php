@@ -18,7 +18,7 @@ class Compra extends Model
     protected $casts = ['com_total' => 'float'];
 
     protected $fillable = [
-        'com_serie','com_correlativo','com_fecha','com_total','proveedor_id',
+        'com_serie','com_correlativo','com_fecha','com_total','proveedor_id'
     ];
 
     public function proveedor()

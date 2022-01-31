@@ -82,7 +82,7 @@
                   <div class="col-3 mb-2">
                     <div class="form-group">
                       <label>Precio </label>
-                      <input type="number" class="form-control" v-model="producto.pro_precioventa">
+                      <input type="text" class="form-control" v-model="producto.pro_precioventa">
                     </div>
                   </div>
                   <div class="col-3 mb-2">
@@ -133,7 +133,7 @@
                   <div class="col-7"></div>
                   <div class="col-3">
                     <div class="form-group">
-                      <label>Total</label>
+                      <label>Total (S/.)</label>
                       <input readonly class="text-end" type="text" v-model="venta.ven_total">
                     </div>
                   </div>
@@ -342,15 +342,19 @@ export default{
   },
   methods:{
     async crear(){
-      console.log('venta:',this.venta)
-      await this.axios.post('/api/venta',this.venta)
-        .then(response => {
-          this.$router.push({name:"mostrarVenta"})
-          Swal.fire('Registrado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      if(this.venta.detalle.length>0){
+        await this.axios.post('/api/venta',this.venta)
+          .then(response => {
+            this.$router.push({name:"mostrarVenta"})
+            Swal.fire('Registrado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+      }
+      else{
+        Swal.fire('Venta sin detalle','','error')
+      }
     },
     async getSerie(){
       await this.axios.get('/api/serie')
@@ -435,13 +439,14 @@ export default{
         var band=0
         console.log('llega',this.venta.detalle)
         this.venta.detalle.forEach(element => {
-          if(element.Producto==this.producto.pro_nombre){
+          if(element.Producto==this.producto.nombre){
             band=1
             console.log(element)
           }
         });       
         if(band==0)
         {
+          console.log('AA',this.producto)
           this.venta.detalle.push(({id:this.producto.id,Producto: this.producto.nombre,Precio:this.producto.pro_precioventa,Cantidad:this.cantidad,Subtotal:this.producto.pro_precioventa*this.cantidad,stock:this.producto.pro_stockactual}))
           this.venta.ven_total += this.producto.pro_precioventa*this.cantidad
           this.cantidad=1
@@ -459,7 +464,15 @@ export default{
     editItem(id) {
       this.edit = this.edit !== id.item.id ? id.item.id : null;
       id.item.Subtotal = id.item.Precio * id.item.Cantidad
+      this.calculartotal()
     },
+  calculartotal(){
+    this.venta.ven_total=0
+    this.venta.detalle.forEach(element => {
+        console.log('listadet',element)
+        this.venta.ven_total+=Number(element.Subtotal)  
+      });
+  },
    seleccionarProducto(){
      this.axios.get(`/api/producto/${this.producto_id}`)
       .then(response=>{

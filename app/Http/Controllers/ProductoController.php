@@ -16,8 +16,9 @@ class ProductoController extends Controller
     {
         $filtro = $request->nombre;
         // $productos = Producto::all();
-        $productos = Producto::select('productos.*',DB::raw("concat(concat(pro_nombre,' '),marcas.mar_nombre) as nombre"),'marcas.mar_nombre')
+        $productos = Producto::select('productos.*',DB::raw("concat(concat(concat(concat(pro_nombre,' '),marcas.mar_nombre),' '),unidades.uni_nombre) as nombre"),'marcas.mar_nombre')
         ->join('marcas','marcas.id','=','productos.marca_id')
+        ->join('unidades','unidades.id','=','productos.unidad_id')
         ->where('pro_nombre','LIKE','%'.$filtro.'%')
         ->orderBy('pro_stockactual','asc')->get();
         return response()->json($productos);
@@ -55,8 +56,9 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
-        $producto = Producto::select('productos.*',DB::raw("concat(concat(pro_nombre,' '),marcas.mar_nombre) as nombre"),'marcas.mar_nombre')
+        $producto = Producto::select('productos.*',DB::raw("concat(concat(concat(concat(pro_nombre,' '),marcas.mar_nombre),' '),unidades.uni_nombre) as nombre"),'marcas.mar_nombre')
         ->join('marcas','marcas.id','=','productos.marca_id')
+        ->join('unidades','unidades.id','=','productos.unidad_id')
         ->where('productos.id','=',$producto->id)->first();
         return response()->json($producto);
     }

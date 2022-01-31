@@ -93,7 +93,7 @@ export default{
       }],
 
       // da
-      series2: [1, 1, 1, 1, 10],
+      series2: [1, 1, 1, 1, 1],
       chartOptions2: {
         chart: {
           type: 'donut',

@@ -93,7 +93,7 @@
         @show="resetModalUnidad"
         @hidden="resetModalUnidad"
         >
-        <form @submit.prevent="crearUnidad">
+        <form @submit.prevent="">
           <p v-if="errorsunidad.length">
             <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
             <ul>
@@ -108,7 +108,7 @@
               </div>
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-primary" @click="crearUnidad">Guardar</button>
               <button type="button" class="btn btn-secondary" @click="hideUnidad">Cerrar</button>
             </div>
           </div>
@@ -125,7 +125,7 @@
         @show="resetModalCategoria"
         @hidden="resetModalCategoria"
       >
-      <form @submit.prevent="crearCategoria">
+      <form @submit.prevent="">
         <p v-if="errorscategoria.length">
           <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
           <ul>
@@ -140,8 +140,8 @@
             </div>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-              <button type="button" class="btn btn-secondary" @click="hideCategoria">Cerrar</button>
+            <button type="button" @click="crearCategoria" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" @click="hideCategoria">Cerrar</button>
           </div>
         </div>
 
@@ -156,7 +156,7 @@
         @show="resetModalMarca"
         @hidden="resetModalMarca"
       >
-      <form @submit.prevent="crearMarca">
+      <form @submit.prevent="">
         <p v-if="errorsmarca.length">
           <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
           <ul>
@@ -171,7 +171,7 @@
             </div>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-primary" @click="crearMarca">Guardar</button>
               <button type="button" class="btn btn-secondary" @click="hideMarca">Cerrar</button>
           </div>
         </div>
@@ -330,16 +330,16 @@ export default{
         this.categoria.cat_nombre=""
     },
     async crearCategoria(){
-      if(categoria.cat_nombre){
+      if(this.categoria.cat_nombre){
         this.isModalCategoria = true
-      await this.axios.post('/api/categoria',this.categoria)
-        .then(response => {
-            this.getdata()
-            this.isModalCategoriaVisible=false
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+        await this.axios.post('/api/categoria',this.categoria)
+          .then(response => {
+              this.getdata()
+              this.isModalCategoriaVisible=false
+          })
+          .catch(error=>{
+            console.log(error)
+          })
       }
       this.errorscategoria = [];
       if (!this.categoria.cat_nombre) {
@@ -357,7 +357,7 @@ export default{
         this.marca.mar_nombre=""
     },
     async crearMarca(){
-      if(marca.mar_nombre){
+      if(this.marca.mar_nombre){
         this.isModalMarca = true
       await this.axios.post('/api/marca',this.marca)
         .then(response => {

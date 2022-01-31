@@ -296,6 +296,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -306,6 +312,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      errors: [],
       compra: {
         com_fecha: moment__WEBPACK_IMPORTED_MODULE_1___default()().format("YYYY-MM-DD"),
         com_serie: "",
@@ -358,7 +365,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         thClass: 'text-center',
         sortable: false
       }],
-      cantidad: "0",
+      cantidad: 1,
       isModalProductoVisible: false,
       productoModal: {
         pro_nombre: "",
@@ -414,8 +421,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                console.log('compra:', _this2.compra);
-                _context2.next = 3;
+                console.log('compra', _this2.compra);
+
+                if (!(_this2.compra.detalle.length > 0)) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                _this2.errors = [];
+
+                if (!_this2.compra.com_serie) {
+                  _this2.errors.push('La serie es obligatorio.');
+                }
+
+                if (!_this2.compra.com_correlativo) {
+                  _this2.errors.push('El correlativo es obligatorio.');
+                }
+
+                if (!(_this2.errors.length == 0)) {
+                  _context2.next = 8;
+                  break;
+                }
+
+                _context2.next = 8;
                 return _this2.axios.post('/api/compra', _this2.compra).then(function (response) {
                   _this2.$router.push({
                     name: "mostrarCompra"
@@ -426,13 +454,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 3:
+              case 8:
+                _context2.next = 11;
+                break;
+
+              case 10:
+                Swal.fire('Compra sin detalle', '', 'error');
+
+              case 11:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    },
+    isDigit: function isDigit(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+        ;
+      } else {
+        return true;
+      }
     },
     getProductos: function getProductos() {
       var _this3 = this;
@@ -538,16 +584,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     agregarDetalle: function agregarDetalle() {
-      this.compra.detalle.push({
-        id: this.producto.id,
-        Producto: this.producto.nombre,
-        Precio: this.producto.pro_preciocompra,
-        Cantidad: this.cantidad,
-        Subtotal: this.producto.pro_preciocompra * this.cantidad,
-        stock: this.producto.pro_stockactual
-      });
-      this.compra.com_total += this.producto.pro_preciocompra * this.cantidad;
-      this.cantidad = 0;
+      var _this6 = this;
+
+      if (this.cantidad <= 0) {
+        Swal.fire('Error en la cantidad', '', 'error');
+      } else if (this.producto.pro_precioventa <= 0) {
+        Swal.fire('Error en el precio', '', 'error');
+      } else {
+        var band = 0;
+        this.compra.detalle.forEach(function (element) {
+          if (element.Producto == _this6.producto.nombre) {
+            band = 1;
+            console.log(element);
+          }
+        });
+
+        if (band == 0) {
+          this.compra.detalle.push({
+            id: this.producto.id,
+            Producto: this.producto.nombre,
+            Precio: this.producto.pro_preciocompra,
+            Cantidad: this.cantidad,
+            Subtotal: this.producto.pro_preciocompra * this.cantidad,
+            stock: this.producto.pro_stockactual
+          });
+          this.compra.com_total += this.producto.pro_preciocompra * this.cantidad;
+          this.cantidad = 1;
+        } else {
+          Swal.fire('Producto ya agregado', '', 'error');
+        }
+      }
     },
     deleteItem: function deleteItem(index) {
       this.compra.com_total -= this.compra.detalle[index].Subtotal;
@@ -556,49 +622,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     editItem: function editItem(id) {
       this.edit = this.edit !== id.item.id ? id.item.id : null;
       id.item.Subtotal = id.item.Precio * id.item.Cantidad;
+      this.calculartotal();
+    },
+    calculartotal: function calculartotal() {
+      var _this7 = this;
+
+      this.compra.com_total = 0;
+      this.compra.detalle.forEach(function (element) {
+        console.log('listadet', element);
+        _this7.compra.com_total += Number(element.Subtotal);
+      });
     },
     seleccionarProducto: function seleccionarProducto() {
-      var _this6 = this;
+      var _this8 = this;
 
       this.axios.get("/api/producto/".concat(this.producto_id)).then(function (response) {
-        _this6.producto = response.data;
+        _this8.producto = response.data;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     seleccionarProveedor: function seleccionarProveedor() {
-      var _this7 = this;
+      var _this9 = this;
 
       this.axios.get("/api/proveedor/".concat(this.proveedor_id)).then(function (response) {
-        _this7.proveedor = response.data;
-        _this7.compra.proveedor_id = _this7.proveedor.id;
+        _this9.proveedor = response.data;
+        _this9.compra.proveedor_id = _this9.proveedor.id;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     showModalProducto: function showModalProducto() {
-      var _this8 = this;
+      var _this10 = this;
 
       this.isModalProductoVisible = true;
       this.axios.get('/api/marca').then(function (response) {
-        _this8.marcas = response.data;
-        _this8.productoModal.marca_id = _this8.marcas[0].id;
+        _this10.marcas = response.data;
+        _this10.productoModal.marca_id = _this10.marcas[0].id;
       })["catch"](function (error) {
-        _this8.marcas = [];
+        _this10.marcas = [];
       });
       this.axios.get('/api/unidad').then(function (response) {
-        _this8.unidades = response.data;
-        _this8.productoModal.unidad_id = _this8.unidades[0].id;
+        _this10.unidades = response.data;
+        _this10.productoModal.unidad_id = _this10.unidades[0].id;
       })["catch"](function (error) {
-        _this8.marcas = [];
+        _this10.marcas = [];
       });
       this.axios.get('/api/categoria').then(function (response) {
-        _this8.categorias = response.data;
-        _this8.productoModal.categoria_id = _this8.categorias[0].id;
+        _this10.categorias = response.data;
+        _this10.productoModal.categoria_id = _this10.categorias[0].id;
       })["catch"](function (error) {
-        _this8.marcas = [];
+        _this10.marcas = [];
       });
     },
     hideModalProducto: function hideModalProducto() {
@@ -612,19 +688,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.productoModal.pro_preciocompra = "";
     },
     crearProducto: function crearProducto() {
-      var _this9 = this;
+      var _this11 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                _this9.isModalProducto = true;
+                _this11.isModalProducto = true;
                 _context6.next = 3;
-                return _this9.axios.post('/api/producto', _this9.productoModal).then(function (response) {
-                  _this9.getProductos();
+                return _this11.axios.post('/api/producto', _this11.productoModal).then(function (response) {
+                  _this11.getProductos();
 
-                  _this9.isModalProductoVisible = false;
+                  _this11.isModalProductoVisible = false;
                 })["catch"](function (error) {
                   console.log(error);
                 });
@@ -636,6 +712,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee6);
       }))();
+    },
+    isNumber: function isNumber(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+        evt.preventDefault();
+        ;
+      } else {
+        return true;
+      }
     }
   }
 });
@@ -22938,6 +23025,28 @@ var render = function () {
             _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
+              _vm.errors.length
+                ? _c("p", [
+                    _c("b", [
+                      _vm._v(
+                        "Por favor, corrija el(los) siguiente(s) error(es):"
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      _vm._l(_vm.errors, function (error) {
+                        return _c(
+                          "li",
+                          { key: error, staticClass: "text-danger" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      0
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "form",
                 {
@@ -22964,7 +23073,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "date" },
+                          attrs: { readonly: "", type: "date" },
                           domProps: { value: _vm.compra.com_fecha },
                           on: {
                             input: function ($event) {
@@ -22984,7 +23093,7 @@ var render = function () {
                     _vm._v(" "),
                     _c("div", { staticClass: "col-4 mb-2" }, [
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Serie")]),
+                        _c("label", [_vm._v("Serie (*)")]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -23016,7 +23125,7 @@ var render = function () {
                     _vm._v(" "),
                     _c("div", { staticClass: "col-4 mb-2" }, [
                       _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Correlativo")]),
+                        _c("label", [_vm._v("Correlativo (*)")]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -23031,6 +23140,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.compra.com_correlativo },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isDigit($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -23102,7 +23214,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.proveedor.pvd_doc },
                           on: {
                             input: function ($event) {
@@ -23134,7 +23246,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.proveedor.pvd_direccion },
                           on: {
                             input: function ($event) {
@@ -23201,6 +23313,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.producto.pro_preciocompra },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isNumber($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -23233,6 +23348,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.cantidad },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isNumber($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -23277,6 +23395,11 @@ var render = function () {
                                     fn: function (row) {
                                       return [
                                         _c("b-form-input", {
+                                          on: {
+                                            keypress: function ($event) {
+                                              return _vm.isNumber($event)
+                                            },
+                                          },
                                           model: {
                                             value: row.item.Precio,
                                             callback: function ($$v) {
@@ -23295,6 +23418,11 @@ var render = function () {
                                     fn: function (row) {
                                       return [
                                         _c("b-form-input", {
+                                          on: {
+                                            keypress: function ($event) {
+                                              return _vm.isNumber($event)
+                                            },
+                                          },
                                           model: {
                                             value: row.item.Cantidad,
                                             callback: function ($$v) {
@@ -23380,7 +23508,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "text-end",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.compra.com_total },
                           on: {
                             input: function ($event) {

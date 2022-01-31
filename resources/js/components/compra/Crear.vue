@@ -8,24 +8,30 @@
               <h4>Crear Compra</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="crear">
                 <div class="row">
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Fecha de emisión</label>
-                      <input type="date" class="form-control" v-model="compra.com_fecha">
+                      <input readonly type="date" class="form-control" v-model="compra.com_fecha">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
                     <div class="form-group">
-                      <label>Serie</label>
+                      <label>Serie (*)</label>
                       <input type="text" class="form-control" v-model="compra.com_serie">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
                     <div class="form-group">
-                      <label>Correlativo</label>
-                      <input type="text" class="form-control" v-model="compra.com_correlativo">
+                      <label>Correlativo (*)</label>
+                      <input type="text" class="form-control" v-model="compra.com_correlativo" @keypress="isDigit($event)">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
@@ -45,13 +51,13 @@
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Documento</label>
-                      <input type="text" class="form-control" v-model="proveedor.pvd_doc">
+                      <input readonly type="text" class="form-control" v-model="proveedor.pvd_doc">
                     </div>
                   </div>
                   <div class="col-4 mb-2">
                     <div class="form-group">
                       <label>Dirección</label>
-                      <input type="text" class="form-control" v-model="proveedor.pvd_direccion">
+                      <input readonly type="text" class="form-control" v-model="proveedor.pvd_direccion">
                     </div>
                   </div>
                   <div class="col-3 mb-2">
@@ -74,13 +80,13 @@
                   <div class="col-3 mb-2">
                     <div class="form-group">
                       <label>Precio </label>
-                      <input type="text" class="form-control" v-model="producto.pro_preciocompra">
+                      <input type="text" class="form-control" v-model="producto.pro_preciocompra" @keypress="isNumber($event)">
                     </div>
                   </div>
                   <div class="col-3 mb-2">
                     <div class="form-group">
                       <label>Cantidad</label>
-                      <input type="text" class="form-control" v-model="cantidad">
+                      <input type="text" class="form-control" v-model="cantidad" @keypress="isNumber($event)">
                     </div>
                   </div>
                   <div class="col-3 mt-4">
@@ -97,11 +103,11 @@
                       :fields="fields"
                     >
                     <template v-slot:cell(Precio)="row" v-if="edit">
-                      <b-form-input v-model="row.item.Precio"/>
+                      <b-form-input @keypress="isNumber($event)" v-model="row.item.Precio"/>
                     </template>
                     
                     <template v-slot:cell(Cantidad)="row" v-if="edit">
-                      <b-form-input v-model="row.item.Cantidad"/>
+                      <b-form-input @keypress="isNumber($event)" v-model="row.item.Cantidad"/>
                     </template>
                       <template #cell(actions)="data">
                         <b-button
@@ -126,7 +132,7 @@
                   <div class="col-3">
                     <div class="form-group">
                       <label>Total</label>
-                      <input class="text-end" type="text" v-model="compra.com_total">
+                      <input readonly class="text-end" type="text" v-model="compra.com_total">
                     </div>
                   </div>
                   <div class="col-2"></div>
@@ -271,6 +277,7 @@ export default{
     },
   data(){
     return {
+      errors:[],
       compra:{
         com_fecha:moment().format("YYYY-MM-DD"),
         com_serie:"",
@@ -308,7 +315,7 @@ export default{
         { key: 'Subtotal', label: 'Subtotal', sortable: false, tdClass: 'text-end'},
         { key: 'actions', label: 'Acciones', tdClass: 'text-center', thClass: 'text-center', sortable: false },
       ],
-      cantidad:"0",
+      cantidad:1,
       isModalProductoVisible: false,
       productoModal:{
         pro_nombre:"",
@@ -338,15 +345,40 @@ export default{
   },
   methods:{
     async crear(){
-      console.log('compra:',this.compra)
-      await this.axios.post('/api/compra',this.compra)
-        .then(response => {
-          this.$router.push({name:"mostrarCompra"})
-          Swal.fire('Registrado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      console.log('compra',this.compra)
+      if(this.compra.detalle.length>0){
+        this.errors =[]
+        if(!this.compra.com_serie)
+        {
+          this.errors.push('La serie es obligatorio.');
+        }
+        if(!this.compra.com_correlativo)
+        {
+          this.errors.push('El correlativo es obligatorio.');
+        }
+        if(this.errors.length==0){
+          await this.axios.post('/api/compra',this.compra)
+          .then(response => {
+            this.$router.push({name:"mostrarCompra"})
+            Swal.fire('Registrado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+        }
+      }
+      else{
+        Swal.fire('Compra sin detalle','','error')
+      }
+    },
+    isDigit: function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
     },
     async getProductos(){
       await this.axios.get('/api/producto')
@@ -408,9 +440,31 @@ export default{
         })
     },
     agregarDetalle(){
-      this.compra.detalle.push(({id:this.producto.id,Producto: this.producto.nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad,stock:this.producto.pro_stockactual}))
-      this.compra.com_total += this.producto.pro_preciocompra*this.cantidad
-      this.cantidad=0
+      if(this.cantidad<=0)
+      {
+        Swal.fire('Error en la cantidad','','error')
+      }
+      else if(this.producto.pro_precioventa<=0){
+        Swal.fire('Error en el precio','','error')
+      }
+      else{
+        var band=0
+        this.compra.detalle.forEach(element => {
+          if(element.Producto==this.producto.nombre){
+            band=1
+            console.log(element)
+          }
+        });       
+        if(band==0)
+        {
+          this.compra.detalle.push(({id:this.producto.id,Producto: this.producto.nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad,stock:this.producto.pro_stockactual}))
+          this.compra.com_total += this.producto.pro_preciocompra*this.cantidad
+          this.cantidad=1
+        } 
+        else{
+          Swal.fire('Producto ya agregado','','error')
+        }
+      }
     },
     deleteItem(index){
      this.compra.com_total -= this.compra.detalle[index].Subtotal
@@ -420,7 +474,15 @@ export default{
     editItem(id) {
       this.edit = this.edit !== id.item.id ? id.item.id : null;
       id.item.Subtotal = id.item.Precio * id.item.Cantidad
+      this.calculartotal()
     },
+    calculartotal(){
+    this.compra.com_total=0
+    this.compra.detalle.forEach(element => {
+        console.log('listadet',element)
+        this.compra.com_total+=Number(element.Subtotal)  
+      });
+  },
    seleccionarProducto(){
      this.axios.get(`/api/producto/${this.producto_id}`)
       .then(response=>{
@@ -489,6 +551,15 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+    },
+    isNumber: function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
     },
   }
 }
