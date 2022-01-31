@@ -20,7 +20,7 @@ class CompraController extends Controller
      */
     public function index()
     {
-        $compras = Compra::all();
+        $compras = Compra::orderBy('com_fecha','desc')->get();
         return response()->json($compras);
     }
 
@@ -42,16 +42,23 @@ class CompraController extends Controller
      */
     public function store(Request $request)
     {   
-        $request->all();
-        $compra = Compra::create($request->post());
-        foreach($request->detalle as $item){
-            $this->guardarVentaDetalle($item,$compra->id);
+        DB::beginTransaction();
+        try {
+            $request->all();
+            $compra = Compra::create($request->post());
+            $ser_det = $request->com_serie.'-'.$request->com_correlativo;
+            foreach($request->detalle as $item){
+                $this->guardarVentaDetalle($item,$compra->id,$ser_det);
+            }
+            return response()->json([
+                'compra'=>$compra
+            ]);
+        }catch (\Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
         }
-        return response()->json([
-            'compra'=>$compra
-        ]);
     }
-    protected function guardarVentaDetalle($item, $id){
+    protected function guardarVentaDetalle($item, $id,$ser_det){
         //dd($item);
         // $det = new DetalleCompra(
         //     $item['Precio'],
@@ -65,12 +72,15 @@ class CompraController extends Controller
             'dcp_precio' => $item['Precio'],
             'compra_id' => $id,
             'producto_id' => $item['id'],
+            'stock' => $item['stock'],
         ]);
         $fechaact = Carbon::now();
         $kardex = Kardex::create([
             'krd_fecha' => $fechaact,
             'krd_tipo' => 1,
+            'krd_serie' => $ser_det,
             'krd_cantidad' => $item['Cantidad'],
+            'krd_stockant' => $item['stock'],
             'producto_id' => $item['id'],
         ]);
 

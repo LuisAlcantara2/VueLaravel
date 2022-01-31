@@ -30,8 +30,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="proveedor in proveedores" :key="proveedor.id">
-              <td>{{ proveedor.id}}</td>
+            <tr v-for="(proveedor,index) in proveedores" :key="proveedor.id">
+              <td>{{ index+1}}</td>
               <td>{{ proveedor.pvd_nombre}}</td>
               <td>{{ proveedor.pvd_doc}}</td>
               <td>

@@ -15,9 +15,13 @@ class Kardex extends Model
     
     protected $table="kardex";
     protected $dates = ['deleted_at'];
+    protected $casts = [
+        'krd_cantidad' => 'float',
+    ];
+
 
     protected $fillable = [
-        'krd_fecha','krd_tipo','krd_cantidad','krd_anterior','krd_actual','producto_id',
+        'krd_fecha','krd_tipo','krd_serie','krd_cantidad','krd_stockant','producto_id',
     ];
 
     public function producto()

@@ -1,0 +1,74 @@
+<template>
+<div class="container">
+  <div class="row">
+    <div>
+      <router-link to="/crearSerie" class="btn btn-success" custom v-slot="{ navigate }">
+        <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
+      </router-link>
+    </div>
+    <div class="col-12 mt-3">
+      <div class="table-responsive">
+        <table class="table table-border">
+          <thead class="bg-primary text-white">
+            <tr>
+              <th>#</th>
+              <th>Serie</th>
+              <th>Correlativo Actual</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(serie,index) in series" :key="serie.id">
+              <td>{{ index+1}}</td>
+              <td>{{ serie.ser_serie}}</td>
+              <td>{{ serie.ser_corre}}</td>
+              <td>
+                <router-link :to="{name:'editarSerie', params: { id: serie.id }}" class="btn btn-info" custom v-slot="{ navigate }">
+                  <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
+                </router-link>
+                <a type="button" @click="borrarSerie(serie.id)" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</template>
+<script>
+export default{
+  name:"series",
+  data(){
+    return{
+      series:[]
+    }
+  },
+  mounted(){
+    this.mostrarSeries()
+  },
+  methods: {
+    async mostrarSeries(){
+      await this.axios.get('api/serie')
+        .then(response=>{
+          this.series = response.data
+        })
+        .catch(error=>{
+          this.series = []
+        })
+    },
+    borrarSerie(id){
+      Swal.fire({
+        title:'¿Confirma eliminar el registro?',
+        confirmButtonText:'Confirmar',
+        showCancelButton: true
+      }).then((result)=>{
+        if(result.isConfirmed){
+          this.axios.delete(`/api/serie/${id}`).then(response=>{this.mostrarSeries()}).catch(error=>{console.log(error)});
+          Swal.fire('Eliminado','','success')
+        }else if(result.isDenied){}
+      });
+    }
+  },
+}
+</script>

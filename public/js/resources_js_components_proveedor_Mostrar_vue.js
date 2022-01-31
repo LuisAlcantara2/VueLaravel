@@ -1112,9 +1112,9 @@ var render = function () {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.proveedores, function (proveedor) {
+              _vm._l(_vm.proveedores, function (proveedor, index) {
                 return _c("tr", { key: proveedor.id }, [
-                  _c("td", [_vm._v(_vm._s(proveedor.id))]),
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(proveedor.pvd_nombre))]),
                   _vm._v(" "),

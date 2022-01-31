@@ -82,13 +82,13 @@
                   <div class="col-3 mb-2">
                     <div class="form-group">
                       <label>Precio </label>
-                      <input type="text" class="form-control" v-model="producto.pro_precioventa">
+                      <input type="number" class="form-control" v-model="producto.pro_precioventa">
                     </div>
                   </div>
                   <div class="col-3 mb-2">
                     <div class="form-group">
                       <label>Cantidad</label>
-                      <input type="text" class="form-control" v-model="cantidad">
+                      <input type="number" class="form-control" v-model="cantidad" :max="producto.pro_stockactual" >
                     </div>
                   </div>
                   <div class="col-3 mt-4">
@@ -134,7 +134,7 @@
                   <div class="col-3">
                     <div class="form-group">
                       <label>Total</label>
-                      <input class="text-end" type="text" v-model="venta.ven_total">
+                      <input readonly class="text-end" type="text" v-model="venta.ven_total">
                     </div>
                   </div>
                   <div class="col-2"></div>
@@ -308,7 +308,7 @@ export default{
         { key: 'Subtotal', label: 'Subtotal', sortable: false, tdClass: 'text-end'},
         { key: 'actions', label: 'Acciones', tdClass: 'text-center', thClass: 'text-center', sortable: false },
       ],
-      cantidad:"0",
+      cantidad:1,
       isModalProductoVisible: false,
       productoModal:{
         pro_nombre:"",
@@ -424,9 +424,32 @@ export default{
         })
     },
     agregarDetalle(){
-      this.venta.detalle.push(({id:this.producto.id,Producto: this.producto.pro_nombre,Precio:this.producto.pro_precioventa,Cantidad:this.cantidad,Subtotal:this.producto.pro_precioventa*this.cantidad}))
-      this.venta.ven_total += this.producto.pro_precioventa*this.cantidad
-      this.cantidad=0
+      if(this.cantidad<=0)
+      {
+        Swal.fire('Error en la cantidad','','error')
+      }
+      else if(this.producto.pro_precioventa<=0){
+        Swal.fire('Error en el precio','','error')
+      }
+      else{
+        var band=0
+        console.log('llega',this.venta.detalle)
+        this.venta.detalle.forEach(element => {
+          if(element.Producto==this.producto.pro_nombre){
+            band=1
+            console.log(element)
+          }
+        });       
+        if(band==0)
+        {
+          this.venta.detalle.push(({id:this.producto.id,Producto: this.producto.pro_nombre,Precio:this.producto.pro_precioventa,Cantidad:this.cantidad,Subtotal:this.producto.pro_precioventa*this.cantidad,stock:this.producto.pro_stockactual}))
+          this.venta.ven_total += this.producto.pro_precioventa*this.cantidad
+          this.cantidad=1
+        } 
+        else{
+          Swal.fire('Producto ya agregado','','error')
+        }
+      }
     },
     deleteItem(index){
      this.venta.ven_total -= this.venta.detalle[index].Subtotal

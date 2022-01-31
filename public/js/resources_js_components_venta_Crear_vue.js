@@ -362,7 +362,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         thClass: 'text-center',
         sortable: false
       }],
-      cantidad: "0",
+      cantidad: 1,
       isModalProductoVisible: false,
       productoModal: {
         pro_nombre: "",
@@ -575,15 +575,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     agregarDetalle: function agregarDetalle() {
-      this.venta.detalle.push({
-        id: this.producto.id,
-        Producto: this.producto.pro_nombre,
-        Precio: this.producto.pro_precioventa,
-        Cantidad: this.cantidad,
-        Subtotal: this.producto.pro_precioventa * this.cantidad
-      });
-      this.venta.ven_total += this.producto.pro_precioventa * this.cantidad;
-      this.cantidad = 0;
+      var _this7 = this;
+
+      if (this.cantidad <= 0) {
+        Swal.fire('Error en la cantidad', '', 'error');
+      } else if (this.producto.pro_precioventa <= 0) {
+        Swal.fire('Error en el precio', '', 'error');
+      } else {
+        var band = 0;
+        console.log('llega', this.venta.detalle);
+        this.venta.detalle.forEach(function (element) {
+          if (element.Producto == _this7.producto.pro_nombre) {
+            band = 1;
+            console.log(element);
+          }
+        });
+
+        if (band == 0) {
+          this.venta.detalle.push({
+            id: this.producto.id,
+            Producto: this.producto.pro_nombre,
+            Precio: this.producto.pro_precioventa,
+            Cantidad: this.cantidad,
+            Subtotal: this.producto.pro_precioventa * this.cantidad,
+            stock: this.producto.pro_stockactual
+          });
+          this.venta.ven_total += this.producto.pro_precioventa * this.cantidad;
+          this.cantidad = 1;
+        } else {
+          Swal.fire('Producto ya agregado', '', 'error');
+        }
+      }
     },
     deleteItem: function deleteItem(index) {
       this.venta.ven_total -= this.venta.detalle[index].Subtotal;
@@ -594,59 +616,59 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       id.item.Subtotal = id.item.Precio * id.item.Cantidad;
     },
     seleccionarProducto: function seleccionarProducto() {
-      var _this7 = this;
+      var _this8 = this;
 
       this.axios.get("/api/producto/".concat(this.producto_id)).then(function (response) {
-        _this7.producto = response.data;
+        _this8.producto = response.data;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     seleccionarCliente: function seleccionarCliente() {
-      var _this8 = this;
+      var _this9 = this;
 
       this.axios.get("/api/cliente/".concat(this.cliente_id)).then(function (response) {
-        _this8.cliente = response.data;
-        _this8.venta.cliente_id = _this8.cliente.id;
+        _this9.cliente = response.data;
+        _this9.venta.cliente_id = _this9.cliente.id;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     seleccionarSerie: function seleccionarSerie() {
-      var _this9 = this;
+      var _this10 = this;
 
       this.axios.get("/api/serie/".concat(this.serie_id)).then(function (response) {
-        _this9.serie = response.data;
-        _this9.venta.ven_serie = _this9.serie.ser_serie;
-        _this9.venta.ven_correlativo = _this9.serie.ser_corre;
+        _this10.serie = response.data;
+        _this10.venta.ven_serie = _this10.serie.ser_serie;
+        _this10.venta.ven_correlativo = _this10.serie.ser_corre;
         console.log(response.data);
       })["catch"](function (error) {
         console.log(error);
       });
     },
     showModalProducto: function showModalProducto() {
-      var _this10 = this;
+      var _this11 = this;
 
       this.isModalProductoVisible = true;
       this.axios.get('/api/marca').then(function (response) {
-        _this10.marcas = response.data;
-        _this10.productoModal.marca_id = _this10.marcas[0].id;
+        _this11.marcas = response.data;
+        _this11.productoModal.marca_id = _this11.marcas[0].id;
       })["catch"](function (error) {
-        _this10.marcas = [];
+        _this11.marcas = [];
       });
       this.axios.get('/api/unidad').then(function (response) {
-        _this10.unidades = response.data;
-        _this10.productoModal.unidad_id = _this10.unidades[0].id;
+        _this11.unidades = response.data;
+        _this11.productoModal.unidad_id = _this11.unidades[0].id;
       })["catch"](function (error) {
-        _this10.marcas = [];
+        _this11.marcas = [];
       });
       this.axios.get('/api/categoria').then(function (response) {
-        _this10.categorias = response.data;
-        _this10.productoModal.categoria_id = _this10.categorias[0].id;
+        _this11.categorias = response.data;
+        _this11.productoModal.categoria_id = _this11.categorias[0].id;
       })["catch"](function (error) {
-        _this10.marcas = [];
+        _this11.marcas = [];
       });
     },
     hideModalProducto: function hideModalProducto() {
@@ -660,19 +682,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.productoModal.pro_precioventa = "";
     },
     crearProducto: function crearProducto() {
-      var _this11 = this;
+      var _this12 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                _this11.isModalProducto = true;
+                _this12.isModalProducto = true;
                 _context7.next = 3;
-                return _this11.axios.post('/api/producto', _this11.productoModal).then(function (response) {
-                  _this11.getProductos();
+                return _this12.axios.post('/api/producto', _this12.productoModal).then(function (response) {
+                  _this12.getProductos();
 
-                  _this11.isModalProductoVisible = false;
+                  _this12.isModalProductoVisible = false;
                 })["catch"](function (error) {
                   console.log(error);
                 });
@@ -23242,7 +23264,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: { type: "number" },
                           domProps: { value: _vm.producto.pro_precioventa },
                           on: {
                             input: function ($event) {
@@ -23274,7 +23296,10 @@ var render = function () {
                             },
                           ],
                           staticClass: "form-control",
-                          attrs: { type: "text" },
+                          attrs: {
+                            type: "number",
+                            max: _vm.producto.pro_stockactual,
+                          },
                           domProps: { value: _vm.cantidad },
                           on: {
                             input: function ($event) {
@@ -23425,7 +23450,7 @@ var render = function () {
                             },
                           ],
                           staticClass: "text-end",
-                          attrs: { type: "text" },
+                          attrs: { readonly: "", type: "text" },
                           domProps: { value: _vm.venta.ven_total },
                           on: {
                             input: function ($event) {

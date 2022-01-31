@@ -1117,9 +1117,9 @@ var render = function () {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.productos, function (producto) {
+              _vm._l(_vm.productos, function (producto, index) {
                 return _c("tr", { key: producto.id }, [
-                  _c("td", [_vm._v(_vm._s(producto.id))]),
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(producto.pro_nombre))]),
                   _vm._v(" "),

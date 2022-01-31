@@ -1110,9 +1110,9 @@ var render = function () {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.unidades, function (unidad) {
+              _vm._l(_vm.unidades, function (unidad, index) {
                 return _c("tr", { key: unidad.id }, [
-                  _c("td", [_vm._v(_vm._s(unidad.id))]),
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(unidad.uni_nombre))]),
                   _vm._v(" "),

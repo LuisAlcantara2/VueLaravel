@@ -16,6 +16,7 @@ class Venta extends Model
     
     protected $table="ventas";
     protected $dates = ['deleted_at'];
+    protected $casts = ['ven_total' => 'float'];
 
     protected $fillable = [
         'ven_serie','ven_correlativo','ven_fecha','ven_total','cliente_id',

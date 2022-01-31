@@ -30,8 +30,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="compra in compras" :key="compra.id">
-              <td>{{ compra.id}}</td>
+            <tr v-for="(compra,index) in compras" :key="compra.id">
+              <td>{{ index+1}}</td>
               <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
               <td>{{ compra.pvd_nombre}}</td>
@@ -88,7 +88,14 @@ export default{
       }
     },
     async Reporte(file){
-      axios({
+      if(this.desde==""){
+        Swal.fire('Ingrese fecha inicial','','error')
+      }
+      else if (this.hasta==""){
+        Swal.fire('Ingrese fecha final','','error')
+      }
+      else{
+        axios({
         url: '/api/reporteCompraPdf',
         method: 'GET',
         responseType: 'blob', // important
@@ -105,6 +112,7 @@ export default{
         // link.click();
       });
       window.open("pdf/reporte Compra.pdf");
+      }
     },
     async getrptCompras(){
       await this.axios.get('/api/getrptCompras',{

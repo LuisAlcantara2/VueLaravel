@@ -36,7 +36,10 @@ class SerieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $serie = Serie::create($request->post());
+        return response()->json([
+            'serie'=>$serie
+        ]);
     }
 
     /**
@@ -68,9 +71,12 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Serie $serie)
     {
-        //
+        $serie->fill($request->post())->save();
+        return response()->json([
+            'serie'=>$serie
+        ]);
     }
 
     /**
@@ -79,8 +85,11 @@ class SerieController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Serie $serie)
     {
-        //
+        $serie->delete();
+        return response()->json([
+            'mensaje'=>'Serie eliminada'
+        ]);
     }
 }

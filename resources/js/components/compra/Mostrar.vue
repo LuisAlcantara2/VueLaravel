@@ -19,8 +19,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="compra in compras" :key="compra.id">
-              <td>{{ compra.id}}</td>
+            <tr v-for="(compra,index) in compras" :key="compra.id">
+              <td>{{ index+1}}</td>
               <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
               <td align="right">{{ compra.com_total}}</td>
@@ -49,7 +49,7 @@
 import moment from "moment";
 Vue.filter('formatDate', function(value) {
   if (value) {
-    return moment(String(value)).format('MM/DD/YYYY')
+    return moment(String(value)).format('DD/MM/YYYY')
   }
 })
 export default{

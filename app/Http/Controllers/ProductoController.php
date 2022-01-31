@@ -16,7 +16,8 @@ class ProductoController extends Controller
     {
         $filtro = $request->nombre;
         // $productos = Producto::all();
-        $productos = Producto::where('pro_nombre','LIKE','%'.$filtro.'%')->get();
+        $productos = Producto::where('pro_nombre','LIKE','%'.$filtro.'%')
+        ->orderBy('pro_stockactual','asc')->get();
         return response()->json($productos);
     }
 

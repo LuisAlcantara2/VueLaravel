@@ -29,8 +29,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="unidad in unidades" :key="unidad.id">
-              <td>{{ unidad.id}}</td>
+            <tr v-for="(unidad,index) in unidades" :key="unidad.id">
+              <td>{{ index+1}}</td>
               <td>{{ unidad.uni_nombre}}</td>
               <td>
                 <router-link :to="{name:'editarUnidad', params:{id: unidad.id}}" class="btn btn-info" custom v-slot="{ navigate }">

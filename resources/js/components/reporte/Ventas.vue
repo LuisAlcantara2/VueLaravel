@@ -30,8 +30,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="venta in ventas" :key="venta.id">
-              <td>{{ venta.id}}</td>
+            <tr v-for="(venta,index) in ventas" :key="venta.id">
+              <td>{{ index+1}}</td>
               <td>{{ venta.ven_fecha | formatDate}}</td>
               <td>{{ venta.ven_serie}} - {{ venta.ven_correlativo}}</td>
               <td>{{ venta.cli_nombre}}</td>
@@ -89,8 +89,14 @@ export default{
       }
     },
     async Reporte(file){
-      console.log('ad')
-      axios({
+      if(this.desde==""){
+        Swal.fire('Ingrese fecha inicial','','error')
+      }
+      else if (this.hasta==""){
+        Swal.fire('Ingrese fecha final','','error')
+      }
+      else{
+        axios({
         url: '/api/reporteVentaPdf',
         method: 'GET',
         responseType: 'blob', // important
@@ -107,6 +113,7 @@ export default{
         // link.click();
       });
       window.open("pdf/reporte Venta.pdf");
+      }
     },
     async getrptVentas(){
       await this.axios.get('/api/getrptVentas',{

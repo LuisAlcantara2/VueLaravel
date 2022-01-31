@@ -408,7 +408,7 @@ export default{
         })
     },
     agregarDetalle(){
-      this.compra.detalle.push(({id:this.producto.id,Producto: this.producto.pro_nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad}))
+      this.compra.detalle.push(({id:this.producto.id,Producto: this.producto.pro_nombre,Precio:this.producto.pro_preciocompra,Cantidad:this.cantidad,Subtotal:this.producto.pro_preciocompra*this.cantidad,stock:this.producto.pro_stockactual}))
       this.compra.com_total += this.producto.pro_preciocompra*this.cantidad
       this.cantidad=0
     },

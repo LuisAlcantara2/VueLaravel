@@ -82,7 +82,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 Vue.filter('formatDate', function (value) {
   if (value) {
-    return moment__WEBPACK_IMPORTED_MODULE_1___default()(String(value)).format('MM/DD/YYYY');
+    return moment__WEBPACK_IMPORTED_MODULE_1___default()(String(value)).format('DD/MM/YYYY');
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -22506,9 +22506,9 @@ var render = function () {
             _c(
               "tbody",
               [
-                _vm._l(_vm.compras, function (compra) {
+                _vm._l(_vm.compras, function (compra, index) {
                   return _c("tr", { key: compra.id }, [
-                    _c("td", [_vm._v(_vm._s(compra.id))]),
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(_vm._s(_vm._f("formatDate")(compra.com_fecha))),

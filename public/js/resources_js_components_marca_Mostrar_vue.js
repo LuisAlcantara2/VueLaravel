@@ -1107,9 +1107,9 @@ var render = function () {
             _vm._v(" "),
             _c(
               "tbody",
-              _vm._l(_vm.marcas, function (marca) {
+              _vm._l(_vm.marcas, function (marca, index) {
                 return _c("tr", { key: marca.id }, [
-                  _c("td", [_vm._v(_vm._s(marca.id))]),
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(marca.mar_nombre))]),
                   _vm._v(" "),

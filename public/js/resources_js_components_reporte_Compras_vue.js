@@ -124,25 +124,31 @@ Vue.filter('formatDate', function (value) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                axios({
-                  url: '/api/reporteCompraPdf',
-                  method: 'GET',
-                  responseType: 'blob',
-                  // important
-                  params: {
-                    desde: _this.desde,
-                    hasta: _this.hasta
-                  }
-                }).then(function (response) {
-                  var url = window.URL.createObjectURL(new Blob([response.data]));
-                  var link = document.createElement('a');
-                  link.href = url;
-                  link.setAttribute('download', 'file.pdf');
-                  document.body.appendChild(link); // link.click();
-                });
-                window.open("pdf/reporte Compra.pdf");
+                if (_this.desde == "") {
+                  Swal.fire('Ingrese fecha inicial', '', 'error');
+                } else if (_this.hasta == "") {
+                  Swal.fire('Ingrese fecha final', '', 'error');
+                } else {
+                  axios({
+                    url: '/api/reporteCompraPdf',
+                    method: 'GET',
+                    responseType: 'blob',
+                    // important
+                    params: {
+                      desde: _this.desde,
+                      hasta: _this.hasta
+                    }
+                  }).then(function (response) {
+                    var url = window.URL.createObjectURL(new Blob([response.data]));
+                    var link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', 'file.pdf');
+                    document.body.appendChild(link); // link.click();
+                  });
+                  window.open("pdf/reporte Compra.pdf");
+                }
 
-              case 2:
+              case 1:
               case "end":
                 return _context.stop();
             }
@@ -22559,9 +22565,9 @@ var render = function () {
             _c(
               "tbody",
               [
-                _vm._l(_vm.compras, function (compra) {
+                _vm._l(_vm.compras, function (compra, index) {
                   return _c("tr", { key: compra.id }, [
-                    _c("td", [_vm._v(_vm._s(compra.id))]),
+                    _c("td", [_vm._v(_vm._s(index + 1))]),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(_vm._s(_vm._f("formatDate")(compra.com_fecha))),

@@ -29,8 +29,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="marca in marcas" :key="marca.id">
-              <td>{{ marca.id}}</td>
+            <tr v-for="(marca,index) in marcas" :key="marca.id">
+              <td>{{ index+1}}</td>
               <td>{{ marca.mar_nombre}}</td>
               <td>
                 <router-link :to="{name:'editarMarca', params: { id: marca.id }}" class="btn btn-info" custom v-slot="{ navigate }">

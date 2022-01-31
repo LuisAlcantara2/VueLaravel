@@ -22,7 +22,7 @@ class VentaController extends Controller
      */
     public function index()
     {
-        $ventas = Venta::all();
+        $ventas = Venta::orderBy('ven_fecha','desc')->get();
         return response()->json($ventas);
     }
 
@@ -50,10 +50,11 @@ class VentaController extends Controller
             $serie = Serie::find($ser_id->id);
             $serie->ser_corre = $request->ven_correlativo+1;
             $serie->save();
+            $ser_det = $request->ven_serie."-".$request->ven_correlativo;
             $request->all();
             $venta = Venta::create($request->post());
             foreach($request->detalle as $item){
-                $this->guardarVentaDetalle($item,$venta->id);
+                $this->guardarVentaDetalle($item,$venta->id,$ser_det);
             }
             DB::commit();
             return response()->json([
@@ -71,18 +72,21 @@ class VentaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    protected function guardarVentaDetalle($item, $id){
+    protected function guardarVentaDetalle($item, $id,$ser_det){
         $detalle = DetalleVenta::create([
             'dvt_cantidad' => $item['Cantidad'],
             'dvt_precio' => $item['Precio'],
             'venta_id' => $id,
             'producto_id' => $item['id'],
+            'stock' => $item['stock'],
         ]);
         $fechaact = Carbon::now();
         $kardex = Kardex::create([
             'krd_fecha' => $fechaact,
             'krd_tipo' => 0,
+            'krd_serie' => $ser_det,
             'krd_cantidad' => -$item['Cantidad'],
+            'krd_stockant' => $item['stock'],
             'producto_id' => $item['id'],
         ]);
 
@@ -90,7 +94,14 @@ class VentaController extends Controller
     }
     public function show(Venta $venta)
     {
-        return response()->json($venta);
+        $detalle = DetalleVenta::select('productos.id as id','productos.pro_nombre as Producto','detalleventas.dvt_precio as Precio','detalleventas.dvt_cantidad as Cantidad',DB::raw('detalleventas.dvt_cantidad * detalleventas.dvt_precio as Subtotal'))
+        ->join('productos', 'productos.id', '=', 'detalleventas.producto_id')
+        ->where('detalleventas.venta_id','=',$venta->id)->get();
+        return response()->json([
+            'venta'=>$venta,
+            'detalle'=>$detalle,
+        ]);
+
     }
 
     /**

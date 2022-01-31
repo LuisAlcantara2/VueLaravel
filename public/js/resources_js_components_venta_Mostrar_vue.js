@@ -132,22 +132,14 @@ Vue.filter('formatDate', function (value) {
       }).then(function (result) {
         if (result.isConfirmed) {
           _this2.axios["delete"]("/api/venta/".concat(id)).then(function (response) {
+            Swal.fire('Eliminado', '', 'success');
+
             _this2.mostrarVentas();
           })["catch"](function (error) {
             console.log(error);
           });
-
-          Swal.fire('Eliminado', '', 'success');
         } else if (result.isDenied) {}
-      }); // if (confirm("¿Confirma eliminar el registro?")){
-      //   this.axios.delete(`/api/venta/${id}`)
-      //   .then(response=>{
-      //     this.mostrarVentas()
-      //   })
-      //   .catch(error=>{
-      //     console.log(error)
-      //   })
-      // }
+      });
     },
     sumPrecios: function sumPrecios() {
       var _this3 = this;
@@ -22505,9 +22497,9 @@ var render = function () {
           _c(
             "tbody",
             [
-              _vm._l(_vm.ventas, function (venta) {
+              _vm._l(_vm.ventas, function (venta, index) {
                 return _c("tr", { key: venta.id }, [
-                  _c("td", [_vm._v(_vm._s(venta.id))]),
+                  _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
                   _c("td", [
                     _vm._v(_vm._s(_vm._f("formatDate")(venta.ven_fecha))),
@@ -22522,7 +22514,7 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("td", { attrs: { align: "right" } }, [
-                    _vm._v(_vm._s(venta.ven_total)),
+                    _vm._v(_vm._s(venta.ven_total.toFixed(2))),
                   ]),
                   _vm._v(" "),
                   _c(

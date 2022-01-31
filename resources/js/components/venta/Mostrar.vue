@@ -18,12 +18,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="venta in ventas" :key="venta.id">
-              <td>{{ venta.id }}</td>              
+            <tr v-for="(venta,index) in ventas" :key="venta.id">
+              <td>{{ index+1}}</td>           
               <td>{{ venta.ven_fecha | formatDate}}</td>
               <!-- format("YYYY-MM-DD"), -->
               <td>{{ venta.ven_serie}} - {{ venta.ven_correlativo}}</td>
-              <td align="right">{{ venta.ven_total}}</td>
+              <td align="right">{{ venta.ven_total.toFixed(2)}}</td>
               <td>
                 <router-link :to="{name:'editarVenta', params: { id: venta.id }}" class="btn btn-info" custom v-slot="{ navigate }">
                   <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> Editar</span>
@@ -81,19 +81,15 @@ export default{
         showCancelButton: true
       }).then((result)=>{
         if(result.isConfirmed){
-          this.axios.delete(`/api/venta/${id}`).then(response=>{this.mostrarVentas()}).catch(error=>{console.log(error)});
-          Swal.fire('Eliminado','','success')
+          this.axios.delete(`/api/venta/${id}`)
+          .then(response=>{
+            Swal.fire('Eliminado','','success')
+            this.mostrarVentas()
+          }).catch(error=>{
+            console.log(error)
+          });
         }else if(result.isDenied){}
       });
-      // if (confirm("¿Confirma eliminar el registro?")){
-      //   this.axios.delete(`/api/venta/${id}`)
-      //   .then(response=>{
-      //     this.mostrarVentas()
-      //   })
-      //   .catch(error=>{
-      //     console.log(error)
-      //   })
-      // }
     },
     sumPrecios() {
       this.ventas.forEach(element => {

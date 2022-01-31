@@ -31,8 +31,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="producto in productos" :key="producto.id">
-              <td>{{ producto.id}}</td>
+            <tr v-for="(producto,index) in productos" :key="producto.id">
+              <td>{{ index+1}}</td>
               <td>{{ producto.pro_nombre}}</td>
               <td >{{ producto.pro_precioventa}}</td>
               <td v-bind:class = "(producto.pro_stockactual<=producto.pro_stockmin)?'bg-danger text-white':''"><strong> {{ producto.pro_stockactual}}</strong></td>

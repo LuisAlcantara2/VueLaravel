@@ -97,9 +97,9 @@ export default Vue.extend({
           name: 'Configuracion',
           children: [
             {
-              name: 'Empresa',
+              name: 'Serie',
               href: {
-                name: 'mostrarEmpresa'
+                name: 'mostrarSerie'
               },
             }
           ]
@@ -109,7 +109,6 @@ export default Vue.extend({
   },
   methods: {
     onSidebarChanged () {
-      console.log('ads')
     }
   }
 })

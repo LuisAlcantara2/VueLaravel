@@ -24,6 +24,10 @@ const EmpresaMostrar = ()=> import('./components/empresa/Mostrar.vue')
 const EmpresaCrear = ()=> import('./components/empresa/Crear.vue')
 const EmpresaEditar = ()=> import('./components/empresa/Editar.vue')
 
+const SerieMostrar = ()=> import('./components/serie/Mostrar.vue')
+const SerieCrear = ()=> import('./components/serie/Crear.vue')
+const SerieEditar = ()=> import('./components/serie/Editar.vue')
+
 const ProductoMostrar = ()=> import('./components/producto/Mostrar.vue')
 const ProductoCrear = ()=> import('./components/producto/Crear.vue')
 const ProductoEditar = ()=> import('./components/producto/Editar.vue')
@@ -123,19 +127,19 @@ export const routes =[
         component:ProveedorEditar
     },
     {
-        name :'mostrarEmpresa',
-        path: '/empresas',
-        component:EmpresaMostrar
+        name :'mostrarSerie',
+        path: '/series',
+        component:SerieMostrar
     },
     {
-        name :'crearEmpresa',
-        path: '/crearEmpresa',
-        component:EmpresaCrear
+        name :'crearSerie',
+        path: '/crearSerie',
+        component:SerieCrear
     },
     {
-        name :'editarEmpresa',
-        path: '/editarEmpresa/:id',
-        component:EmpresaEditar
+        name :'editarSerie',
+        path: '/editarSerie/:id',
+        component:SerieEditar
     },
     {
         name :'mostrarProducto',

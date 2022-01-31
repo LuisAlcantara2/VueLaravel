@@ -17,7 +17,9 @@ class CreateKardexTable extends Migration
             $table->id();
             $table->date('krd_fecha');
             $table->integer('krd_tipo');
+            $table->string('krd_serie');
             $table->decimal('krd_cantidad');
+            $table->decimal('krd_stockant')->nullable();
             // $table->decimal('krd_anterior')->nullable();
             // $table->decimal('krd_actual');
             $table->unsignedBigInteger('producto_id');

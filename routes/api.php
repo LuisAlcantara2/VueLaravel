@@ -43,7 +43,8 @@ Route::resource('producto',App\Http\Controllers\ProductoController::class)->only
 Route::resource('compra',App\Http\Controllers\CompraController::class)->only([
     'index','store','update','show','destroy'
 ]);
-Route::resource('venta',App\Http\Controllers\VentaController::class)->only([
+Route::resource('venta',App\Http\Controllers\VentaController::class,
+    ['parameters' => 'singular'])->parameters(['venta' => 'venta','ventum' => 'venta'])->only([
     'index','store','update','show','destroy'
 ]);
 Route::resource('serie',App\Http\Controllers\SerieController::class)->only([
