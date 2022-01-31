@@ -35,7 +35,7 @@
               <td>{{ compra.com_fecha | formatDate}}</td>
               <td>{{ compra.com_serie}} - {{ compra.com_correlativo}}</td>
               <td>{{ compra.pvd_nombre}}</td>
-              <td align="right">{{ compra.com_total}}</td>
+              <td align="right">{{ compra.com_total.toFixed(2)}}</td>
             </tr>
             <tr>
               <td></td>

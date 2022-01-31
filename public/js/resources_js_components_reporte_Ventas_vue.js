@@ -22585,7 +22585,7 @@ var render = function () {
                     _c("td", [_vm._v(_vm._s(venta.cli_nombre))]),
                     _vm._v(" "),
                     _c("td", { attrs: { align: "right" } }, [
-                      _vm._v(_vm._s(venta.ven_total)),
+                      _vm._v(_vm._s(venta.ven_total.toFixed(2))),
                     ]),
                   ])
                 }),

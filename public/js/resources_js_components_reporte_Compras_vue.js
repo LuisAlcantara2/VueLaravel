@@ -22584,7 +22584,7 @@ var render = function () {
                     _c("td", [_vm._v(_vm._s(compra.pvd_nombre))]),
                     _vm._v(" "),
                     _c("td", { attrs: { align: "right" } }, [
-                      _vm._v(_vm._s(compra.com_total)),
+                      _vm._v(_vm._s(compra.com_total.toFixed(2))),
                     ]),
                   ])
                 }),

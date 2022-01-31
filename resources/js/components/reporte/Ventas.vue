@@ -35,7 +35,7 @@
               <td>{{ venta.ven_fecha | formatDate}}</td>
               <td>{{ venta.ven_serie}} - {{ venta.ven_correlativo}}</td>
               <td>{{ venta.cli_nombre}}</td>
-              <td align="right">{{ venta.ven_total}}</td>
+              <td align="right">{{ venta.ven_total.toFixed(2)}}</td>
             </tr>
             <tr>
               <td></td>

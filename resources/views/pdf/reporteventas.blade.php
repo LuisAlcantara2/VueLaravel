@@ -17,17 +17,18 @@
 @foreach ($venta as $item)
         <tr>
             <td scope="row" style="text-align:center">  
-                {{$item->ven_serie}}
+                {{$item->ven_serie}}-{{$item->ven_correlativo}}
             </td>
             <td style="text-align:center">
-                {{$item->ven_fecha}}
+                {{-- {{$item->ven_fecha}} --}}
+                {{ \Carbon\Carbon::parse($item->ven_fecha)->format('d/m/Y')}}
             </td>
 
             <td style="text-align:left">
                 {{$item->cli_nombre}}
             </td>
             <td style="text-align:right">
-                {{$item->ven_total}}
+                {{number_format($item->ven_total,2)}}
             </td>
         </tr>
     @endforeach
