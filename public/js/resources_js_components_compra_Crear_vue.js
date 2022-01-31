@@ -540,7 +540,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     agregarDetalle: function agregarDetalle() {
       this.compra.detalle.push({
         id: this.producto.id,
-        Producto: this.producto.pro_nombre,
+        Producto: this.producto.nombre,
         Precio: this.producto.pro_preciocompra,
         Cantidad: this.cantidad,
         Subtotal: this.producto.pro_preciocompra * this.cantidad,
@@ -23168,7 +23168,7 @@ var render = function () {
                             attrs: {
                               options: _vm.productos,
                               "value-field": "id",
-                              "text-field": "pro_nombre",
+                              "text-field": "nombre",
                             },
                             on: { change: _vm.seleccionarProducto },
                             model: {

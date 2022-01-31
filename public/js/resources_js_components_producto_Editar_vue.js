@@ -110,10 +110,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "editar-producto",
   data: function data() {
     return {
+      errors: [],
       producto: {
         pro_nombre: "",
         pro_stockactual: "",
@@ -145,7 +152,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                if (!(_this.producto.pro_nombre && _this.producto.pro_stockactual && _this.producto.pro_stockmin && _this.producto.pro_precioventa && _this.producto.pro_preciocompra)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 3;
                 return _this.axios.put("/api/producto/".concat(_this.$route.params.id), _this.producto).then(function (response) {
                   _this.$router.push({
                     name: "mostrarProducto"
@@ -156,7 +168,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 2:
+              case 3:
+                _this.errors = [];
+
+                if (!_this.producto.pro_nombre) {
+                  _this.errors.push('El nombre es obligatorio.');
+                }
+
+                if (!_this.producto.pro_stockactual) {
+                  _this.errors.push('El stock actual es obligatorio.');
+                }
+
+                if (!_this.producto.pro_stockmin) {
+                  _this.errors.push('El stock mínimo es obligatorio.');
+                }
+
+                if (!_this.producto.pro_precioventa) {
+                  _this.errors.push('El precio venta es obligatorio.');
+                }
+
+                if (!_this.producto.pro_preciocompra) {
+                  _this.errors.push('El precio compra es obligatorio.');
+                }
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -1091,6 +1126,28 @@ var render = function () {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
+            _vm.errors.length
+              ? _c("p", [
+                  _c("b", [
+                    _vm._v(
+                      "Por favor, corrija el(los) siguiente(s) error(es):"
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    _vm._l(_vm.errors, function (error) {
+                      return _c(
+                        "li",
+                        { key: error, staticClass: "text-danger" },
+                        [_vm._v(_vm._s(error))]
+                      )
+                    }),
+                    0
+                  ),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "form",
               {

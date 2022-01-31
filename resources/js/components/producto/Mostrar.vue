@@ -9,13 +9,13 @@
     </div>
     <div class="col-auto">
       <button class="btn btn-primary" @click="mostrarProductos"><i class="fas fa-search"></i> Filtrar</button>
-      <button v-if="nombre.length>0" class="btn btn-warning" @click.prevent="Reset"><i class="fas fa-ban"></i> Limpiar</button>
+      <button v-if="nombre.length>0" class="btn btn-warning" @click.prevent="Reset"><i class="fas fa-ban"></i><span class="d-none d-lg-inline-block"> Limpiar</span> </button>
     </div>
   </div>
   <div class="row">
     <div>
       <router-link to="/crearProducto" class="btn btn-success" custom v-slot="{ navigate }">
-        <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  Nuevo</span>
+        <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-plus-circle"></i>  <span class="d-none d-sm-inline-block">Nuevo</span></span>
       </router-link>
     </div>
     <div class="col-12 mt-3">
@@ -33,17 +33,19 @@
           <tbody>
             <tr v-for="(producto,index) in productos" :key="producto.id">
               <td>{{ index+1}}</td>
-              <td>{{ producto.pro_nombre}}</td>
+              <td v-if="producto.mar_nombre=='Ninguno'">{{ producto.pro_nombre}}</td>
+              <td v-else>{{ producto.pro_nombre}} {{ producto.mar_nombre}}</td>
+              <!-- <td>{{ producto.pro_nombre}} {{}}</td> -->
               <td >{{ producto.pro_precioventa}}</td>
               <td v-bind:class = "(producto.pro_stockactual<=producto.pro_stockmin)?'bg-danger text-white':''"><strong> {{ producto.pro_stockactual}}</strong></td>
               <td>
                 <router-link :to="{ name: 'editarProducto', params: { id: producto.id }}" class="btn btn-info" custom v-slot="{ navigate }">
-                  <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i>Editar</span>
+                  <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-edit"></i> <span class="d-none d-lg-inline-block"> Editar</span></span>
                 </router-link>
                 <router-link :to="{ name: 'movimientoProducto', params: { id: producto.id }}" class="btn btn-warning" custom v-slot="{ navigate }">
-                  <span @click="navigate" @keypress.enter="navigate" role="link"><i class="fas fa-eye"></i> Movimientos</span>
+                  <span @click="navigate" @keypress.enter="navigate" role="link"> <i class="fas fa-eye"></i> <span class="d-none d-lg-inline-block"> Movimientos</span></span>
                 </router-link>
-                <a type="button" @click="borrarProducto(producto.id)" class="btn btn-danger"><i class="fas fa-trash"></i> Eliminar </a>
+                <a type="button" @click="borrarProducto(producto.id)" class="btn btn-danger"><i class="fas fa-trash"></i> <span class="d-none d-lg-inline-block"> Eliminar</span></a>
               </td>
             </tr>
           </tbody>

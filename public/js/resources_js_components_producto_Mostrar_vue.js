@@ -85,6 +85,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "productos",
   data: function data() {
@@ -1054,7 +1056,12 @@ var render = function () {
                   },
                 },
               },
-              [_c("i", { staticClass: "fas fa-ban" }), _vm._v(" Limpiar")]
+              [
+                _c("i", { staticClass: "fas fa-ban" }),
+                _c("span", { staticClass: "d-none d-lg-inline-block" }, [
+                  _vm._v(" Limpiar"),
+                ]),
+              ]
             )
           : _vm._e(),
       ]),
@@ -1098,7 +1105,12 @@ var render = function () {
                       },
                       [
                         _c("i", { staticClass: "fas fa-plus-circle" }),
-                        _vm._v("  Nuevo"),
+                        _vm._v(" "),
+                        _c(
+                          "span",
+                          { staticClass: "d-none d-sm-inline-block" },
+                          [_vm._v("Nuevo")]
+                        ),
                       ]
                     ),
                   ]
@@ -1121,7 +1133,15 @@ var render = function () {
                 return _c("tr", { key: producto.id }, [
                   _c("td", [_vm._v(_vm._s(index + 1))]),
                   _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(producto.pro_nombre))]),
+                  producto.mar_nombre == "Ninguno"
+                    ? _c("td", [_vm._v(_vm._s(producto.pro_nombre))])
+                    : _c("td", [
+                        _vm._v(
+                          _vm._s(producto.pro_nombre) +
+                            " " +
+                            _vm._s(producto.mar_nombre)
+                        ),
+                      ]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(producto.pro_precioventa))]),
                   _vm._v(" "),
@@ -1184,7 +1204,15 @@ var render = function () {
                                     },
                                     [
                                       _c("i", { staticClass: "fas fa-edit" }),
-                                      _vm._v("Editar"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "d-none d-lg-inline-block",
+                                        },
+                                        [_vm._v(" Editar")]
+                                      ),
                                     ]
                                   ),
                                 ]
@@ -1237,7 +1265,15 @@ var render = function () {
                                     },
                                     [
                                       _c("i", { staticClass: "fas fa-eye" }),
-                                      _vm._v(" Movimientos"),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "d-none d-lg-inline-block",
+                                        },
+                                        [_vm._v(" Movimientos")]
+                                      ),
                                     ]
                                   ),
                                 ]
@@ -1262,7 +1298,12 @@ var render = function () {
                         },
                         [
                           _c("i", { staticClass: "fas fa-trash" }),
-                          _vm._v(" Eliminar "),
+                          _vm._v(" "),
+                          _c(
+                            "span",
+                            { staticClass: "d-none d-lg-inline-block" },
+                            [_vm._v(" Eliminar")]
+                          ),
                         ]
                       ),
                     ],

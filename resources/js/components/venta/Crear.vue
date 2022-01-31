@@ -71,7 +71,7 @@
                         :options="productos"
                         class="form-control"
                         value-field="id"
-                        text-field="pro_nombre"
+                        text-field="nombre"
                         @change="seleccionarProducto"
                       ></b-form-select>
                       <!-- <select v-model="productoSel" class="form-control" id="producto">
@@ -442,7 +442,7 @@ export default{
         });       
         if(band==0)
         {
-          this.venta.detalle.push(({id:this.producto.id,Producto: this.producto.pro_nombre,Precio:this.producto.pro_precioventa,Cantidad:this.cantidad,Subtotal:this.producto.pro_precioventa*this.cantidad,stock:this.producto.pro_stockactual}))
+          this.venta.detalle.push(({id:this.producto.id,Producto: this.producto.nombre,Precio:this.producto.pro_precioventa,Cantidad:this.cantidad,Subtotal:this.producto.pro_precioventa*this.cantidad,stock:this.producto.pro_stockactual}))
           this.venta.ven_total += this.producto.pro_precioventa*this.cantidad
           this.cantidad=1
         } 

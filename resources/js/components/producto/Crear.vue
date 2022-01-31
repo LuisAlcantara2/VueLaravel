@@ -7,6 +7,12 @@
               <h4>Crear Producto</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="crear">
                 <div class="row">
                   <div class="col-12 mb-2">
@@ -18,25 +24,25 @@
                   <div class="col-6 mb-2">
                     <div class="form-group">
                       <label>Stock actual</label>
-                      <input type="text" class="form-control" v-model="producto.pro_stockactual">
+                      <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_stockactual">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
                       <label>Stock mínimo</label>
-                      <input type="text" class="form-control" v-model="producto.pro_stockmin">
+                      <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_stockmin">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
                       <label>Precio Venta</label>
-                      <input type="text" class="form-control" v-model="producto.pro_precioventa">
+                      <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_precioventa">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
                     <div class="form-group">
                       <label>Precio Compra</label>
-                      <input type="text" class="form-control" v-model="producto.pro_preciocompra">
+                      <input type="text" class="form-control" @keypress="isNumber($event)" v-model="producto.pro_preciocompra">
                     </div>
                   </div>
                   <div class="col-6 mb-2">
@@ -87,7 +93,13 @@
         @show="resetModalUnidad"
         @hidden="resetModalUnidad"
         >
-        <form @submit.prevent="crear">
+        <form @submit.prevent="crearUnidad">
+          <p v-if="errorsunidad.length">
+            <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+            <ul>
+              <li v-for="error in errorsunidad" :key="error" class="text-danger">{{ error }}</li>
+            </ul>
+          </p>
           <div class="row">
             <div class="col-12 mb-2">
               <div class="form-group">
@@ -96,7 +108,7 @@
               </div>
             </div>
             <div class="col-12">
-              <button type="button" class="btn btn-primary" @click="crearUnidad">Guardar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
               <button type="button" class="btn btn-secondary" @click="hideUnidad">Cerrar</button>
             </div>
           </div>
@@ -113,7 +125,13 @@
         @show="resetModalCategoria"
         @hidden="resetModalCategoria"
       >
-      <form @submit.prevent="crear">
+      <form @submit.prevent="crearCategoria">
+        <p v-if="errorscategoria.length">
+          <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+          <ul>
+            <li v-for="error in errorscategoria" :key="error" class="text-danger">{{ error }}</li>
+          </ul>
+        </p>
         <div class="row">
           <div class="col-12 mb-2">
             <div class="form-group">
@@ -122,7 +140,7 @@
             </div>
           </div>
           <div class="col-12">
-            <button type="button" class="btn btn-primary" @click="crearCategoria">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
               <button type="button" class="btn btn-secondary" @click="hideCategoria">Cerrar</button>
           </div>
         </div>
@@ -138,7 +156,13 @@
         @show="resetModalMarca"
         @hidden="resetModalMarca"
       >
-      <form @submit.prevent="crear">
+      <form @submit.prevent="crearMarca">
+        <p v-if="errorsmarca.length">
+          <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+          <ul>
+            <li v-for="error in errorsmarca" :key="error" class="text-danger">{{ error }}</li>
+          </ul>
+        </p>
         <div class="row">
           <div class="col-12 mb-2">
             <div class="form-group">
@@ -147,7 +171,7 @@
             </div>
           </div>
           <div class="col-12">
-            <button type="button" class="btn btn-primary" @click="crearMarca">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
               <button type="button" class="btn btn-secondary" @click="hideMarca">Cerrar</button>
           </div>
         </div>
@@ -166,6 +190,10 @@ export default{
     },
   data(){
     return {
+      errors: [],
+      errorsunidad:[],
+      errorscategoria:[],
+      errorsmarca:[],
       producto:{
         pro_nombre:"",
         pro_stockactual:"",
@@ -201,8 +229,8 @@ export default{
   },
   methods:{
     async crear(){
-      console.log(this.producto)
-      await this.axios.post('/api/producto',this.producto)
+      if (this.producto.pro_nombre && this.producto.pro_stockactual && this.producto.pro_stockmin && this.producto.pro_precioventa && this.producto.pro_preciocompra) {
+        await this.axios.post('/api/producto',this.producto)
         .then(response => {
           this.$router.push({name:"mostrarProducto"})
           Swal.fire('Registrado Correctamente','','success')
@@ -210,6 +238,23 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+      }
+      this.errors = [];
+      if (!this.producto.pro_nombre) {
+        this.errors.push('El nombre es obligatorio.');
+      }
+      if (!this.producto.pro_stockactual) {
+        this.errors.push('El stock actual es obligatorio.');
+      }
+      if (!this.producto.pro_stockmin) {
+        this.errors.push('El stock mínimo es obligatorio.');
+      }
+      if (!this.producto.pro_precioventa) {
+        this.errors.push('El precio venta es obligatorio.');
+      }
+      if (!this.producto.pro_preciocompra) {
+        this.errors.push('El precio compra es obligatorio.');
+      }
     },
     async getdata(){
       await this.axios.get('/api/marca')
@@ -259,7 +304,8 @@ export default{
         this.unidad.uni_nombre=""
     },
     async crearUnidad(){
-      this.isModalUnidad = true
+      if(this.unidad.uni_nombre){
+        this.isModalUnidad = true
       await this.axios.post('/api/unidad',this.unidad)
         .then(response => {
             this.getdata()
@@ -268,6 +314,11 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+      }
+      this.errorsunidad = [];
+      if (!this.unidad.uni_nombre) {
+        this.errorsunidad.push('El nombre es obligatorio.');
+      }
     },
     showModalCategoria() {
       this.isModalCategoriaVisible=true
@@ -279,7 +330,8 @@ export default{
         this.categoria.cat_nombre=""
     },
     async crearCategoria(){
-      this.isModalCategoria = true
+      if(categoria.cat_nombre){
+        this.isModalCategoria = true
       await this.axios.post('/api/categoria',this.categoria)
         .then(response => {
             this.getdata()
@@ -288,6 +340,12 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+      }
+      this.errorscategoria = [];
+      if (!this.categoria.cat_nombre) {
+        this.errorscategoria.push('El nombre es obligatorio.');
+      }
+
     },
     showModalMarca() {
       this.isModalMarcaVisible=true
@@ -299,7 +357,8 @@ export default{
         this.marca.mar_nombre=""
     },
     async crearMarca(){
-      this.isModalMarca = true
+      if(marca.mar_nombre){
+        this.isModalMarca = true
       await this.axios.post('/api/marca',this.marca)
         .then(response => {
             this.getdata()
@@ -308,6 +367,20 @@ export default{
         .catch(error=>{
           console.log(error)
         })
+      }
+      this.errorsmarca = [];
+      if (!this.marca.mar_nombre) {
+        this.errorsmarca.push('El nombre es obligatorio.');
+      }
+    },
+    isNumber: function(evt) {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
     },
   }
 }

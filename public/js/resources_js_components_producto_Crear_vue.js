@@ -189,6 +189,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "crear-producto",
@@ -197,6 +221,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      errors: [],
+      errorsunidad: [],
+      errorscategoria: [],
+      errorsmarca: [],
       producto: {
         pro_nombre: "",
         pro_stockactual: "",
@@ -239,7 +267,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                console.log(_this.producto);
+                if (!(_this.producto.pro_nombre && _this.producto.pro_stockactual && _this.producto.pro_stockmin && _this.producto.pro_precioventa && _this.producto.pro_preciocompra)) {
+                  _context.next = 3;
+                  break;
+                }
+
                 _context.next = 3;
                 return _this.axios.post('/api/producto', _this.producto).then(function (response) {
                   _this.$router.push({
@@ -252,6 +284,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 });
 
               case 3:
+                _this.errors = [];
+
+                if (!_this.producto.pro_nombre) {
+                  _this.errors.push('El nombre es obligatorio.');
+                }
+
+                if (!_this.producto.pro_stockactual) {
+                  _this.errors.push('El stock actual es obligatorio.');
+                }
+
+                if (!_this.producto.pro_stockmin) {
+                  _this.errors.push('El stock mínimo es obligatorio.');
+                }
+
+                if (!_this.producto.pro_precioventa) {
+                  _this.errors.push('El precio venta es obligatorio.');
+                }
+
+                if (!_this.producto.pro_preciocompra) {
+                  _this.errors.push('El precio compra es obligatorio.');
+                }
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -330,8 +385,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                if (!_this3.unidad.uni_nombre) {
+                  _context3.next = 4;
+                  break;
+                }
+
                 _this3.isModalUnidad = true;
-                _context3.next = 3;
+                _context3.next = 4;
                 return _this3.axios.post('/api/unidad', _this3.unidad).then(function (response) {
                   _this3.getdata();
 
@@ -340,7 +400,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 3:
+              case 4:
+                _this3.errorsunidad = [];
+
+                if (!_this3.unidad.uni_nombre) {
+                  _this3.errorsunidad.push('El nombre es obligatorio.');
+                }
+
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -365,8 +432,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                if (!categoria.cat_nombre) {
+                  _context4.next = 4;
+                  break;
+                }
+
                 _this4.isModalCategoria = true;
-                _context4.next = 3;
+                _context4.next = 4;
                 return _this4.axios.post('/api/categoria', _this4.categoria).then(function (response) {
                   _this4.getdata();
 
@@ -375,7 +447,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 3:
+              case 4:
+                _this4.errorscategoria = [];
+
+                if (!_this4.categoria.cat_nombre) {
+                  _this4.errorscategoria.push('El nombre es obligatorio.');
+                }
+
+              case 6:
               case "end":
                 return _context4.stop();
             }
@@ -400,8 +479,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context5.prev = _context5.next) {
               case 0:
+                if (!marca.mar_nombre) {
+                  _context5.next = 4;
+                  break;
+                }
+
                 _this5.isModalMarca = true;
-                _context5.next = 3;
+                _context5.next = 4;
                 return _this5.axios.post('/api/marca', _this5.marca).then(function (response) {
                   _this5.getdata();
 
@@ -410,13 +494,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 3:
+              case 4:
+                _this5.errorsmarca = [];
+
+                if (!_this5.marca.mar_nombre) {
+                  _this5.errorsmarca.push('El nombre es obligatorio.');
+                }
+
+              case 6:
               case "end":
                 return _context5.stop();
             }
           }
         }, _callee5);
       }))();
+    },
+    isNumber: function isNumber(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+
+      if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+        evt.preventDefault();
+        ;
+      } else {
+        return true;
+      }
     }
   }
 });
@@ -1285,6 +1387,28 @@ var render = function () {
             _vm._m(0),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
+              _vm.errors.length
+                ? _c("p", [
+                    _c("b", [
+                      _vm._v(
+                        "Por favor, corrija el(los) siguiente(s) error(es):"
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      _vm._l(_vm.errors, function (error) {
+                        return _c(
+                          "li",
+                          { key: error, staticClass: "text-danger" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      0
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "form",
                 {
@@ -1346,6 +1470,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.producto.pro_stockactual },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isNumber($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -1378,6 +1505,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.producto.pro_stockmin },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isNumber($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -1410,6 +1540,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.producto.pro_precioventa },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isNumber($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -1442,6 +1575,9 @@ var render = function () {
                           attrs: { type: "text" },
                           domProps: { value: _vm.producto.pro_preciocompra },
                           on: {
+                            keypress: function ($event) {
+                              return _vm.isNumber($event)
+                            },
                             input: function ($event) {
                               if ($event.target.composing) {
                                 return
@@ -1736,11 +1872,33 @@ var render = function () {
               on: {
                 submit: function ($event) {
                   $event.preventDefault()
-                  return _vm.crear.apply(null, arguments)
+                  return _vm.crearUnidad.apply(null, arguments)
                 },
               },
             },
             [
+              _vm.errorsunidad.length
+                ? _c("p", [
+                    _c("b", [
+                      _vm._v(
+                        "Por favor, corrija el(los) siguiente(s) error(es):"
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      _vm._l(_vm.errorsunidad, function (error) {
+                        return _c(
+                          "li",
+                          { key: error, staticClass: "text-danger" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      0
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-12 mb-2" }, [
                   _c("div", { staticClass: "form-group" }, [
@@ -1779,8 +1937,7 @@ var render = function () {
                     "button",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "button" },
-                      on: { click: _vm.crearUnidad },
+                      attrs: { type: "submit" },
                     },
                     [_vm._v("Guardar")]
                   ),
@@ -1829,11 +1986,33 @@ var render = function () {
               on: {
                 submit: function ($event) {
                   $event.preventDefault()
-                  return _vm.crear.apply(null, arguments)
+                  return _vm.crearCategoria.apply(null, arguments)
                 },
               },
             },
             [
+              _vm.errorscategoria.length
+                ? _c("p", [
+                    _c("b", [
+                      _vm._v(
+                        "Por favor, corrija el(los) siguiente(s) error(es):"
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      _vm._l(_vm.errorscategoria, function (error) {
+                        return _c(
+                          "li",
+                          { key: error, staticClass: "text-danger" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      0
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-12 mb-2" }, [
                   _c("div", { staticClass: "form-group" }, [
@@ -1872,8 +2051,7 @@ var render = function () {
                     "button",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "button" },
-                      on: { click: _vm.crearCategoria },
+                      attrs: { type: "submit" },
                     },
                     [_vm._v("Guardar")]
                   ),
@@ -1915,11 +2093,33 @@ var render = function () {
               on: {
                 submit: function ($event) {
                   $event.preventDefault()
-                  return _vm.crear.apply(null, arguments)
+                  return _vm.crearMarca.apply(null, arguments)
                 },
               },
             },
             [
+              _vm.errorsmarca.length
+                ? _c("p", [
+                    _c("b", [
+                      _vm._v(
+                        "Por favor, corrija el(los) siguiente(s) error(es):"
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      _vm._l(_vm.errorsmarca, function (error) {
+                        return _c(
+                          "li",
+                          { key: error, staticClass: "text-danger" },
+                          [_vm._v(_vm._s(error))]
+                        )
+                      }),
+                      0
+                    ),
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-12 mb-2" }, [
                   _c("div", { staticClass: "form-group" }, [
@@ -1954,8 +2154,7 @@ var render = function () {
                     "button",
                     {
                       staticClass: "btn btn-primary",
-                      attrs: { type: "button" },
-                      on: { click: _vm.crearMarca },
+                      attrs: { type: "submit" },
                     },
                     [_vm._v("Guardar")]
                   ),

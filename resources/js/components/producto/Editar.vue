@@ -7,6 +7,12 @@
               <h4>Editar Producto</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="actualizar">
                 <div class="row">
                   <div class="col-12 mb-2">
@@ -83,6 +89,7 @@ export default{
   name : "editar-producto",
   data(){
     return {
+      errors: [],
       producto:{
         pro_nombre:"",
         pro_stockactual:"",
@@ -107,14 +114,32 @@ export default{
   },
   methods:{
     async actualizar(){
-      await this.axios.put(`/api/producto/${this.$route.params.id}`,this.producto)
-        .then(response => {
-          this.$router.push({name:"mostrarProducto"})
-          Swal.fire('Actualizado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      if (this.producto.pro_nombre && this.producto.pro_stockactual && this.producto.pro_stockmin && this.producto.pro_precioventa && this.producto.pro_preciocompra) {
+        await this.axios.put(`/api/producto/${this.$route.params.id}`,this.producto)
+          .then(response => {
+            this.$router.push({name:"mostrarProducto"})
+            Swal.fire('Actualizado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+      }
+      this.errors = [];
+      if (!this.producto.pro_nombre) {
+        this.errors.push('El nombre es obligatorio.');
+      }
+      if (!this.producto.pro_stockactual) {
+        this.errors.push('El stock actual es obligatorio.');
+      }
+      if (!this.producto.pro_stockmin) {
+        this.errors.push('El stock mínimo es obligatorio.');
+      }
+      if (!this.producto.pro_precioventa) {
+        this.errors.push('El precio venta es obligatorio.');
+      }
+      if (!this.producto.pro_preciocompra) {
+        this.errors.push('El precio compra es obligatorio.');
+      }
     },
     async mostrarProducto(){
       await this.axios.get(`/api/producto/${this.$route.params.id}`)
