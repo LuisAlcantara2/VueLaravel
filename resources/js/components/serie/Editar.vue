@@ -7,6 +7,12 @@
               <h4>Editar Serie</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="actualizar">
                 <div class="row">
                   <div class="col-12 mb-2">
@@ -34,6 +40,7 @@ export default{
   name : "editar-serie",
   data(){
     return {
+      errors:[],
       serie:{
         ser_serie:"",
         ser_corre:0,
@@ -44,15 +51,23 @@ export default{
     this.mostrarSerie()
   },
   methods:{
-    async actualizar(){    
-      await this.axios.put(`/api/serie/${this.$route.params.id}`,this.serie)
-        .then(response => {
-          this.$router.push({name:"mostrarSerie"})
-          Swal.fire('Actualizado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+    async actualizar(){
+      if(this.serie.ser_serie)
+      {
+        await this.axios.put(`/api/serie/${this.$route.params.id}`,this.serie)
+          .then(response => {
+            this.$router.push({name:"mostrarSerie"})
+            Swal.fire('Actualizado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+      }
+      this.errors =[]
+      if(!this.serie.ser_serie)
+      {
+        this.errors.push('El nombre es obligatorio.');
+      }
     },
     async mostrarSerie(){
       await this.axios.get(`/api/serie/${this.$route.params.id}`)
