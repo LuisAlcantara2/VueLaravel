@@ -62,10 +62,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "crear-unidad",
   data: function data() {
     return {
+      errors: [],
       unidad: {
         uni_nombre: ""
       }
@@ -80,7 +87,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                if (!_this.unidad.uni_nombre) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 3;
                 return _this.axios.post('/api/unidad', _this.unidad).then(function (response) {
                   _this.$router.push({
                     name: "mostrarUnidad"
@@ -91,7 +103,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   console.log(error);
                 });
 
-              case 2:
+              case 3:
+                _this.errors = [];
+
+                if (!_this.unidad.uni_nombre) {
+                  _this.errors.push('El nombre es obligatorio.');
+                }
+
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -963,6 +982,28 @@ var render = function () {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
+            _vm.errors.length
+              ? _c("p", [
+                  _c("b", [
+                    _vm._v(
+                      "Por favor, corrija el(los) siguiente(s) error(es):"
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    _vm._l(_vm.errors, function (error) {
+                      return _c(
+                        "li",
+                        { key: error, staticClass: "text-danger" },
+                        [_vm._v(_vm._s(error))]
+                      )
+                    }),
+                    0
+                  ),
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c(
               "form",
               {

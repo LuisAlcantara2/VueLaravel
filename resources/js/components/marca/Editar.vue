@@ -7,6 +7,12 @@
               <h4>Editar Marca</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="actualizar">
                 <div class="row">
                   <div class="col-12 mb-2">
@@ -35,6 +41,7 @@ export default{
   name : "editar-marca",
   data(){
     return {
+      errors:[],
       marca:{
         mar_nombre:"",
         // mar_estado:1,
@@ -46,14 +53,22 @@ export default{
   },
   methods:{
     async actualizar(){
-      await this.axios.put(`/api/marca/${this.$route.params.id}`,this.marca)
-        .then(response => {
-          this.$router.push({name:"mostrarMarca"})
-          Swal.fire('Actualizado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      if(this.marca.mar_nombre)
+      {
+        await this.axios.put(`/api/marca/${this.$route.params.id}`,this.marca)
+          .then(response => {
+            this.$router.push({name:"mostrarMarca"})
+            Swal.fire('Actualizado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+      }
+      this.errors =[]
+      if(!this.marca.mar_nombre)
+      {
+        this.errors.push('El nombre es obligatorio.');
+      }
     },
     async mostrarMarca(){
       await this.axios.get(`/api/marca/${this.$route.params.id}`)

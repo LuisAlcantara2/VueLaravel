@@ -7,6 +7,12 @@
               <h4>Crear Unidad</h4>
             </div>
             <div class="card-body">
+              <p v-if="errors.length">
+                <b>Por favor, corrija el(los) siguiente(s) error(es):</b>
+                <ul>
+                  <li v-for="error in errors" :key="error" class="text-danger">{{ error }}</li>
+                </ul>
+              </p>
               <form @submit.prevent="crear">
                 <div class="row">
                   <div class="col-12 mb-2">
@@ -35,6 +41,7 @@ export default{
   name : "crear-unidad",
   data(){
     return {
+      errors:[],
       unidad:{
         uni_nombre:"",
       }
@@ -42,14 +49,22 @@ export default{
   },
   methods:{
     async crear(){
-      await this.axios.post('/api/unidad',this.unidad)
-        .then(response => {
-          this.$router.push({name:"mostrarUnidad"})
-          Swal.fire('Registrado Correctamente','','success')
-        })
-        .catch(error=>{
-          console.log(error)
-        })
+      if(this.unidad.uni_nombre)
+      {
+        await this.axios.post('/api/unidad',this.unidad)
+          .then(response => {
+            this.$router.push({name:"mostrarUnidad"})
+            Swal.fire('Registrado Correctamente','','success')
+          })
+          .catch(error=>{
+            console.log(error)
+          })
+      }
+      this.errors =[]
+      if(!this.unidad.uni_nombre)
+      {
+        this.errors.push('El nombre es obligatorio.');
+      }
     }
   }
 }
